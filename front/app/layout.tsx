@@ -18,6 +18,7 @@ export const metadata: Metadata = {
     "venta de propiedades",
     "alquiler de propiedades",
     "Medde & Padilla",
+    "Casas"
   ],
   icons: {
     icon: "/logo/favicon.png",
