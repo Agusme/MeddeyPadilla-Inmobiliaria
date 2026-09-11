@@ -24,7 +24,7 @@ const defaultItems: NavbarItem[] = [
 ];
 
 export default function Navbar({
-  logo = "Meddey Paddilla",
+  logo = "Medde Paddilla",
   items = defaultItems,
 }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
