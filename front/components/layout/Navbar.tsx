@@ -46,7 +46,7 @@ export default function Navbar({
             alt={logo}
             width={220}
             height={38}
-            className="h-auto w-[180px] sm:w-[220px]"
+            className="h-auto w-45 sm:w-55"
             priority
           />
         </Link>
@@ -77,7 +77,7 @@ export default function Navbar({
 
         <div
           id="main-navigation"
-          className={`${isOpen ? "flex" : "hidden"} absolute left-0 right-0 top-[73px] z-10 flex-col gap-1 border-b border-black/10 bg-white px-6 py-4 shadow-sm lg:static lg:flex lg:flex-row lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
+          className={`${isOpen ? "flex" : "hidden"} absolute left-0 right-0 top-18.25 z-10 flex-col gap-1 border-b border-black/10 bg-white px-6 py-4 shadow-sm lg:static lg:flex lg:flex-row lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
         >
           {items.map((item) => (
             <Link
