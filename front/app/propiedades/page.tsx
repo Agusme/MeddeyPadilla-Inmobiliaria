@@ -1,4 +1,5 @@
 import Image from "next/image";
+import PropertyFilter from "@/components/properties/PropertyFilter";
 
 const properties = [
   {
@@ -43,49 +44,7 @@ export default function PropiedadesPage() {
         </p>
       </header>
 
-      <section
-        className="border-y border-black/10 py-6"
-        aria-label="Filtros de propiedades"
-      >
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <label className="flex flex-col gap-2 text-sm font-medium text-black">
-            Operación
-            <select className="h-12 rounded-lg border border-black/15 bg-white px-4 text-sm font-normal outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/20">
-              <option>Todas</option>
-              <option>Venta</option>
-              <option>Alquiler</option>
-            </select>
-          </label>
-          <label className="flex flex-col gap-2 text-sm font-medium text-black">
-            Tipo de propiedad
-            <select className="h-12 rounded-lg border border-black/15 bg-white px-4 text-sm font-normal outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/20">
-              <option>Todos los tipos</option>
-              <option>Casa</option>
-              <option>Departamento</option>
-              <option>Terreno</option>
-              <option>Local</option>
-            </select>
-          </label>
-          <label className="flex flex-col gap-2 text-sm font-medium text-black">
-            Ubicación
-            <select className="h-12 rounded-lg border border-black/15 bg-white px-4 text-sm font-normal outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/20">
-              <option>Todas las ubicaciones</option>
-              <option>San Miguel de Tucumán</option>
-              <option>Yerba Buena</option>
-              <option>Lomas de Tafí</option>
-            </select>
-          </label>
-          <label className="flex flex-col gap-2 text-sm font-medium text-black">
-            Precio máximo
-            <select className="h-12 rounded-lg border border-black/15 bg-white px-4 text-sm font-normal outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/20">
-              <option>Sin límite</option>
-              <option>USD 50.000</option>
-              <option>USD 100.000</option>
-              <option>USD 200.000</option>
-            </select>
-          </label>
-        </div>
-      </section>
+      <PropertyFilter />
 
       <div className="flex items-center justify-between py-8">
         <p className="text-sm text-black/55">3 propiedades encontradas</p>
