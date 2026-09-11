@@ -103,8 +103,8 @@ function ProfessionalIcon() {
 export default function Footer() {
   return (
     <footer className="bg-[#151515] text-white">
-      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
-        <div>
+      <div className="mx-auto grid max-w-7xl justify-items-center gap-12 px-6 py-14 text-center sm:grid-cols-2 sm:justify-items-start sm:text-left lg:grid-cols-4 lg:px-8">
+        <div className="w-full">
           <Link
             href="/"
             aria-label="Ir al inicio"
@@ -120,7 +120,7 @@ export default function Footer() {
           </Link>
         </div>
 
-        <div>
+        <div className="w-full">
           <h2 className="mb-5 text-sm font-semibold uppercase tracking-widest text-white">
             Navegación
           </h2>
@@ -138,7 +138,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div>
+        <div className="w-full">
           <h2 className="mb-5 text-sm font-semibold uppercase tracking-widest text-white">
             Propiedades
           </h2>
@@ -156,11 +156,11 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div>
+        <div className="w-full">
           <h2 className="mb-5 text-sm font-semibold uppercase tracking-widest text-white">
             Seguinos
           </h2>
-          <div className="flex gap-3">
+          <div className="flex justify-center gap-3 sm:justify-start">
             <a
               aria-label="Facebook"
               href="https://www.facebook.com/profile.php?id=61587494125747&mibextid=wwXIfr&rdid=F78yUKJ9Y8y1A3Tt&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18DGxUozJ6%2F%3Fmibextid%3DwwXIfr#"
@@ -189,7 +189,7 @@ export default function Footer() {
               <WhatsappIcon />
             </a>
           </div>
-          <address className="mt-7 space-y-3 text-sm not-italic leading-6 text-white/75">
+          <address className="mx-auto mt-7 w-fit space-y-3 text-left text-sm not-italic leading-6 text-white/75 sm:mx-0">
             <a
               href="https://maps.app.goo.gl/7s2iLpzWy1XDuCMPA"
               target="_blank"
