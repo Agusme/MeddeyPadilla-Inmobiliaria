@@ -105,7 +105,7 @@ export default function PropiedadesPage() {
             key={property.title}
             className="overflow-hidden border border-black/10 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
           >
-            <div className="relative aspect-[4/3] bg-black/5">
+            <div className="relative aspect-4/3 bg-black/5">
               <Image
                 src={property.image}
                 alt={property.title}
