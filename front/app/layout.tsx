@@ -1,14 +1,15 @@
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "Meddey & Padilla | Inmobiliaria",
-    template: "%s | Meddey & Padilla",
+    default: "Medde & Padilla | Inmobiliaria",
+    template: "%s | Medde & Padilla",
   },
   description:
-    "Meddey & Padilla Inmobiliaria: encontrá propiedades y servicios inmobiliarios para comprar, vender o alquilar.",
+    "Medde & Padilla Inmobiliaria: encontrá propiedades y servicios inmobiliarios para comprar, vender o alquilar.",
   authors: [{ name: "Agustina Mena" }],
   creator: "Agustina Mena",
   keywords: [
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     "propiedades",
     "venta de propiedades",
     "alquiler de propiedades",
-    "Meddey & Padilla",
+    "Medde & Padilla",
   ],
   icons: {
     icon: "/logo/favicon.png",
@@ -26,8 +27,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_AR",
-    siteName: "Meddey & Padilla Inmobiliaria",
-    title: "Meddey & Padilla | Inmobiliaria",
+    siteName: "Medde & Padilla Inmobiliaria",
+    title: "Medde & Padilla | Inmobiliaria",
     description:
       "Encontrá propiedades y servicios inmobiliarios para comprar, vender o alquilar.",
     images: ["/logo/logoHorizontal.png"],
@@ -41,9 +42,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>
+      <body className="flex min-h-screen flex-col">
         <Navbar />
-        {children}
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );
