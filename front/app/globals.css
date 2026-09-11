@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+:root {
+  --brand-red: #b71c1c;
+  --brand-black: #000000;
+  --brand-white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--brand-white);
+  color: var(--brand-black);
+}
