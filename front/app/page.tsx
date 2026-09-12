@@ -1,6 +1,36 @@
 import Image from "next/image";
 import ButtonLink from "@/components/ui/ButtonLink";
 import PropertyFilter from "@/components/properties/PropertyFilter";
+import PropertyCard, {
+  type PropertyCardData,
+} from "@/components/properties/PropertyCard";
+
+const featuredProperties: PropertyCardData[] = [
+  {
+    title: "Casa con jardín y piscina",
+    location: "Yerba Buena, Tucumán",
+    type: "Casa",
+    operation: "Venta",
+    price: "USD 185.000",
+    image: "/home/homehero.jpg",
+  },
+  {
+    title: "Departamento luminoso",
+    location: "San Miguel de Tucumán",
+    type: "Departamento",
+    operation: "Alquiler",
+    price: "$ 650.000 / mes",
+    image: "/home/hom.jpg",
+  },
+  {
+    title: "Terreno con excelente ubicación",
+    location: "Lomas de Tafí, Tucumán",
+    type: "Terreno",
+    operation: "Venta",
+    price: "USD 72.000",
+    image: "/home/herohomee.jpg",
+  },
+];
 
 export default function Home() {
   return (
@@ -36,6 +66,38 @@ export default function Home() {
             <PropertyFilter overlay />
           </div>
         </div>
+      </section>
+      <section
+        className="mx-auto max-w-7xl py-8 sm:py-14"
+        aria-labelledby="featured-properties-title"
+      >
+        <div className="mb-8 flex items-end justify-between gap-6">
+          <div>
+            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#B71C1C]">
+              Una selección para vos
+            </p>
+            <h2
+              id="featured-properties-title"
+              className="text-3xl font-semibold tracking-tight text-black sm:text-4xl"
+            >
+              Propiedades destacadas
+            </h2>
+          </div>
+          <ButtonLink
+            href="/propiedades"
+            className="hidden shrink-0 sm:inline-flex"
+          >
+            Ver todas
+          </ButtonLink>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {featuredProperties.map((property) => (
+            <PropertyCard key={property.title} property={property} />
+          ))}
+        </div>
+        <ButtonLink href="/propiedades" className="mt-8 sm:hidden">
+          Ver todas las propiedades
+        </ButtonLink>
       </section>
     </>
   );
