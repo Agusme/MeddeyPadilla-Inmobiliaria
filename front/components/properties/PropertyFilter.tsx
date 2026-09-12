@@ -7,11 +7,27 @@ export default function PropertyFilter({
 }: PropertyFilterProps) {
   return (
     <section
-      className={overlay ? "mx-0 max-w-5xl" : "border-y border-black/10 py-5"}
+      className={
+        overlay
+          ? "mx-0 w-full max-w-7xl sm:w-17/20"
+          : "border-y border-black/10 py-5"
+      }
       aria-label="Filtros de propiedades"
     >
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
-        <label className="flex h-12 flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-3 text-sm font-semibold text-black shadow-sm sm:h-16 sm:px-5">
+      <div
+        className={
+          overlay
+            ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"
+            : "grid gap-3 sm:grid-cols-2 lg:flex lg:items-center"
+        }
+      >
+        <label
+          className={
+            overlay
+              ? "flex h-16 w-full flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-8 text-sm font-semibold text-black shadow-lg"
+              : "flex h-12 w-full max-w-md flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-3 text-sm font-semibold text-black shadow-sm sm:px-5 lg:max-w-lg"
+          }
+        >
           <span className="sr-only">Propiedad</span>
           <select className="w-full bg-transparent text-sm text-black outline-none">
             <option>Propiedad</option>
@@ -21,7 +37,13 @@ export default function PropertyFilter({
             <option>Local</option>
           </select>
         </label>
-        <label className="flex h-12 flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-3 text-sm font-semibold text-black shadow-sm sm:h-16 sm:px-5">
+        <label
+          className={
+            overlay
+              ? "flex h-16 w-full flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-8 text-sm font-semibold text-black shadow-lg"
+              : "flex h-12 w-full max-w-md flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-3 text-sm font-semibold text-black shadow-sm sm:px-5 lg:max-w-lg"
+          }
+        >
           <span className="sr-only">Tipo de operación</span>
           <select className="w-full bg-transparent text-sm text-black outline-none">
             <option>Tipo de operación</option>
@@ -32,7 +54,7 @@ export default function PropertyFilter({
         <button
           type="button"
           aria-label="Buscar propiedades"
-          className="flex h-12 items-center justify-center rounded-md bg-[#B71C1C] px-6 text-white shadow-sm transition hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] sm:col-span-2 sm:h-14 lg:col-span-1 lg:h-16 lg:w-16"
+          className={`flex items-center justify-center rounded-md bg-[#B71C1C] text-white shadow-lg transition hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${overlay ? "h-16 w-16" : "h-12 w-14 justify-self-start"}`}
         >
           <svg
             aria-hidden="true"
