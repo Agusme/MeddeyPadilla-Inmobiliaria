@@ -77,14 +77,14 @@ export default function Navbar({
 
         <div
           id="main-navigation"
-          className={`${isOpen ? "flex" : "hidden"} absolute left-0 right-0 top-18.25 z-10 flex-col gap-1 border-b border-black/10 bg-white px-6 py-4 shadow-sm lg:static lg:flex lg:flex-row lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
+          className={`${isOpen ? "flex" : "hidden"} absolute left-0 right-0 top-18.25 z-10 flex-col gap-1 border-b border-black/10 bg-white px-6 py-4 shadow-sm lg:static lg:flex lg:flex-row lg:items-center lg:gap-10 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
         >
           {items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={item.href === pathname ? "page" : undefined}
-              className={`rounded px-3 py-2 text-base font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${item.href === pathname ? "text-[#B71C1C]" : "text-black hover:text-[#B71C1C]"}`}
+              className={`rounded px-4 py-2.5 text-base font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${item.href === pathname ? "text-[#B71C1C]" : "text-black hover:text-[#B71C1C]"}`}
               onClick={() => setIsOpen(false)}
             >
               {item.label}
