@@ -59,7 +59,7 @@ export default function Home() {
               Propiedades seleccionadas y asesoramiento cercano para comprar,
               vender o alquilar con confianza.
             </p>
-            <ButtonLink href="/propiedades" className="mt-8 sm:mt-6">
+            <ButtonLink href="/propiedades#listado-propiedades" className="mt-8 sm:mt-6">
               Ver propiedades
             </ButtonLink>
           </div>
@@ -85,7 +85,7 @@ export default function Home() {
             </h2>
           </div>
           <Link
-            href="/propiedades"
+            href="/propiedades#listado-propiedades"
             className="inline-flex shrink-0 self-end items-center text-sm font-semibold text-[#B71C1C] transition hover:translate-x-0.5 hover:text-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
           >
             Ver todas <span aria-hidden="true" className="ml-2">→</span>

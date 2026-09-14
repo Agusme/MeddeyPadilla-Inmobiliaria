@@ -47,6 +47,7 @@ export default function PropiedadesPage() {
         </div>
 
         <section
+          id="listado-propiedades"
           className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
           aria-label="Listado de propiedades"
         >
