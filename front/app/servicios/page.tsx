@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import ButtonLink from "@/components/ui/ButtonLink";
-import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
@@ -38,7 +37,6 @@ function ServiceIcon({ type }: { type: Service["icon"] }) {
 export default function ServiciosPage() {
   return (
     <div className="overflow-hidden bg-white">
-      <PageHero title="Nuestros servicios" />
 
       <section className="mx-auto max-w-7xl px-6 py-10 sm:px-8 lg:px-12 lg:py-12" aria-label="Introducción a los servicios">
         <SectionHeading eyebrow="Servicios inmobiliarios" title="Soluciones pensadas para cada etapa." description="Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad." />
