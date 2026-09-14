@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import ButtonLink from "@/components/ui/ButtonLink";
 import PageHero from "@/components/ui/PageHero";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
   title: "Servicios",
@@ -39,7 +40,9 @@ export default function ServiciosPage() {
     <div className="overflow-hidden bg-white">
       <PageHero title="Nuestros servicios" />
 
-      <section className="mx-auto max-w-7xl px-6 py-10 sm:px-8 lg:px-12 lg:py-12" aria-label="Introducción a los servicios"><h2 className="max-w-3xl border-l-4 border-[#B71C1C] pl-5 text-3xl font-semibold tracking-tight text-[#171717] sm:text-4xl">Soluciones inmobiliarias pensadas para cada etapa</h2><p className="mt-3 max-w-2xl text-base leading-7 text-black/65 sm:text-lg">Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad.</p></section>
+      <section className="mx-auto max-w-7xl px-6 py-10 sm:px-8 lg:px-12 lg:py-12" aria-label="Introducción a los servicios">
+        <SectionHeading eyebrow="Servicios inmobiliarios" title="Soluciones pensadas para cada etapa" description="Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad." />
+      </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8 lg:px-12 lg:pb-16" aria-label="Listado de servicios">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">

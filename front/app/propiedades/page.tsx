@@ -1,6 +1,7 @@
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import PropertyCard from "@/components/properties/PropertyCard";
 import PageHero from "@/components/ui/PageHero";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 const properties = [
   {
@@ -33,27 +34,16 @@ export default function PropiedadesPage() {
   return (
     <div className="overflow-hidden bg-white">
       <PageHero title="Propiedades" />
-      <div className="relative z-10 bg-white shadow-[0_-6px_18px_rgba(0,0,0,0.08)]">
+      <div className="relative z-10 bg-[#f7f6f3] shadow-[0_-6px_18px_rgba(0,0,0,0.08)]">
         <div className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
-        <header className="mb-10 max-w-2xl">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#B71C1C]">
-            Encontrá tu próximo lugar
-          </p>
-          <p className="mt-4 text-base leading-7 text-black/60">
-            Explorá nuestra selección de propiedades y encontrá una opción que
-            se adapte a tu próxima etapa.
-          </p>
+        <header className="mb-9 sm:mb-10">
+          <SectionHeading eyebrow="Encontrá tu próximo lugar" title="La propiedad indicada está más cerca." description="Explorá nuestra selección de propiedades y encontrá una opción que se adapte a tu próxima etapa." />
         </header>
 
         <PropertyFilter />
 
-        <div className="flex items-center justify-between py-8">
+        <div className="py-8">
           <p className="text-sm text-black/55">3 propiedades encontradas</p>
-          <select className="rounded-lg border border-black/15 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#B71C1C]">
-            <option>Más recientes</option>
-            <option>Menor precio</option>
-            <option>Mayor precio</option>
-          </select>
         </div>
 
         <section
