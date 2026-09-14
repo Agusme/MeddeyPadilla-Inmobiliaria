@@ -35,7 +35,7 @@ const featuredProperties: PropertyCardData[] = [
 export default function Home() {
   return (
     <>
-      <section className="relative isolate -mx-6 min-h-[82dvh] overflow-hidden sm:-mx-8 sm:min-h-[calc(100dvh-73px)] lg:-mx-12">
+      <section className="relative isolate min-h-[82dvh] overflow-hidden sm:min-h-[calc(100dvh-73px)]">
         <Image
           src="/home/herohom.jpg"
           alt="Casa con piscina y espacios exteriores"
@@ -68,7 +68,7 @@ export default function Home() {
         </div>
       </section>
       <section
-        className="mx-auto max-w-7xl py-8 sm:py-14"
+        className="mx-auto max-w-7xl px-6 py-8 sm:px-8 sm:py-14 lg:px-12"
         aria-labelledby="featured-properties-title"
       >
         <div className="mb-8 flex items-end justify-between gap-6">
