@@ -1,5 +1,6 @@
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import PropertyCard from "@/components/properties/PropertyCard";
+import PageHero from "@/components/ui/PageHero";
 
 const properties = [
   {
@@ -30,15 +31,14 @@ const properties = [
 
 export default function PropiedadesPage() {
   return (
-    <div className="-mx-6 min-h-full bg-[#faf9f6] px-6 py-12 sm:-mx-8 sm:px-8 sm:py-16 lg:-mx-12 lg:px-12">
-      <div className="mx-auto max-w-7xl">
+    <div className="overflow-hidden bg-white">
+      <PageHero title="Propiedades" />
+      <div className="relative z-10 bg-white shadow-[0_-6px_18px_rgba(0,0,0,0.08)]">
+        <div className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
         <header className="mb-10 max-w-2xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#B71C1C]">
             Encontrá tu próximo lugar
           </p>
-          <h1 className="text-4xl font-semibold tracking-tight text-black sm:text-5xl">
-            Propiedades
-          </h1>
           <p className="mt-4 text-base leading-7 text-black/60">
             Explorá nuestra selección de propiedades y encontrá una opción que
             se adapte a tu próxima etapa.
@@ -64,6 +64,7 @@ export default function PropiedadesPage() {
             <PropertyCard key={property.title} property={property} />
           ))}
         </section>
+        </div>
       </div>
     </div>
   );

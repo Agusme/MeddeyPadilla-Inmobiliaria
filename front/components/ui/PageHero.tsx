@@ -1,0 +1,18 @@
+import Image from "next/image";
+
+type PageHeroProps = {
+  title: string;
+};
+
+export default function PageHero({ title }: PageHeroProps) {
+  return (
+    <section className="relative isolate overflow-hidden border-b border-black/10 bg-[#171717] py-18 text-white">
+      <Image src="/home/herohom.jpg" alt="" fill priority className="absolute z-0 object-cover object-center opacity-25" sizes="100vw" />
+      <div className="absolute inset-0 z-0 bg-black/65" />
+      <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+        <p className="text-xs font-bold uppercase tracking-[.28em] text-[#e16a62]">Medde &amp; Padilla</p>
+        <h1 className="mt-4 text-5xl font-semibold tracking-tight sm:text-6xl">{title}</h1>
+      </div>
+    </section>
+  );
+}

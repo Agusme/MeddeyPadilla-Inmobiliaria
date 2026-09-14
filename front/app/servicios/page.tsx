@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import ButtonLink from "@/components/ui/ButtonLink";
+import PageHero from "@/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "Servicios",
@@ -35,12 +36,8 @@ function ServiceIcon({ type }: { type: Service["icon"] }) {
 
 export default function ServiciosPage() {
   return (
-    <div className="-mx-6 overflow-hidden bg-white sm:-mx-8 lg:-mx-12">
-      <section className="relative isolate overflow-hidden border-b border-black/10 bg-[#171717] py-18 text-white">
-        <Image src="/home/herohom.jpg" alt="" fill priority className="absolute z-0 object-cover object-center opacity-25" sizes="100vw" />
-        <div className="absolute inset-0 z-0 bg-black/65" />
-        <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-8 lg:px-12"><p className="text-xs font-bold uppercase tracking-[.28em] text-[#e16a62]">Medde &amp; Padilla</p><h1 className="mt-4 text-5xl font-semibold tracking-tight sm:text-6xl">Nuestros servicios</h1></div>
-      </section>
+    <div className="overflow-hidden bg-white">
+      <PageHero title="Nuestros servicios" />
 
       <section className="mx-auto max-w-7xl px-6 py-10 sm:px-8 lg:px-12 lg:py-12" aria-label="Introducción a los servicios"><h2 className="max-w-3xl border-l-4 border-[#B71C1C] pl-5 text-3xl font-semibold tracking-tight text-[#171717] sm:text-4xl">Soluciones inmobiliarias pensadas para cada etapa</h2><p className="mt-3 max-w-2xl text-base leading-7 text-black/65 sm:text-lg">Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad.</p></section>
 
