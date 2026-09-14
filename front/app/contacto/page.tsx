@@ -1,4 +1,3 @@
-import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import GoogleMap from "@/components/contact/GoogleMap";
 
@@ -21,7 +20,6 @@ function InstagramIcon() {
 export default function ContactoPage() {
   return (
     <div className="overflow-hidden bg-[#f7f6f3]">
-      <PageHero title="Contacto" />
       <section className="mx-auto max-w-7xl px-0 py-12 sm:px-8 sm:py-16 lg:px-12">
         <header className="mb-9 px-6 sm:mb-10 sm:px-0">
           <SectionHeading eyebrow="Hablemos" title="Estamos para acompañarte" description="Contanos qué necesitás y te ayudamos a dar el próximo paso con la atención personalizada que buscás." />

@@ -1,6 +1,5 @@
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import PropertyCard from "@/components/properties/PropertyCard";
-import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 const properties = [
@@ -33,7 +32,6 @@ const properties = [
 export default function PropiedadesPage() {
   return (
     <div className="overflow-hidden bg-white">
-      <PageHero title="Propiedades" />
       <div className="relative z-10 bg-[#f7f6f3] shadow-[0_-6px_18px_rgba(0,0,0,0.08)]">
         <div className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
         <header className="mb-9 sm:mb-10">
