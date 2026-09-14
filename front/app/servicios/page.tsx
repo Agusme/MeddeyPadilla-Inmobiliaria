@@ -41,7 +41,7 @@ export default function ServiciosPage() {
       <PageHero title="Nuestros servicios" />
 
       <section className="mx-auto max-w-7xl px-6 py-10 sm:px-8 lg:px-12 lg:py-12" aria-label="Introducción a los servicios">
-        <SectionHeading eyebrow="Servicios inmobiliarios" title="Soluciones pensadas para cada etapa" description="Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad." />
+        <SectionHeading eyebrow="Servicios inmobiliarios" title="Soluciones pensadas para cada etapa." description="Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad." />
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8 lg:px-12 lg:pb-16" aria-label="Listado de servicios">

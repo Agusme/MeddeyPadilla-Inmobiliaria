@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import ButtonLink from "@/components/ui/ButtonLink";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import PropertyCard, {
@@ -71,7 +72,7 @@ export default function Home() {
         className="mx-auto max-w-7xl px-6 py-8 sm:px-8 sm:py-14 lg:px-12"
         aria-labelledby="featured-properties-title"
       >
-        <div className="mb-8 flex items-end justify-between gap-6">
+        <div className="mb-8 flex flex-col items-start gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#B71C1C]">
               Una selección para vos
@@ -83,21 +84,18 @@ export default function Home() {
               Propiedades destacadas
             </h2>
           </div>
-          <ButtonLink
+          <Link
             href="/propiedades"
-            className="hidden shrink-0 sm:inline-flex"
+            className="inline-flex shrink-0 self-end items-center text-sm font-semibold text-[#B71C1C] transition hover:translate-x-0.5 hover:text-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
           >
-            Ver todas
-          </ButtonLink>
+            Ver todas <span aria-hidden="true" className="ml-2">→</span>
+          </Link>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {featuredProperties.map((property) => (
             <PropertyCard key={property.title} property={property} />
           ))}
         </div>
-        <ButtonLink href="/propiedades" className="mt-8 sm:hidden">
-          Ver todas las propiedades
-        </ButtonLink>
       </section>
     </>
   );
