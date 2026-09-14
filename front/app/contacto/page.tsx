@@ -1,5 +1,6 @@
 import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
+import GoogleMap from "@/components/contact/GoogleMap";
 
 function LocationIcon() {
   return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 shrink-0 fill-none stroke-current" strokeWidth="1.8"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" /><circle cx="12" cy="10" r="2.3" /></svg>;
@@ -21,12 +22,12 @@ export default function ContactoPage() {
   return (
     <div className="overflow-hidden bg-[#f7f6f3]">
       <PageHero title="Contacto" />
-      <section className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
-        <header className="mb-9 sm:mb-10">
+      <section className="mx-auto max-w-7xl px-0 py-12 sm:px-8 sm:py-16 lg:px-12">
+        <header className="mb-9 px-6 sm:mb-10 sm:px-0">
           <SectionHeading eyebrow="Hablemos" title="Estamos para acompañarte" description="Contanos qué necesitás y te ayudamos a dar el próximo paso con la atención personalizada que buscás." />
         </header>
 
-        <div className="grid overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="grid overflow-hidden border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] sm:rounded-2xl lg:grid-cols-[0.95fr_1.05fr]">
           <section className="overflow-hidden bg-[#171717] p-6 text-white sm:p-8" aria-labelledby="contact-details-title">
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#e16a62]">Nuestra oficina</p>
             <h2 id="contact-details-title" className="mt-3 text-3xl font-semibold tracking-tight">Dónde encontrarnos</h2>
@@ -37,7 +38,7 @@ export default function ContactoPage() {
             </address>
             <a href="https://wa.me/5493816806570" target="_blank" rel="noreferrer" className="mt-7 inline-flex w-full items-center justify-center rounded-full bg-[#B71C1C] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:-translate-y-0.5 hover:bg-[#8F1616] sm:w-fit">Escribinos por WhatsApp <span aria-hidden="true" className="ml-2">→</span></a>
             <div className="mt-8 overflow-hidden rounded-xl border border-white/15">
-              <iframe title="Ubicación de Medde & Padilla" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3560.0147078832747!2d-65.2071939!3d-26.8394845!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94225c08dfa9b5c9%3A0x94a08a050923ec08!2sCongreso%20de%20Tucum%C3%A1n%20603%20Piso%205%20oficina%20c%2C%20T4000%20San%20Miguel%20de%20Tucum%C3%A1n%2C%20Tucum%C3%A1n!5e0!3m2!1ses-419!2sar!4v1789409620514!5m2!1ses-419!2sar" className="pointer-events-none h-64 w-full border-0 sm:pointer-events-auto" loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
+              <GoogleMap />
             </div>
             <div className="mt-7 border-t border-white/15 pt-6">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/55">Seguinos</p>
