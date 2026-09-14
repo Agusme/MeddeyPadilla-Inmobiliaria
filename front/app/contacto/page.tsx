@@ -27,7 +27,7 @@ export default function ContactoPage() {
         </header>
 
         <div className="grid overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] lg:grid-cols-[0.95fr_1.05fr]">
-          <section className="bg-[#171717] p-6 text-white sm:p-8" aria-labelledby="contact-details-title">
+          <section className="overflow-hidden bg-[#171717] p-6 text-white sm:p-8" aria-labelledby="contact-details-title">
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#e16a62]">Nuestra oficina</p>
             <h2 id="contact-details-title" className="mt-3 text-3xl font-semibold tracking-tight">Dónde encontrarnos</h2>
             <p className="mt-3 max-w-md leading-7 text-white/70">Acercate a nuestra oficina en el centro de San Miguel de Tucumán o contactanos por teléfono y WhatsApp.</p>
