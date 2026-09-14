@@ -31,10 +31,10 @@ export default function Navbar({
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-black/10 bg-white shadow-sm">
+    <header className="relative z-50 border-b border-black/10 bg-white shadow-sm">
       <nav
         aria-label="Navegacion principal"
-        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"
+        className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"
       >
         <Link
           href="/"
@@ -77,7 +77,7 @@ export default function Navbar({
 
         <div
           id="main-navigation"
-          className={`${isOpen ? "flex" : "hidden"} absolute left-0 right-0 top-18.25 z-10 flex-col gap-1 border-b border-black/10 bg-white px-6 py-4 shadow-sm lg:static lg:flex lg:flex-row lg:items-center lg:gap-10 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
+          className={`${isOpen ? "flex" : "hidden"} absolute left-0 right-0 top-full z-10 max-h-[calc(100dvh-4.5rem)] flex-col gap-1 overflow-y-auto border-b border-black/10 bg-white px-6 py-4 shadow-sm lg:static lg:flex lg:max-h-none lg:flex-row lg:items-center lg:gap-10 lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
         >
           {items.map((item) => (
             <Link
