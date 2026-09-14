@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import ButtonLink from "@/components/ui/ButtonLink";
+import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
@@ -45,10 +45,10 @@ export default function ServiciosPage() {
       <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8 lg:px-12 lg:pb-16" aria-label="Listado de servicios">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
           {services.map((service, index) => (
-            <article key={service.title} className={`group relative isolate min-h-[260px] overflow-hidden rounded-md bg-[#171717] text-white lg:col-span-2 ${services.length === 5 && index === 3 ? "lg:col-start-2" : ""}`}>
-              <Image src={service.image} alt="" fill className="-z-10 object-cover transition duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-black/78 via-black/55 to-black/18" />
-              <div className="flex h-full min-h-[260px] max-w-[290px] flex-col p-5 sm:p-6"><div className="flex items-center gap-3 text-[#d73b35]"><ServiceIcon type={service.icon} /><span className="h-7 w-px bg-[#d73b35]" /></div><div className="mt-auto"><h3 className="min-h-[3.24rem] text-2xl font-medium leading-[1.08] tracking-tight">{service.title}</h3><p className="mt-3 min-h-[3.75rem] text-sm leading-5 text-white/78">{service.description}</p></div></div>
+            <article key={service.title} className={`group relative isolate min-h-65 overflow-hidden rounded-md bg-[#171717] text-white lg:col-span-2 ${services.length === 5 && index === 3 ? "lg:col-start-2" : ""}`}>
+              <ImageWithSkeleton src={service.image} alt="" containerClassName="-z-10" imageClassName="transition duration-700 group-hover:scale-105" skeletonClassName="from-white/15 via-white/5 to-white/15" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
+              <div className="absolute inset-0 -z-10 bg-linear-to-tr from-black/78 via-black/55 to-black/18" />
+              <div className="flex h-full min-h-65 max-w-72.5 flex-col p-5 sm:p-6"><div className="flex items-center gap-3 text-[#d73b35]"><ServiceIcon type={service.icon} /><span className="h-7 w-px bg-[#d73b35]" /></div><div className="mt-auto"><h3 className="min-h-[3.24rem] text-2xl font-medium leading-[1.08] tracking-tight">{service.title}</h3><p className="mt-3 min-h-15 text-sm leading-5 text-white/78">{service.description}</p></div></div>
             </article>
           ))}
         </div>

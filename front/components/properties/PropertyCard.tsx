@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 
 export type PropertyCardData = {
   title: string;
@@ -15,13 +15,11 @@ type PropertyCardProps = {
 
 export default function PropertyCard({ property }: PropertyCardProps) {
   return (
-    <article className="overflow-hidden border border-black/10 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+    <article className="overflow-hidden border border-black/10 bg-white shadow-sm transition-shadow duration-300 hover:shadow-[0_14px_32px_rgba(0,0,0,0.18)]">
       <div className="relative aspect-4/3 bg-black/5">
-        <Image
+        <ImageWithSkeleton
           src={property.image}
           alt={property.title}
-          fill
-          className="object-cover"
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
         />
         <span className="absolute left-4 top-4 bg-[#B71C1C] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
