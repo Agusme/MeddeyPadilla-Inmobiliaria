@@ -13,7 +13,7 @@ const featuredProperties: PropertyCardData[] = [
     type: "Casa",
     operation: "Venta",
     price: "USD 185.000",
-    image: "/home/homehero.jpg",
+    image: "/image1.webp",
   },
   {
     title: "Departamento luminoso",
@@ -21,7 +21,7 @@ const featuredProperties: PropertyCardData[] = [
     type: "Departamento",
     operation: "Alquiler",
     price: "$ 650.000 / mes",
-    image: "/home/hom.jpg",
+    image: "/image2.webp",
   },
   {
     title: "Terreno con excelente ubicación",
@@ -29,7 +29,7 @@ const featuredProperties: PropertyCardData[] = [
     type: "Terreno",
     operation: "Venta",
     price: "USD 72.000",
-    image: "/home/herohomee.jpg",
+    image: "/image.webp",
   },
 ];
 
