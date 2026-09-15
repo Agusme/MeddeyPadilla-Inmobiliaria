@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ButtonLink from "@/components/ui/ButtonLink";
+import ContactCta from "@/components/ui/ContactCta";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import PropertyCard, {
   type PropertyCardData,
@@ -97,6 +98,12 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <ContactCta
+        title="¿Buscás vender, comprar o alquilar?"
+        description="Contanos qué necesitás. Te acompañamos con atención personalizada para que encuentres el próximo paso indicado."
+        ctaLabel="Ir a contacto"
+        showWhatsApp
+      />
     </>
   );
 }
