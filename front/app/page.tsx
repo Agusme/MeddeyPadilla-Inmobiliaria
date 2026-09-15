@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ButtonLink from "@/components/ui/ButtonLink";
+import ContactCta from "@/components/ui/ContactCta";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import PropertyCard, {
   type PropertyCardData,
@@ -13,7 +14,7 @@ const featuredProperties: PropertyCardData[] = [
     type: "Casa",
     operation: "Venta",
     price: "USD 185.000",
-    image: "/home/homehero.jpg",
+    image: "/image1.webp",
   },
   {
     title: "Departamento luminoso",
@@ -21,7 +22,7 @@ const featuredProperties: PropertyCardData[] = [
     type: "Departamento",
     operation: "Alquiler",
     price: "$ 650.000 / mes",
-    image: "/home/hom.jpg",
+    image: "/image2.webp",
   },
   {
     title: "Terreno con excelente ubicación",
@@ -29,7 +30,7 @@ const featuredProperties: PropertyCardData[] = [
     type: "Terreno",
     operation: "Venta",
     price: "USD 72.000",
-    image: "/home/herohomee.jpg",
+    image: "/image.webp",
   },
 ];
 
@@ -97,6 +98,12 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <ContactCta
+        title="¿Buscás vender, comprar o alquilar?"
+        description="Contanos qué necesitás. Te acompañamos con atención personalizada para que encuentres el próximo paso indicado."
+        ctaLabel="Ir a contacto"
+        showWhatsApp
+      />
     </>
   );
 }

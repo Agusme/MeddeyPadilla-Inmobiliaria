@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import ButtonLink from "@/components/ui/ButtonLink";
-import PageHero from "@/components/ui/PageHero";
+import ContactCta from "@/components/ui/ContactCta";
+import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
@@ -38,7 +37,6 @@ function ServiceIcon({ type }: { type: Service["icon"] }) {
 export default function ServiciosPage() {
   return (
     <div className="overflow-hidden bg-white">
-      <PageHero title="Nuestros servicios" />
 
       <section className="mx-auto max-w-7xl px-6 py-10 sm:px-8 lg:px-12 lg:py-12" aria-label="Introducción a los servicios">
         <SectionHeading eyebrow="Servicios inmobiliarios" title="Soluciones pensadas para cada etapa." description="Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad." />
@@ -47,16 +45,20 @@ export default function ServiciosPage() {
       <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8 lg:px-12 lg:pb-16" aria-label="Listado de servicios">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
           {services.map((service, index) => (
-            <article key={service.title} className={`group relative isolate min-h-[260px] overflow-hidden rounded-md bg-[#171717] text-white lg:col-span-2 ${services.length === 5 && index === 3 ? "lg:col-start-2" : ""}`}>
-              <Image src={service.image} alt="" fill className="-z-10 object-cover transition duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-black/78 via-black/55 to-black/18" />
-              <div className="flex h-full min-h-[260px] max-w-[290px] flex-col p-5 sm:p-6"><div className="flex items-center gap-3 text-[#d73b35]"><ServiceIcon type={service.icon} /><span className="h-7 w-px bg-[#d73b35]" /></div><div className="mt-auto"><h3 className="min-h-[3.24rem] text-2xl font-medium leading-[1.08] tracking-tight">{service.title}</h3><p className="mt-3 min-h-[3.75rem] text-sm leading-5 text-white/78">{service.description}</p></div></div>
+            <article key={service.title} className={`group relative isolate min-h-65 overflow-hidden rounded-md bg-[#171717] text-white lg:col-span-2 ${services.length === 5 && index === 3 ? "lg:col-start-2" : ""}`}>
+              <ImageWithSkeleton src={service.image} alt="" containerClassName="-z-10" imageClassName="transition duration-700 group-hover:scale-105" skeletonClassName="from-white/15 via-white/5 to-white/15" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
+              <div className="absolute inset-0 -z-10 bg-linear-to-tr from-black/78 via-black/55 to-black/18" />
+              <div className="flex h-full min-h-65 max-w-72.5 flex-col p-5 sm:p-6"><div className="flex items-center gap-3 text-[#d73b35]"><ServiceIcon type={service.icon} /><span className="h-7 w-px bg-[#d73b35]" /></div><div className="mt-auto"><h3 className="min-h-[3.24rem] text-2xl font-medium leading-[1.08] tracking-tight">{service.title}</h3><p className="mt-3 min-h-15 text-sm leading-5 text-white/78">{service.description}</p></div></div>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="bg-white py-12"><div className="mx-auto grid max-w-7xl gap-8 bg-white px-6 py-10 text-[#171717] shadow-xl shadow-black/10 sm:px-8 sm:py-12 lg:grid-cols-[1fr_auto] lg:items-center lg:px-12"><div className="max-w-2xl"><p className="text-sm font-semibold uppercase tracking-[.2em] text-[#B71C1C]">Hablemos</p><h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">¿Tenés una propiedad o buscás tu próximo lugar?</h2><p className="mt-4 leading-7 text-black/65">Contanos qué necesitás. Te asesoramos de forma personalizada y sin compromiso.</p></div><ButtonLink href="/contacto" className="w-fit shrink-0 px-8 py-4 text-base">Quiero asesoramiento <span aria-hidden="true" className="ml-2">→</span></ButtonLink></div></section>
+      <ContactCta
+        title="¿Tenés una propiedad o buscás tu próximo lugar?"
+        description="Contanos qué necesitás. Te asesoramos de forma personalizada y sin compromiso."
+        ctaLabel="Quiero asesoramiento"
+      />
     </div>
   );
 }
