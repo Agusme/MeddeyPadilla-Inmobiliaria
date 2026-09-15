@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ButtonLink from "@/components/ui/ButtonLink";
+import ContactCta from "@/components/ui/ContactCta";
 import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 import SectionHeading from "@/components/ui/SectionHeading";
 
@@ -54,7 +54,11 @@ export default function ServiciosPage() {
         </div>
       </section>
 
-      <section className="bg-white py-12"><div className="mx-auto grid max-w-7xl gap-8 bg-white px-6 py-10 text-[#171717] shadow-xl shadow-black/10 sm:px-8 sm:py-12 lg:grid-cols-[1fr_auto] lg:items-center lg:px-12"><div className="max-w-2xl"><p className="text-sm font-semibold uppercase tracking-[.2em] text-[#B71C1C]">Hablemos</p><h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">¿Tenés una propiedad o buscás tu próximo lugar?</h2><p className="mt-4 leading-7 text-black/65">Contanos qué necesitás. Te asesoramos de forma personalizada y sin compromiso.</p></div><ButtonLink href="/contacto" className="w-fit shrink-0 px-8 py-4 text-base">Quiero asesoramiento <span aria-hidden="true" className="ml-2">→</span></ButtonLink></div></section>
+      <ContactCta
+        title="¿Tenés una propiedad o buscás tu próximo lugar?"
+        description="Contanos qué necesitás. Te asesoramos de forma personalizada y sin compromiso."
+        ctaLabel="Quiero asesoramiento"
+      />
     </div>
   );
 }
