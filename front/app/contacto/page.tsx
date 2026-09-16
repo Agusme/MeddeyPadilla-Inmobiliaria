@@ -19,7 +19,7 @@ function InstagramIcon() {
 
 export default function ContactoPage() {
   return (
-    <div className="overflow-hidden bg-[#f7f6f3]">
+    <div className="overflow-hidden bg-white">
       <section className="mx-auto max-w-7xl px-0 py-12 sm:px-8 sm:py-16 lg:px-12">
         <header className="mb-9 px-6 sm:mb-10 sm:px-0">
           <SectionHeading eyebrow="Hablemos" title="Estamos para acompañarte" description="Contanos qué necesitás y te ayudamos a dar el próximo paso con la atención personalizada que buscás." />
@@ -31,7 +31,7 @@ export default function ContactoPage() {
             <h2 id="contact-details-title" className="mt-3 text-3xl font-semibold tracking-tight">Dónde encontrarnos</h2>
             <p className="mt-3 max-w-md leading-7 text-white/70">Acercate a nuestra oficina en el centro de San Miguel de Tucumán o contactanos por teléfono y WhatsApp.</p>
             <address className="mt-7 space-y-4 text-sm not-italic text-white/85">
-              <a href="https://maps.app.goo.gl/7s2iLpzWy1XDuCMPA" target="_blank" rel="noreferrer" className="flex items-start gap-3 transition hover:text-[#e16a62]"><LocationIcon /><span>Congreso 603, piso 5, oficina C<br />San Miguel de Tucumán, Tucumán</span></a>
+              <a href="https://www.google.com/maps/search/?api=1&query=Congreso%20603%2C%20piso%205%2C%20oficina%20C%2C%20San%20Miguel%20de%20Tucum%C3%A1n" target="_blank" rel="noreferrer" className="flex items-start gap-3 transition hover:text-[#e16a62]"><LocationIcon /><span>Congreso 603, piso 5, oficina C<br />San Miguel de Tucumán, Tucumán</span></a>
               <a href="tel:+5493816806570" className="flex items-center gap-3 transition hover:text-[#e16a62]"><PhoneIcon /><span>+54 9 3816 80-6570</span></a>
             </address>
             <a href="https://wa.me/5493816806570" target="_blank" rel="noreferrer" className="mt-7 inline-flex w-full items-center justify-center rounded-full bg-[#B71C1C] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:-translate-y-0.5 hover:bg-[#8F1616] sm:w-fit">Escribinos por WhatsApp <span aria-hidden="true" className="ml-2">→</span></a>

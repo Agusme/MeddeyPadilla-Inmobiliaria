@@ -5,7 +5,7 @@ const navigationLinks = [
   { label: "Inicio", href: "/" },
   { label: "Propiedades", href: "/propiedades" },
   { label: "Servicios", href: "/servicios" },
-  { label: "Conocénos", href: "/nosotros" },
+  { label: "Conocénos", href: "/conocenos" },
   { label: "Contacto", href: "/contacto" },
 ];
 
@@ -84,7 +84,7 @@ function PhoneIcon() {
   );
 }
 
-function ProfessionalIcon() {
+function EmailIcon() {
   return (
     <svg
       aria-hidden="true"
@@ -92,10 +92,8 @@ function ProfessionalIcon() {
       className="h-5 w-5 shrink-0 fill-none stroke-current"
       strokeWidth="1.8"
     >
-      <circle cx="9" cy="7" r="3" />
-      <path d="M3.5 19a5.5 5.5 0 0 1 11 0" />
-      <rect x="14" y="12" width="7" height="8" rx="1" />
-      <path d="M16 15h3M16 17.5h2" />
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m4 7 8 6 8-6" />
     </svg>
   );
 }
@@ -191,7 +189,7 @@ export default function Footer() {
           </div>
           <address className="mx-auto mt-7 w-fit space-y-3 text-left text-sm not-italic leading-6 text-white/75 sm:mx-0">
             <a
-              href="https://maps.app.goo.gl/7s2iLpzWy1XDuCMPA"
+              href="https://www.google.com/maps/search/?api=1&query=Congreso%20603%2C%20piso%205%2C%20oficina%20C%2C%20San%20Miguel%20de%20Tucum%C3%A1n"
               target="_blank"
               rel="noreferrer"
               aria-label="Ver ubicación en Google Maps"
@@ -208,10 +206,14 @@ export default function Footer() {
               <PhoneIcon />
               <span>+54 9 3816 80-6570</span>
             </a>
-            <p className="flex items-center gap-3">
-              <ProfessionalIcon />
-              <span>M.P. 666</span>
-            </p>
+            <a
+              href="mailto:meddepadillainmo@gmail.com"
+              aria-label="Enviar un correo a meddepadillainmo@gmail.com"
+              className="flex items-center gap-3 transition hover:text-[#B71C1C]"
+            >
+              <EmailIcon />
+              <span>meddepadillainmo@gmail.com</span>
+            </a>
           </address>
         </div>
       </div>

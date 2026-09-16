@@ -19,7 +19,7 @@ const defaultItems: NavbarItem[] = [
   { label: "Inicio", href: "/" },
   { label: "Propiedades", href: "/propiedades" },
   { label: "Servicios", href: "/servicios" },
-  { label: "Conocénos", href: "/nosotros" },
+  { label: "Conocénos", href: "/conocenos" },
   { label: "Contacto", href: "/contacto" },
 ];
 
