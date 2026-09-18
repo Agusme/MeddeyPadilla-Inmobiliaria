@@ -42,11 +42,11 @@ export default function Navbar({
           onClick={() => setIsOpen(false)}
         >
           <Image
-            src="/logo/logoHorizontal.png"
+            src="/logo/logoNavbar.png"
             alt={logo}
             width={220}
             height={38}
-            className="h-auto w-45 sm:w-55"
+            className="h-auto w-24 sm:w-30"
             priority
           />
         </Link>

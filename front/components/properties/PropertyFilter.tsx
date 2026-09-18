@@ -10,7 +10,7 @@ export default function PropertyFilter({
       className={
         overlay
           ? "mx-0 w-full max-w-7xl sm:w-17/20"
-          : "rounded-2xl border border-black/10 bg-[#171717] p-4 shadow-[0_22px_50px_-20px_rgba(0,0,0,0.45)] sm:p-5"
+          : "rounded-2xl border border-[#8F1616] bg-[#B71C1C] p-4 shadow-[0_22px_50px_-20px_rgba(0,0,0,0.45)] sm:p-5"
       }
       aria-label="Filtros de propiedades"
     >
@@ -54,7 +54,7 @@ export default function PropertyFilter({
         <button
           type="button"
           aria-label="Buscar propiedades"
-          className={`flex items-center justify-center rounded-md bg-[#B71C1C] text-white shadow-lg shadow-[#B71C1C]/25 transition hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${overlay ? "h-16 w-full sm:w-16" : "h-12 w-full sm:w-14 sm:justify-self-start lg:justify-self-end"}`}
+          className={`flex items-center justify-center rounded-md bg-[#171717] text-white shadow-lg shadow-black/25 transition hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-black ${overlay ? "h-16 w-full sm:w-16" : "h-12 w-full sm:w-14 sm:justify-self-start lg:justify-self-end"}`}
         >
           <svg
             aria-hidden="true"

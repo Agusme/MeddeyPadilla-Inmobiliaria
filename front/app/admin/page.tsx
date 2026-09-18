@@ -7,10 +7,14 @@ export const metadata: Metadata = {
 
 export default function AdminPage() {
   return (
-    <div className="flex min-h-[calc(100dvh-11rem)] items-center justify-center bg-[#f8f7f6] px-5 py-12 sm:px-8">
+    <div
+      className="relative flex min-h-[calc(100dvh-11rem)] items-center justify-center overflow-hidden bg-[#171717] bg-cover bg-center bg-no-repeat px-5 py-12 sm:px-8"
+      style={{ backgroundImage: "url('/home/herohom.jpg')" }}
+    >
+      <div aria-hidden="true" className="absolute inset-0 bg-black/35" />
       <section
         aria-labelledby="admin-login-title"
-        className="w-full max-w-md rounded-2xl border border-black/10 bg-white p-7 shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] sm:p-9"
+        className="relative w-full max-w-md rounded-2xl border border-white/40 bg-white/95 p-7 shadow-[0_22px_50px_-25px_rgba(0,0,0,0.65)] backdrop-blur-sm sm:p-9"
       >
         <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#B71C1C]">
           Medde &amp; Padilla

@@ -26,8 +26,8 @@ export default function ContactoPage() {
         </header>
 
         <div className="grid overflow-hidden border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] sm:rounded-2xl lg:grid-cols-[0.95fr_1.05fr]">
-          <section className="overflow-hidden bg-[#171717] p-6 text-white sm:p-8" aria-labelledby="contact-details-title">
-            <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#e16a62]">Nuestra oficina</p>
+          <section className="overflow-hidden bg-[#B71C1C] p-6 text-white sm:p-8" aria-labelledby="contact-details-title">
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-white">Nuestra oficina</p>
             <h2 id="contact-details-title" className="mt-3 text-3xl font-semibold tracking-tight">Dónde encontrarnos</h2>
             <p className="mt-3 max-w-md leading-7 text-white/70">Acercate a nuestra oficina en el centro de San Miguel de Tucumán o contactanos por teléfono y WhatsApp.</p>
             <address className="mt-7 space-y-4 text-sm not-italic text-white/85">
@@ -51,7 +51,7 @@ export default function ContactoPage() {
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#B71C1C]">Consulta personalizada</p>
             <h2 id="contact-form-title" className="mt-3 text-3xl font-semibold tracking-tight text-[#171717]">Dejanos tu mensaje</h2>
             <p className="mt-3 leading-7 text-black/60">Completá el formulario y nos comunicaremos con vos a la brevedad.</p>
-            <form className="mt-8 space-y-5">
+            <form id="contact-form" className="mt-8 space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <label className="block text-sm font-semibold text-[#171717]">Nombre y apellido<input required name="name" type="text" autoComplete="name" className="mt-2 h-12 w-full rounded-md border border-black/15 bg-white px-4 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15" /></label>
                 <label className="block text-sm font-semibold text-[#171717]">Teléfono<input required name="phone" type="tel" autoComplete="tel" className="mt-2 h-12 w-full rounded-md border border-black/15 bg-white px-4 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15" /></label>
