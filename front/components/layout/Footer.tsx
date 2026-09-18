@@ -100,7 +100,7 @@ function EmailIcon() {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#151515] text-white">
+    <footer className="bg-[#B71C1C] text-white">
       <div className="mx-auto grid max-w-7xl justify-items-center gap-12 px-6 py-14 text-center sm:grid-cols-2 sm:justify-items-start sm:text-left lg:grid-cols-4 lg:px-8">
         <div className="w-full">
           <Link
