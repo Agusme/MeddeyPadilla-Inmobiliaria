@@ -74,7 +74,7 @@ export default function AdminPropertiesPage() {
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
-  const listedProperties = [
+  const listedProperties: TableProperty[] = [
     ...savedProperties,
     ...exampleProperties
       .filter((property) => !hiddenBaseIds.includes(property.id))

@@ -1,11 +1,29 @@
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Administración",
-  description: "Acceso al panel de administración de propiedades.",
-};
+import { authenticateAdmin } from "@/components/auth/adminAuth";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
+  const router = useRouter();
+  const [error, setError] = useState(false);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const authenticated = authenticateAdmin(
+      String(data.get("username") ?? ""),
+      String(data.get("password") ?? ""),
+    );
+
+    if (!authenticated) {
+      setError(true);
+      return;
+    }
+
+    router.push("/admin/propiedades");
+  }
+
   return (
     <div
       className="relative flex min-h-[calc(100dvh-11rem)] items-center justify-center overflow-hidden bg-[#171717] bg-cover bg-center bg-no-repeat px-5 py-12 sm:px-8"
@@ -19,14 +37,17 @@ export default function AdminPage() {
         <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#B71C1C]">
           Medde &amp; Padilla
         </p>
-        <h1 id="admin-login-title" className="mt-3 text-3xl font-semibold tracking-tight text-[#171717]">
+        <h1
+          id="admin-login-title"
+          className="mt-3 text-3xl font-semibold tracking-tight text-[#171717]"
+        >
           Administración
         </h1>
         <p className="mt-3 text-sm leading-6 text-black/60">
           Ingresá tus datos para gestionar las propiedades.
         </p>
 
-        <form className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <label className="block text-sm font-semibold text-[#171717]">
             Usuario
             <input
@@ -50,6 +71,12 @@ export default function AdminPage() {
               className="mt-2 h-12 w-full rounded-md border border-black/15 bg-white px-4 text-sm outline-none transition placeholder:text-black/40 focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
             />
           </label>
+
+          {error && (
+            <p role="alert" className="text-sm font-semibold text-[#B71C1C]">
+              Usuario o contraseña incorrectos.
+            </p>
+          )}
 
           <button
             type="submit"

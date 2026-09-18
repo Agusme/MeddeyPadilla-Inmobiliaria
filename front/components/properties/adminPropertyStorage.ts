@@ -99,7 +99,7 @@ export function getFeaturedBasePropertyIds() {
 }
 
 export function setBasePropertyFeatured(id: string, featured: boolean) {
-  const currentIds = getFeaturedBasePropertyIds();
+  const currentIds: string[] = getFeaturedBasePropertyIds();
   const nextIds = featured
     ? [...new Set([...currentIds, id])]
     : currentIds.filter((currentId) => currentId !== id);
