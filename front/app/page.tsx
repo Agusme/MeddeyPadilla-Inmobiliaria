@@ -3,9 +3,8 @@ import Link from "next/link";
 import ButtonLink from "@/components/ui/ButtonLink";
 import ContactCta from "@/components/ui/ContactCta";
 import PropertyFilter from "@/components/properties/PropertyFilter";
-import PropertyCard, {
-  type PropertyCardData,
-} from "@/components/properties/PropertyCard";
+import HomeFeaturedProperties from "@/components/properties/HomeFeaturedProperties";
+import { type PropertyCardData } from "@/components/properties/PropertyCard";
 
 const featuredProperties: PropertyCardData[] = [
   {
@@ -15,6 +14,7 @@ const featuredProperties: PropertyCardData[] = [
     operation: "Venta",
     price: "USD 185.000",
     image: "/image1.webp",
+    slug: "casa-con-jardin-y-piscina",
   },
   {
     title: "Departamento luminoso",
@@ -23,6 +23,7 @@ const featuredProperties: PropertyCardData[] = [
     operation: "Alquiler",
     price: "$ 650.000 / mes",
     image: "/image2.webp",
+    slug: "departamento-luminoso",
   },
   {
     title: "Terreno con excelente ubicación",
@@ -31,6 +32,7 @@ const featuredProperties: PropertyCardData[] = [
     operation: "Venta",
     price: "USD 72.000",
     image: "/image.webp",
+    slug: "terreno-con-excelente-ubicacion",
   },
 ];
 
@@ -92,11 +94,7 @@ export default function Home() {
             Ver todas <span aria-hidden="true" className="ml-2">→</span>
           </Link>
         </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featuredProperties.map((property) => (
-            <PropertyCard key={property.title} property={property} />
-          ))}
-        </div>
+        <HomeFeaturedProperties properties={featuredProperties} />
       </section>
       <ContactCta
         title="¿Buscás vender, comprar o alquilar?"

@@ -9,6 +9,7 @@ export type PropertyCardData = {
   price: string;
   image: string;
   slug: string;
+  href?: string;
 };
 
 type PropertyCardProps = {
@@ -17,7 +18,7 @@ type PropertyCardProps = {
 
 export default function PropertyCard({ property }: PropertyCardProps) {
   return (
-    <Link href={`/propiedades/${property.slug}`} className="block overflow-hidden border border-black/10 bg-white shadow-sm transition-shadow duration-300 hover:shadow-[0_14px_32px_rgba(0,0,0,0.18)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]">
+    <Link href={property.href ?? `/propiedades/${property.slug}`} className="block overflow-hidden border border-black/10 bg-white shadow-sm transition-shadow duration-300 hover:shadow-[0_14px_32px_rgba(0,0,0,0.18)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]">
       <div className="relative aspect-4/3 bg-black/5">
         <ImageWithSkeleton
           src={property.image}
