@@ -7,16 +7,13 @@ export type AdminProperty = {
   currency: string;
   status: string;
   street: string;
-  neighborhood: string;
   city: string;
-  province: string;
   totalArea: string;
   coveredArea: string;
   bedrooms: string;
   bathrooms: string;
   parkingSpaces: string;
   description: string;
-  amenities: string;
   imageCount: number;
   createdAt: string;
   featured?: boolean;

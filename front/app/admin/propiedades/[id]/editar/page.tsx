@@ -62,16 +62,13 @@ export default function EditarPropiedadPage() {
       currency: String(data.get("currency") ?? ""),
       status: statuses[String(data.get("status"))] ?? "No publicada",
       street: String(data.get("street") ?? ""),
-      neighborhood: String(data.get("neighborhood") ?? ""),
       city: String(data.get("city") ?? ""),
-      province: String(data.get("province") ?? ""),
       totalArea: String(data.get("totalArea") ?? ""),
       coveredArea: String(data.get("coveredArea") ?? ""),
       bedrooms: String(data.get("bedrooms") ?? ""),
       bathrooms: String(data.get("bathrooms") ?? ""),
       parkingSpaces: String(data.get("parkingSpaces") ?? ""),
       description: String(data.get("description") ?? ""),
-      amenities: String(data.get("amenities") ?? ""),
       featured,
     });
     router.push("/admin/propiedades");
@@ -205,28 +202,11 @@ export default function EditarPropiedadPage() {
                 />
               </label>
               <label className={labelClass}>
-                Barrio
-                <input
-                  name="neighborhood"
-                  defaultValue={property.neighborhood}
-                  className={inputClass}
-                />
-              </label>
-              <label className={labelClass}>
-                Ciudad
+                Ciudad / Provincia
                 <input
                   required
                   name="city"
                   defaultValue={property.city}
-                  className={inputClass}
-                />
-              </label>
-              <label className={labelClass}>
-                Provincia
-                <input
-                  required
-                  name="province"
-                  defaultValue={property.province}
                   className={inputClass}
                 />
               </label>
@@ -289,14 +269,6 @@ export default function EditarPropiedadPage() {
                 rows={6}
                 defaultValue={property.description}
                 className="mt-2 w-full rounded-md border border-black/15 bg-white px-3 py-3 text-sm outline-none focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
-              />
-            </label>
-            <label className={`${labelClass} mt-5`}>
-              Comodidades
-              <input
-                name="amenities"
-                defaultValue={property.amenities}
-                className={inputClass}
               />
             </label>
           </section>

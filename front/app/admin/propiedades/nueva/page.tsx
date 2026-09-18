@@ -17,12 +17,6 @@ export default function NuevaPropiedadPage() {
   const [published, setPublished] = useState(false);
   const [hasFeaturedCapacity, setHasFeaturedCapacity] = useState(false);
   const router = useRouter();
-  const featuredDisabled = !published || !hasFeaturedCapacity;
-  const featuredHelp = !published
-    ? "Primero publicá la propiedad para poder destacarla."
-    : !hasFeaturedCapacity
-      ? "Ya hay 3 propiedades destacadas."
-      : "Mostrala entre las propiedades destacadas del inicio.";
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() =>
@@ -50,16 +44,13 @@ export default function NuevaPropiedadPage() {
       currency: String(data.get("currency") ?? ""),
       status: published ? "Publicada" : "No publicada",
       street: String(data.get("street") ?? ""),
-      neighborhood: String(data.get("neighborhood") ?? ""),
       city: String(data.get("city") ?? ""),
-      province: String(data.get("province") ?? ""),
       totalArea: String(data.get("totalArea") ?? ""),
       coveredArea: String(data.get("coveredArea") ?? ""),
       bedrooms: String(data.get("bedrooms") ?? ""),
       bathrooms: String(data.get("bathrooms") ?? ""),
       parkingSpaces: String(data.get("parkingSpaces") ?? ""),
       description: String(data.get("description") ?? ""),
-      amenities: String(data.get("amenities") ?? ""),
       imageCount: files.length,
       createdAt: new Date().toISOString(),
       featured,
@@ -137,15 +128,6 @@ export default function NuevaPropiedadPage() {
                   <option>ARS</option>
                 </select>
               </label>
-              <label className={labelClass}>
-                Expensas (opcional)
-                <input
-                  name="expenses"
-                  type="number"
-                  min="0"
-                  className={inputClass}
-                />
-              </label>
             </div>
           </section>
           <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm sm:p-7">
@@ -158,16 +140,8 @@ export default function NuevaPropiedadPage() {
                 <input name="street" className={inputClass} />
               </label>
               <label className={labelClass}>
-                Barrio
-                <input name="neighborhood" className={inputClass} />
-              </label>
-              <label className={labelClass}>
-                Ciudad
+                Ciudad / Provincia
                 <input required name="city" className={inputClass} />
-              </label>
-              <label className={labelClass}>
-                Provincia
-                <input required name="province" className={inputClass} />
               </label>
               <label className={labelClass}>
                 Superficie total (m²)
@@ -231,10 +205,6 @@ export default function NuevaPropiedadPage() {
                 className="mt-2 w-full rounded-md border border-black/15 bg-white px-3 py-3 text-sm outline-none focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
               />
             </label>
-            <label className={`${labelClass} mt-5`}>
-              Comodidades
-              <input name="amenities" className={inputClass} />
-            </label>
           </section>
           <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm sm:p-7">
             <h2 className="text-xl font-semibold text-[#171717]">Fotos</h2>
@@ -278,12 +248,12 @@ export default function NuevaPropiedadPage() {
                 </select>
               </label>
               <label
-                className={`mt-7 flex items-start gap-3 ${featuredDisabled ? "cursor-not-allowed opacity-55" : "cursor-pointer"}`}
+                className={`flex items-start gap-3 ${!published || !hasFeaturedCapacity ? "cursor-not-allowed opacity-55" : "cursor-pointer"}`}
               >
                 <input
                   name="featured"
                   type="checkbox"
-                  disabled={featuredDisabled}
+                  disabled={!published || !hasFeaturedCapacity}
                   className="mt-1 h-4 w-4 accent-[#B71C1C]"
                 />
                 <span>
@@ -291,7 +261,11 @@ export default function NuevaPropiedadPage() {
                     Propiedad destacada
                   </span>
                   <span className="mt-1 block text-sm text-black/60">
-                    {featuredHelp}
+                    {!published
+                      ? "Primero publicá la propiedad."
+                      : !hasFeaturedCapacity
+                        ? "Ya hay 3 propiedades destacadas."
+                        : "Se mostrará entre las destacadas del inicio."}
                   </span>
                 </span>
               </label>

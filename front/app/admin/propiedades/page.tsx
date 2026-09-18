@@ -30,9 +30,7 @@ const exampleProperties: TableProperty[] = properties.map((property) => ({
   currency: "",
   status: "Publicada",
   street: "",
-  neighborhood: "",
   city: property.location.split(",")[0] ?? "",
-  province: property.location.split(",")[1]?.trim() ?? "",
   totalArea:
     property.features.find((item) => item.label === "Superficie total")
       ?.value ?? "—",
@@ -47,7 +45,6 @@ const exampleProperties: TableProperty[] = properties.map((property) => ({
   parkingSpaces:
     property.features.find((item) => item.label === "Cochera")?.value ?? "—",
   description: property.description,
-  amenities: "—",
   imageCount: property.images.length,
   createdAt: "",
   isExample: true,
@@ -204,12 +201,7 @@ export default function AdminPropertiesPage() {
                       {property.operation}
                     </td>
                     <td className="px-5 py-5 text-black/70">
-                      {[
-                        property.street,
-                        property.neighborhood,
-                        property.city,
-                        property.province,
-                      ]
+                      {[property.street, property.city]
                         .filter(Boolean)
                         .join(", ") || "Sin ubicación"}
                     </td>
