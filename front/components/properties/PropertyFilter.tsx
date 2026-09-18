@@ -54,7 +54,7 @@ export default function PropertyFilter({
         <button
           type="button"
           aria-label="Buscar propiedades"
-          className={`flex items-center justify-center rounded-md bg-[#171717] text-white shadow-lg shadow-black/25 transition hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-black ${overlay ? "h-16 w-full sm:w-16" : "h-12 w-full sm:w-14 sm:justify-self-start lg:justify-self-end"}`}
+          className={`flex items-center justify-center rounded-md shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${overlay ? "h-16 w-full bg-[#B71C1C] text-white shadow-[#B71C1C]/25 hover:bg-[#8F1616] sm:w-16" : "h-12 w-full border border-black/10 bg-white text-[#B71C1C] shadow-black/15 hover:bg-[#f3d5d5] sm:w-14 sm:justify-self-start lg:justify-self-end"}`}
         >
           <svg
             aria-hidden="true"

@@ -1,4 +1,5 @@
 import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
+import Link from "next/link";
 
 export type PropertyCardData = {
   title: string;
@@ -7,6 +8,7 @@ export type PropertyCardData = {
   operation: string;
   price: string;
   image: string;
+  slug: string;
 };
 
 type PropertyCardProps = {
@@ -15,7 +17,7 @@ type PropertyCardProps = {
 
 export default function PropertyCard({ property }: PropertyCardProps) {
   return (
-    <article className="overflow-hidden border border-black/10 bg-white shadow-sm transition-shadow duration-300 hover:shadow-[0_14px_32px_rgba(0,0,0,0.18)]">
+    <Link href={`/propiedades/${property.slug}`} className="block overflow-hidden border border-black/10 bg-white shadow-sm transition-shadow duration-300 hover:shadow-[0_14px_32px_rgba(0,0,0,0.18)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]">
       <div className="relative aspect-4/3 bg-black/5">
         <ImageWithSkeleton
           src={property.image}
@@ -37,13 +39,8 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           <p className="mt-1 text-sm text-black/55">{property.location}</p>
         </div>
         <p className="text-lg font-semibold text-black">{property.price}</p>
-        <button
-          type="button"
-          className="rounded-full border border-[#B71C1C] px-3 py-2 text-xs font-semibold text-[#B71C1C] transition hover:bg-[#B71C1C] hover:text-white"
-        >
-          Ver propiedad
-        </button>
+        <span className="inline-flex rounded-full border border-[#B71C1C] px-3 py-2 text-xs font-semibold text-[#B71C1C]">Ver propiedad</span>
       </div>
-    </article>
+    </Link>
   );
 }
