@@ -44,7 +44,7 @@ function WhatsappIcon() {
 export default function NosotrosPage() {
   return (
     <div className="bg-white text-[#171717]">
-      <main className="mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-10 lg:px-10">
+      <main className="mx-auto max-w-7xl px-6 py-8 sm:px-8 sm:py-10 lg:px-12">
         <section className="grid gap-8 md:grid-cols-2 md:items-center md:gap-12">
           <div className="flex flex-col justify-center py-3 sm:py-6">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#B71C1C]">Quiénes somos</p>
