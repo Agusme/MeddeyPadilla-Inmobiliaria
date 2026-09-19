@@ -14,6 +14,7 @@ export type AdminProperty = {
   bathrooms: string;
   parkingSpaces: string;
   description: string;
+  amenities?: string;
   imageCount: number;
   createdAt: string;
   featured?: boolean;
