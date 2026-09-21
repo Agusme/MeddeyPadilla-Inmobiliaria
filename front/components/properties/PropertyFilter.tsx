@@ -24,7 +24,7 @@ export default function PropertyFilter({
         <label
           className={
             overlay
-              ? "flex h-16 w-full flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-8 text-sm font-semibold text-black shadow-lg"
+              ? "flex h-12 w-full flex-col justify-center rounded-md border border-black/10 bg-white px-5 text-sm font-semibold text-black shadow-lg"
               : "flex h-12 w-full flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-3 text-sm font-semibold text-black shadow-sm sm:px-5"
           }
         >
@@ -40,7 +40,7 @@ export default function PropertyFilter({
         <label
           className={
             overlay
-              ? "flex h-16 w-full flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-8 text-sm font-semibold text-black shadow-lg"
+              ? "flex h-12 w-full flex-col justify-center rounded-md border border-black/10 bg-white px-5 text-sm font-semibold text-black shadow-lg"
               : "flex h-12 w-full flex-col justify-center gap-1 rounded-md border border-black/10 bg-white px-3 text-sm font-semibold text-black shadow-sm sm:px-5"
           }
         >
@@ -54,7 +54,7 @@ export default function PropertyFilter({
         <button
           type="button"
           aria-label="Buscar propiedades"
-          className={`flex items-center justify-center rounded-md shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${overlay ? "h-16 w-full bg-[#B71C1C] text-white shadow-[#B71C1C]/25 hover:bg-[#8F1616] sm:w-16" : "h-12 w-full border border-black/10 bg-white text-[#B71C1C] shadow-black/15 hover:bg-[#f3d5d5] sm:w-14 sm:justify-self-start lg:justify-self-end"}`}
+          className={`flex items-center justify-center rounded-md shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${overlay ? "h-12 w-full bg-[#B71C1C] text-white shadow-[#B71C1C]/25 hover:bg-[#8F1616] sm:w-12" : "h-12 w-full border border-black/10 bg-white text-[#B71C1C] shadow-black/15 hover:bg-[#f3d5d5] sm:w-14 sm:justify-self-start lg:justify-self-end"}`}
         >
           <svg
             aria-hidden="true"

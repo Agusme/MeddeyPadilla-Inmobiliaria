@@ -31,7 +31,7 @@ const featuredProperties: PropertyCardData[] = [
     type: "Terreno",
     operation: "Venta",
     price: "USD 72.000",
-    image: "/image.webp",
+    image: "/image.jpg",
     slug: "terreno-con-excelente-ubicacion",
   },
 ];
