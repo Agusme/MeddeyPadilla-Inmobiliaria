@@ -34,7 +34,7 @@ export default function ContactoPage() {
               <a href="https://www.google.com/maps/search/?api=1&query=Congreso%20603%2C%20piso%205%2C%20oficina%20C%2C%20San%20Miguel%20de%20Tucum%C3%A1n" target="_blank" rel="noreferrer" className="flex items-start gap-3 transition hover:text-[#e16a62]"><LocationIcon /><span>Congreso 603, piso 5, oficina C<br />San Miguel de Tucumán, Tucumán</span></a>
               <a href="tel:+5493816806570" className="flex items-center gap-3 transition hover:text-[#e16a62]"><PhoneIcon /><span>+54 9 3816 80-6570</span></a>
             </address>
-            <a href="https://wa.me/5493816806570" target="_blank" rel="noreferrer" className="mt-7 inline-flex w-full items-center justify-center rounded-full bg-[#B71C1C] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:-translate-y-0.5 hover:bg-[#8F1616] sm:w-fit">Escribinos por WhatsApp <span aria-hidden="true" className="ml-2">→</span></a>
+            <a href="https://wa.me/5493816806570" target="_blank" rel="noreferrer" className="mt-7 inline-flex w-full items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#B71C1C] shadow-lg shadow-black/30 transition hover:-translate-y-0.5 hover:bg-white/90 sm:w-fit">Escribinos por WhatsApp <span aria-hidden="true" className="ml-2">→</span></a>
             <div className="mt-8 overflow-hidden rounded-xl border border-white/15">
               <GoogleMap />
             </div>

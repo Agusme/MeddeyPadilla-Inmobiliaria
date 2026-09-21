@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const inputClass =
   "mt-2 h-11 w-full rounded-md border border-black/15 bg-white px-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15";
@@ -30,21 +31,12 @@ export default function EditarPropiedadPage() {
     return () => window.cancelAnimationFrame(frame);
   }, [params.id]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!property) return;
     const data = new FormData(event.currentTarget);
     const published = data.get("status") === "published";
     const featured = published && data.get("featured") === "on";
-    if (
-      featured !== Boolean(property.featured) &&
-      !window.confirm(
-        featured
-          ? "¿Seguro que deseas destacar esta propiedad?"
-          : "¿Seguro que deseas quitar esta propiedad de destacadas?",
-      )
-    )
-      return;
     if (featured && !canFeatureProperty(property.id)) {
       setFeaturedError(true);
       return;
@@ -70,6 +62,13 @@ export default function EditarPropiedadPage() {
       parkingSpaces: String(data.get("parkingSpaces") ?? ""),
       description: String(data.get("description") ?? ""),
       featured,
+    });
+    await Swal.fire({
+      title: "Propiedad editada correctamente",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1800,
+      timerProgressBar: true,
     });
     router.push("/admin/propiedades");
   }
