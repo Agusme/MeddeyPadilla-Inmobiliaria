@@ -126,7 +126,7 @@ export default function Footer() {
             {navigationLinks.map((link) => (
               <li key={link.href}>
                 <Link
-                  className="transition hover:text-[#B71C1C]"
+                  className="transition hover:text-white"
                   href={link.href}
                 >
                   {link.label}
@@ -144,7 +144,7 @@ export default function Footer() {
             {propertyLinks.map((link) => (
               <li key={link.href}>
                 <Link
-                  className="transition hover:text-[#B71C1C]"
+                  className="transition hover:text-white"
                   href={link.href}
                 >
                   {link.label}
@@ -164,7 +164,7 @@ export default function Footer() {
               href="https://www.facebook.com/profile.php?id=61587494125747&mibextid=wwXIfr&rdid=F78yUKJ9Y8y1A3Tt&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18DGxUozJ6%2F%3Fmibextid%3DwwXIfr#"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-white/30 p-3 text-white transition hover:border-[#B71C1C] hover:text-[#B71C1C]"
+              className="rounded-full border border-white/30 p-3 text-white transition hover:border-white hover:text-white"
             >
               <FacebookIcon />
             </a>
@@ -173,7 +173,7 @@ export default function Footer() {
               href="https://www.instagram.com/medde.padilla.inmob?igsh=eGI4ZXZ1bDd0dzh5&utm_source=qr"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-white/30 p-3 text-white transition hover:border-[#B71C1C] hover:text-[#B71C1C]"
+              className="rounded-full border border-white/30 p-3 text-white transition hover:border-white hover:text-white"
             >
               <InstagramIcon />
             </a>
@@ -182,7 +182,7 @@ export default function Footer() {
               href="https://wa.me/5493816806570"
               target="_blank"
               rel="noreferrer"
-              className="rounded-full border border-white/30 p-3 text-white transition hover:border-[#B71C1C] hover:text-[#B71C1C]"
+              className="rounded-full border border-white/30 p-3 text-white transition hover:border-white hover:text-white"
             >
               <WhatsappIcon />
             </a>
@@ -193,7 +193,7 @@ export default function Footer() {
               target="_blank"
               rel="noreferrer"
               aria-label="Ver ubicación en Google Maps"
-              className="flex items-center gap-3 transition hover:text-[#B71C1C]"
+              className="flex items-center gap-3 transition hover:text-white"
             >
               <LocationIcon />
               <span>Congreso 603, piso 5, oficina C</span>
@@ -201,7 +201,7 @@ export default function Footer() {
             <a
               href="tel:+5493816806570"
               aria-label="Llamar al +54 9 3816 80-6570"
-              className="flex items-center gap-3 transition hover:text-[#B71C1C]"
+              className="flex items-center gap-3 transition hover:text-white"
             >
               <PhoneIcon />
               <span>+54 9 3816 80-6570</span>
@@ -209,7 +209,7 @@ export default function Footer() {
             <a
               href="mailto:meddepadillainmo@gmail.com"
               aria-label="Enviar un correo a meddepadillainmo@gmail.com"
-              className="flex items-center gap-3 transition hover:text-[#B71C1C]"
+              className="flex items-center gap-3 transition hover:text-white"
             >
               <EmailIcon />
               <span>meddepadillainmo@gmail.com</span>
@@ -226,7 +226,7 @@ export default function Footer() {
             href="https://wa.me/543815633405"
             target="_blank"
             rel="noreferrer"
-            className="transition hover:text-[#B71C1C]"
+            className="transition hover:text-white"
           >
             Agustina Mena | Desarrollo web
           </a>

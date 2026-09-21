@@ -7,6 +7,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const inputClass =
   "mt-2 h-11 w-full rounded-md border border-black/15 bg-white px-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15";
@@ -25,16 +26,25 @@ export default function NuevaPropiedadPage() {
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const featured =
       published && data.get("featured") === "on" && canFeatureProperty();
-    if (
-      featured &&
-      !window.confirm("¿Seguro que deseas destacar esta propiedad?")
-    )
-      return;
+    if (featured) {
+      const result = await Swal.fire({
+        title: "¿Destacar propiedad?",
+        text: "Se mostrará entre las propiedades destacadas del inicio.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí, destacar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#B71C1C",
+        cancelButtonColor: "#4B5563",
+        reverseButtons: true,
+      });
+      if (!result.isConfirmed) return;
+    }
     saveAdminProperty({
       id: crypto.randomUUID(),
       title: String(data.get("title") ?? ""),
@@ -54,6 +64,13 @@ export default function NuevaPropiedadPage() {
       imageCount: files.length,
       createdAt: new Date().toISOString(),
       featured,
+    });
+    await Swal.fire({
+      title: "Propiedad creada correctamente",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1800,
+      timerProgressBar: true,
     });
     router.push("/admin/propiedades");
   }

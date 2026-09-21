@@ -45,7 +45,7 @@ export default function HomeFeaturedProperties({
       price: `${property.currency} ${Number(property.price).toLocaleString("es-AR")}`,
       image: "/image1.webp",
       slug: property.id,
-      href: `/admin/propiedades/${property.id}`,
+      href: `/propiedades/${property.id}`,
     }));
   const allFeaturedProperties = [
     ...featuredProperties,

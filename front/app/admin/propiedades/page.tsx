@@ -13,6 +13,7 @@ import { properties } from "@/components/properties/propertyData";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 type TableProperty = AdminProperty & { isExample?: boolean };
 
@@ -81,22 +82,49 @@ export default function AdminPropertiesPage() {
       })),
   ];
 
-  function handleDelete(property: TableProperty) {
-    if (property.isExample) {
+  async function handleDelete(property: TableProperty) {
+    const result = await Swal.fire({
+      title: "¿Eliminar propiedad?",
+      text: `“${property.title}” dejará de aparecer en el listado. Esta acción no se puede deshacer.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#B71C1C",
+      cancelButtonColor: "#4B5563",
+      reverseButtons: true,
+      focusCancel: true,
+    });
+
+    if (!result.isConfirmed) return;
+
+    const isStoredProperty = savedProperties.some(
+      (storedProperty) => storedProperty.id === property.id,
+    );
+
+    if (!isStoredProperty && property.isExample) {
       hideBaseProperty(property.id);
       setHiddenBaseIds(getHiddenBasePropertyIds());
       setFeaturedBaseIds(getFeaturedBasePropertyIds());
-      return;
+    } else {
+      removeStoredAdminProperty(property.id);
+      setSavedProperties((current) =>
+        current.filter((item) => item.id !== property.id),
+      );
     }
-    removeStoredAdminProperty(property.id);
-    setSavedProperties((current) =>
-      current.filter((item) => item.id !== property.id),
-    );
+    await Swal.fire({
+      title: "Propiedad eliminada correctamente",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1800,
+      timerProgressBar: true,
+    });
   }
 
   function prepareExampleForEdit(property: TableProperty) {
     if (!property.isExample) return;
-    saveAdminProperty(property);
+    const propertyToSave = { ...property, isExample: undefined };
+    saveAdminProperty(propertyToSave);
     hideBaseProperty(property.id);
     setHiddenBaseIds(getHiddenBasePropertyIds());
   }
@@ -236,7 +264,10 @@ export default function AdminPropertiesPage() {
                         </Link>
                         <button
                           type="button"
-                          onClick={() => handleDelete(property)}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            void handleDelete(property);
+                          }}
                           className="text-sm font-semibold text-[#B71C1C]"
                         >
                           Eliminar

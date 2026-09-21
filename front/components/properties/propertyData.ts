@@ -21,7 +21,7 @@ export const properties: Property[] = [
     operation: "Venta",
     price: "USD 185.000",
     image: "/image1.webp",
-    images: ["/image1.webp", "/image2.webp", "/image.webp"],
+    images: ["/image1.webp", "/image2.webp", "/image.jpg"],
     description: "Una casa pensada para disfrutar de espacios amplios, luminosos y conectados con el exterior. Ideal para quienes buscan comodidad, privacidad y una ubicación privilegiada.",
     features: [
       { label: "Dormitorios", value: "3" },
@@ -41,7 +41,7 @@ export const properties: Property[] = [
     operation: "Alquiler",
     price: "$ 650.000 / mes",
     image: "/image2.webp",
-    images: ["/image2.webp", "/image1.webp", "/image.webp"],
+    images: ["/image2.webp", "/image1.webp", "/image.jpg"],
     description: "Departamento con ambientes cómodos y excelente entrada de luz natural. Una alternativa práctica para vivir cerca de los principales servicios de la ciudad.",
     features: [
       { label: "Dormitorios", value: "2" },
@@ -60,8 +60,8 @@ export const properties: Property[] = [
     type: "Terreno",
     operation: "Venta",
     price: "USD 72.000",
-    image: "/image.webp",
-    images: ["/image.webp", "/image1.webp", "/image2.webp"],
+    image: "/image.jpg",
+    images: ["/image.jpg", "/image1.webp", "/image2.webp"],
     description: "Terreno con una excelente proyección, ideal para desarrollar una vivienda o inversión. Ubicado en una zona consolidada y de fácil acceso.",
     features: [
       { label: "Superficie total", value: "600 m²" },
