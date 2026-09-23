@@ -1,3 +1,5 @@
+import type { ApiProperty } from "@/lib/api";
+
 export type AdminProperty = {
   id: string;
   title: string;
@@ -8,17 +10,41 @@ export type AdminProperty = {
   status: string;
   street: string;
   city: string;
-  totalArea: string;
-  coveredArea: string;
-  bedrooms: string;
-  bathrooms: string;
-  parkingSpaces: string;
+  totalArea: string | number;
+  coveredArea: string | number;
+  bedrooms: string | number;
+  bathrooms: string | number;
+  parkingSpaces: string | number;
   description: string;
   amenities?: string;
   imageCount: number;
   createdAt: string;
   featured?: boolean;
 };
+
+export function toAdminProperty(property: ApiProperty): AdminProperty {
+  return {
+    id: property._id,
+    title: property.title,
+    operation: property.operation,
+    propertyType: property.propertyType,
+    price: String(property.price),
+    currency: property.currency,
+    status: property.status === "published" ? "Publicada" : "No publicada",
+    street: property.street,
+    city: property.city,
+    totalArea: property.totalArea === undefined ? "" : String(property.totalArea),
+    coveredArea: property.coveredArea === undefined ? "" : String(property.coveredArea),
+    bedrooms: property.bedrooms === undefined ? "" : String(property.bedrooms),
+    bathrooms: property.bathrooms === undefined ? "" : String(property.bathrooms),
+    parkingSpaces: property.parkingSpaces === undefined ? "" : String(property.parkingSpaces),
+    description: property.description,
+    amenities: property.amenities,
+    imageCount: property.images.length,
+    createdAt: property.createdAt,
+    featured: property.featured,
+  };
+}
 
 export const adminPropertiesStorageKey = "medde-padilla-admin-properties";
 const featuredBasePropertiesStorageKey =

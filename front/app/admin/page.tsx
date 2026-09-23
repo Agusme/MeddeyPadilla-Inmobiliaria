@@ -6,22 +6,22 @@ import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
   const router = useRouter();
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string>();
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setLoading(true);
+    setError(undefined);
     const data = new FormData(event.currentTarget);
-    const authenticated = authenticateAdmin(
-      String(data.get("username") ?? ""),
-      String(data.get("password") ?? ""),
-    );
-
-    if (!authenticated) {
-      setError(true);
-      return;
+    try {
+      await authenticateAdmin(String(data.get("username") ?? ""), String(data.get("password") ?? ""));
+      router.push("/admin/propiedades");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "No se pudo iniciar sesión.");
+    } finally {
+      setLoading(false);
     }
-
-    router.push("/admin/propiedades");
   }
 
   return (
@@ -80,9 +80,10 @@ export default function AdminPage() {
 
           <button
             type="submit"
+            disabled={loading}
             className="inline-flex w-full items-center justify-center rounded-full bg-[#B71C1C] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#B71C1C]/25 transition duration-200 hover:-translate-y-0.5 hover:bg-[#8F1616] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
           >
-            Ingresar
+            {loading ? "Ingresando..." : "Ingresar"}
           </button>
         </form>
       </section>

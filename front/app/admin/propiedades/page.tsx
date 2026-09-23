@@ -7,8 +7,10 @@ import {
   hideBaseProperty,
   removeStoredAdminProperty,
   saveAdminProperty,
+  toAdminProperty,
   type AdminProperty,
 } from "@/components/properties/adminPropertyStorage";
+import { deleteAdminProperty, getAdminProperties } from "@/lib/api";
 import { properties } from "@/components/properties/propertyData";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -64,12 +66,11 @@ export default function AdminPropertiesPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      setSavedProperties(getStoredAdminProperties());
+    void getAdminProperties().then((properties) => {
+      setSavedProperties(properties.map(toAdminProperty));
       setFeaturedBaseIds(getFeaturedBasePropertyIds());
       setHiddenBaseIds(getHiddenBasePropertyIds());
-    });
-    return () => window.cancelAnimationFrame(frame);
+    }).catch(() => setSavedProperties(getStoredAdminProperties()));
   }, []);
 
   const listedProperties: TableProperty[] = [
@@ -98,19 +99,19 @@ export default function AdminPropertiesPage() {
 
     if (!result.isConfirmed) return;
 
-    const isStoredProperty = savedProperties.some(
-      (storedProperty) => storedProperty.id === property.id,
-    );
-
-    if (!isStoredProperty && property.isExample) {
+    if (property.isExample) {
       hideBaseProperty(property.id);
       setHiddenBaseIds(getHiddenBasePropertyIds());
       setFeaturedBaseIds(getFeaturedBasePropertyIds());
     } else {
-      removeStoredAdminProperty(property.id);
-      setSavedProperties((current) =>
-        current.filter((item) => item.id !== property.id),
-      );
+      try {
+        await deleteAdminProperty(property.id);
+        removeStoredAdminProperty(property.id);
+        setSavedProperties((current) => current.filter((item) => item.id !== property.id));
+      } catch (error) {
+        await Swal.fire({ title: "No se pudo eliminar", text: error instanceof Error ? error.message : "Intentá nuevamente.", icon: "error" });
+        return;
+      }
     }
     await Swal.fire({
       title: "Propiedad eliminada correctamente",

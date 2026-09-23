@@ -1,17 +1,13 @@
-export const adminAuthStorageKey = "medde-padilla-admin-session";
-export const adminUsername = "admin";
-export const adminPassword = "admin123";
+import { adminTokenStorageKey, login } from "@/lib/api";
 
-export function authenticateAdmin(username: string, password: string) {
-  if (username !== adminUsername || password !== adminPassword) return false;
-
-  window.sessionStorage.setItem(adminAuthStorageKey, "authenticated");
-  return true;
+export async function authenticateAdmin(username: string, password: string) {
+  const { token } = await login(username, password);
+  window.sessionStorage.setItem(adminTokenStorageKey, token);
 }
 
 export function isAdminAuthenticated() {
   return (
     typeof window !== "undefined" &&
-    window.sessionStorage.getItem(adminAuthStorageKey) === "authenticated"
+    Boolean(window.sessionStorage.getItem(adminTokenStorageKey))
   );
 }

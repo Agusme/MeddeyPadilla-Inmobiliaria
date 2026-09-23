@@ -8,7 +8,7 @@ export type Property = {
   image: string;
   images: string[];
   description: string;
-  features: { label: string; value: string }[];
+  features: { label: string; value: string | number }[];
   address: string;
 };
 

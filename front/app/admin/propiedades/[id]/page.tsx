@@ -1,9 +1,10 @@
 "use client";
 
 import {
-  getStoredAdminProperties,
+  toAdminProperty,
   type AdminProperty,
 } from "@/components/properties/adminPropertyStorage";
+import { getAdminProperty, publicImageUrl } from "@/lib/api";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,13 +15,10 @@ export default function AdminPropertyDetailPage() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      setProperty(
-        getStoredAdminProperties().find((item) => item.id === params.id),
-      );
-      setLoaded(true);
-    });
-    return () => window.cancelAnimationFrame(frame);
+    void getAdminProperty(params.id)
+      .then((item) => setProperty(toAdminProperty(item)))
+      .catch(() => setProperty(undefined))
+      .finally(() => setLoaded(true));
   }, [params.id]);
 
   if (!loaded)
