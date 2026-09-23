@@ -13,11 +13,7 @@ export default function PropiedadesPage() {
   const [properties, setProperties] = useState<PublicProperty[]>([]);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      setProperties(listPublicProperties());
-    });
-
-    return () => window.cancelAnimationFrame(frame);
+    void listPublicProperties().then(setProperties).catch(() => setProperties([]));
   }, []);
 
   return (

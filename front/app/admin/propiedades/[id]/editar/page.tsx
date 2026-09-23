@@ -1,11 +1,10 @@
 "use client";
 
 import {
-  canFeatureProperty,
-  getStoredAdminProperties,
+  toAdminProperty,
   type AdminProperty,
-  updateStoredAdminProperty,
 } from "@/components/properties/adminPropertyStorage";
+import { getAdminProperty, updateAdminProperty } from "@/lib/api";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -22,13 +21,9 @@ export default function EditarPropiedadPage() {
   const [featuredError, setFeaturedError] = useState(false);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() =>
-      setProperty(
-        getStoredAdminProperties().find((item) => item.id === params.id) ??
-          null,
-      ),
-    );
-    return () => window.cancelAnimationFrame(frame);
+    void getAdminProperty(params.id)
+      .then((item) => setProperty(toAdminProperty(item)))
+      .catch(() => setProperty(null));
   }, [params.id]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -37,40 +32,16 @@ export default function EditarPropiedadPage() {
     const data = new FormData(event.currentTarget);
     const published = data.get("status") === "published";
     const featured = published && data.get("featured") === "on";
-    if (featured && !canFeatureProperty(property.id)) {
+    data.set("status", published ? "published" : "draft");
+    data.set("featured", String(featured));
+    try {
+      await updateAdminProperty(property.id, data);
+      await Swal.fire({ title: "Propiedad editada correctamente", icon: "success", showConfirmButton: false, timer: 1800, timerProgressBar: true });
+      router.push("/admin/propiedades");
+    } catch (error) {
       setFeaturedError(true);
-      return;
+      await Swal.fire({ title: "No se pudo guardar", text: error instanceof Error ? error.message : "Intentá nuevamente.", icon: "error" });
     }
-    const statuses: Record<string, string> = {
-      unpublished: "No publicada",
-      published: "Publicada",
-    };
-    updateStoredAdminProperty({
-      ...property,
-      title: String(data.get("title") ?? ""),
-      operation: String(data.get("operation") ?? ""),
-      propertyType: String(data.get("propertyType") ?? ""),
-      price: String(data.get("price") ?? ""),
-      currency: String(data.get("currency") ?? ""),
-      status: statuses[String(data.get("status"))] ?? "No publicada",
-      street: String(data.get("street") ?? ""),
-      city: String(data.get("city") ?? ""),
-      totalArea: String(data.get("totalArea") ?? ""),
-      coveredArea: String(data.get("coveredArea") ?? ""),
-      bedrooms: String(data.get("bedrooms") ?? ""),
-      bathrooms: String(data.get("bathrooms") ?? ""),
-      parkingSpaces: String(data.get("parkingSpaces") ?? ""),
-      description: String(data.get("description") ?? ""),
-      featured,
-    });
-    await Swal.fire({
-      title: "Propiedad editada correctamente",
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1800,
-      timerProgressBar: true,
-    });
-    router.push("/admin/propiedades");
   }
 
   if (!property)

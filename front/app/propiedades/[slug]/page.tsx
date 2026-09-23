@@ -8,18 +8,13 @@ import { useEffect, useState } from "react";
 
 export default function PropertyDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const [property, setProperty] = useState<ReturnType<
-    typeof getPublicPropertyBySlug
-  >>();
+  const [property, setProperty] = useState<
+    Awaited<ReturnType<typeof getPublicPropertyBySlug>>
+  >();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      setProperty(getPublicPropertyBySlug(slug));
-      setLoaded(true);
-    });
-
-    return () => window.cancelAnimationFrame(frame);
+    void getPublicPropertyBySlug(slug).then(setProperty).finally(() => setLoaded(true));
   }, [slug]);
 
   if (!loaded) {

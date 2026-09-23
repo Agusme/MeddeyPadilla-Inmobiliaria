@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  canFeatureProperty,
-  saveAdminProperty,
-} from "@/components/properties/adminPropertyStorage";
+import { createAdminProperty } from "@/lib/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -16,21 +13,15 @@ const labelClass = "block text-sm font-semibold text-[#171717]";
 export default function NuevaPropiedadPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [published, setPublished] = useState(false);
-  const [hasFeaturedCapacity, setHasFeaturedCapacity] = useState(false);
+  const [hasFeaturedCapacity] = useState(true);
+  const [saving, setSaving] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    const frame = window.requestAnimationFrame(() =>
-      setHasFeaturedCapacity(canFeatureProperty()),
-    );
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (saving) return;
     const data = new FormData(event.currentTarget);
-    const featured =
-      published && data.get("featured") === "on" && canFeatureProperty();
+    const featured = published && data.get("featured") === "on";
     if (featured) {
       const result = await Swal.fire({
         title: "¿Destacar propiedad?",
@@ -45,34 +36,18 @@ export default function NuevaPropiedadPage() {
       });
       if (!result.isConfirmed) return;
     }
-    saveAdminProperty({
-      id: crypto.randomUUID(),
-      title: String(data.get("title") ?? ""),
-      operation: String(data.get("operation") ?? ""),
-      propertyType: String(data.get("propertyType") ?? ""),
-      price: String(data.get("price") ?? ""),
-      currency: String(data.get("currency") ?? ""),
-      status: published ? "Publicada" : "No publicada",
-      street: String(data.get("street") ?? ""),
-      city: String(data.get("city") ?? ""),
-      totalArea: String(data.get("totalArea") ?? ""),
-      coveredArea: String(data.get("coveredArea") ?? ""),
-      bedrooms: String(data.get("bedrooms") ?? ""),
-      bathrooms: String(data.get("bathrooms") ?? ""),
-      parkingSpaces: String(data.get("parkingSpaces") ?? ""),
-      description: String(data.get("description") ?? ""),
-      imageCount: files.length,
-      createdAt: new Date().toISOString(),
-      featured,
-    });
-    await Swal.fire({
-      title: "Propiedad creada correctamente",
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1800,
-      timerProgressBar: true,
-    });
-    router.push("/admin/propiedades");
+    data.set("status", published ? "published" : "draft");
+    data.set("featured", String(featured));
+    setSaving(true);
+    try {
+      await createAdminProperty(data);
+      await Swal.fire({ title: "Propiedad creada correctamente", icon: "success", showConfirmButton: false, timer: 1800, timerProgressBar: true });
+      router.push("/admin/propiedades");
+    } catch (error) {
+      await Swal.fire({ title: "No se pudo guardar", text: error instanceof Error ? error.message : "Intentá nuevamente.", icon: "error" });
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -297,9 +272,10 @@ export default function NuevaPropiedadPage() {
             </Link>
             <button
               type="submit"
+              disabled={saving}
               className="rounded-full bg-[#B71C1C] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#B71C1C]/20"
             >
-              Guardar propiedad
+              {saving ? "Guardando..." : "Guardar propiedad"}
             </button>
           </div>
         </form>
