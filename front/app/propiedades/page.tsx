@@ -27,7 +27,10 @@ export default function PropiedadesPage() {
               description="Explorá nuestra selección de propiedades y encontrá una opción que se adapte a tu próxima etapa."
             />
           </header>
-          <PropertyFilter />
+          <div className="max-w-4xl">
+            <PropertyFilter />
+          </div>
+          
           <div className="py-8">
             <p className="text-sm text-black/55">
               {properties.length} propiedades encontradas
