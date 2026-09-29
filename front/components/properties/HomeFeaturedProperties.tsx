@@ -5,6 +5,7 @@ import PropertyCard, {
 } from "@/components/properties/PropertyCard";
 import { adminPropertyStorageChangeEvent } from "@/components/properties/adminPropertyStorage";
 import { getPublicProperties, publicImageUrl, type ApiProperty } from "@/lib/api";
+import { formatPropertyPrice } from "@/lib/formatPrice";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -14,7 +15,7 @@ function toFeaturedCard(property: ApiProperty): PropertyCardData {
     location: [property.street, property.city].filter(Boolean).join(", ") || "Sin ubicación",
     type: property.propertyType,
     operation: property.operation,
-    price: `${property.currency} ${Number(property.price).toLocaleString("es-AR")}`,
+    price: formatPropertyPrice(property.price, property.currency),
     image: publicImageUrl(property.images[0]?.url),
     slug: property.slug,
   };

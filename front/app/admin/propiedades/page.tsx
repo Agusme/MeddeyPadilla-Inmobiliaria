@@ -11,6 +11,7 @@ import {
   type AdminProperty,
 } from "@/components/properties/adminPropertyStorage";
 import { deleteAdminProperty, getAdminProperties } from "@/lib/api";
+import { formatPropertyPrice } from "@/lib/formatPrice";
 import { properties } from "@/components/properties/propertyData";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -55,7 +56,7 @@ const exampleProperties: TableProperty[] = properties.map((property) => ({
 
 function formatPrice(property: TableProperty) {
   return property.currency
-    ? `${property.currency} ${Number(property.price).toLocaleString("es-AR")}`
+    ? formatPropertyPrice(property.price, property.currency)
     : property.price;
 }
 

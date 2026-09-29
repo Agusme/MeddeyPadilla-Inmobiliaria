@@ -5,6 +5,7 @@ import {
   type AdminProperty,
 } from "@/components/properties/adminPropertyStorage";
 import { getAdminProperty, publicImageUrl } from "@/lib/api";
+import { formatPropertyPrice } from "@/lib/formatPrice";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -41,18 +42,15 @@ export default function AdminPropertyDetailPage() {
     );
 
   const location = [property.street, property.city].filter(Boolean).join(", ");
-  const price = `${property.currency} ${Number(property.price).toLocaleString("es-AR")}`;
-  const features = [
+  const price = formatPropertyPrice(property.price, property.currency);
+  const features: [string, string | number][] = [
     ["Dormitorios", property.bedrooms],
     ["Baños", property.bathrooms],
-    [
-      "Superficie cubierta",
-      property.coveredArea ? `${property.coveredArea} m²` : "",
-    ],
-    ["Superficie total", property.totalArea ? `${property.totalArea} m²` : ""],
+    ["Superficie cubierta", property.coveredArea === "" ? "" : `${property.coveredArea} m²`],
+    ["Superficie total", property.totalArea === "" ? "" : `${property.totalArea} m²`],
     ["Cochera", property.parkingSpaces],
     ["Estado", property.status],
-  ];
+  ].filter(([, value]) => value !== "" && value !== undefined && value !== null);
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
@@ -138,7 +136,7 @@ export default function AdminPropertyDetailPage() {
                   {label}
                 </dt>
                 <dd className="mt-1 text-sm font-semibold text-[#171717]">
-                  {value || "—"}
+                  {value ?? "—"}
                 </dd>
               </div>
             ))}

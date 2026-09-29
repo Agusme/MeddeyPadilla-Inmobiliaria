@@ -18,6 +18,7 @@ export type AdminProperty = {
   description: string;
   amenities?: string;
   imageCount: number;
+  images: ApiProperty["images"];
   createdAt: string;
   featured?: boolean;
 };
@@ -41,6 +42,7 @@ export function toAdminProperty(property: ApiProperty): AdminProperty {
     description: property.description,
     amenities: property.amenities,
     imageCount: property.images.length,
+    images: property.images,
     createdAt: property.createdAt,
     featured: property.featured,
   };

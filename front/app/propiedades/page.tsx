@@ -78,10 +78,10 @@ export default function PropiedadesPage() {
               className="mx-auto flex max-w-2xl flex-col items-center px-6 py-4 text-center sm:px-10 sm:py-5"
               role="status"
             >
-              <span className="flex h-10 w-10 items-center justify-center text-[#B71C1C]">
+              <span className="flex h-14 w-14 items-center justify-center text-[#B71C1C]">
                 <svg
                   aria-hidden="true"
-                  className="h-5 w-5"
+                  className="h-9 w-9"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

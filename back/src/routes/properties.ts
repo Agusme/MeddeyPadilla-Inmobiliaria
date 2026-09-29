@@ -12,7 +12,7 @@ const upload = multer({
   fileFilter: (_request, file, done) => done(null, file.mimetype.startsWith("image/")),
 });
 
-type StoredImage = { url: string; publicId: string; position: number };
+type StoredImage = { url: string; publicId?: string; position: number };
 
 async function deleteUploadedImages(images: StoredImage[]) {
   await Promise.all(
@@ -55,6 +55,26 @@ function bodyToProperty(body: Record<string, unknown>) {
     amenities: body.amenities ? String(body.amenities) : undefined,
     featured: body.featured === true || body.featured === "true",
   };
+}
+
+function applyImageOrder(existing: StoredImage[], added: StoredImage[], rawOrder: unknown): StoredImage[] {
+  const keyed = new Map<string, StoredImage>();
+  existing.forEach((image, index) => keyed.set(`existing:${index}`, image));
+  added.forEach((image, index) => keyed.set(`new:${index}`, image));
+  if (rawOrder === undefined) return [...existing, ...added].map((image, position) => ({ ...image, position }));
+  let order: unknown;
+  try { order = JSON.parse(String(rawOrder)); } catch { throw new Error("El orden de las imágenes no es válido."); }
+  if (!Array.isArray(order) || order.length !== keyed.size || order.some((key) => typeof key !== "string")) {
+    throw new Error("El orden de las imágenes no es válido.");
+  }
+  const reordered = (order as string[]).map((key) => {
+    const image = keyed.get(key);
+    if (!image) throw new Error("El orden de las imágenes no es válido.");
+    keyed.delete(key);
+    return { ...image, position: 0 };
+  });
+  if (keyed.size) throw new Error("El orden de las imágenes no es válido.");
+  return reordered.map((image, position) => ({ ...image, position }));
 }
 
 async function validateFeatured(featured: boolean, status: string, exceptId?: string) {
@@ -105,7 +125,8 @@ adminPropertiesRouter.post("/", upload.array("images", 12), async (request, resp
     data.featured = await validateFeatured(data.featured, data.status);
     images = await uploadImages((request.files as Express.Multer.File[]) ?? []);
     const slug = `${createSlug(data.title) || "propiedad"}-${randomUUID().slice(0, 8)}`;
-    response.status(201).json(await Property.create({ ...data, slug, images }));
+    const orderedImages = applyImageOrder([], images, request.body.imageOrder);
+    response.status(201).json(await Property.create({ ...data, slug, images: orderedImages }));
   } catch (error) { await deleteUploadedImages(images); response.status(400).json({ message: error instanceof Error ? error.message : "Datos inválidos." }); }
 });
 adminPropertiesRouter.patch("/:id", upload.array("images", 12), async (request, response) => {
@@ -116,7 +137,10 @@ adminPropertiesRouter.patch("/:id", upload.array("images", 12), async (request, 
     data.featured = await validateFeatured(data.featured, data.status, id);
     images = await uploadImages((request.files as Express.Multer.File[]) ?? []);
     const update: Record<string, unknown> = { ...data };
-    if (images.length) update.$push = { images: { $each: images } };
+    const existingImages: StoredImage[] = (await Property.findById(id).select("images").lean())?.images ?? [];
+    if (images.length || request.body.imageOrder !== undefined) {
+      update.images = applyImageOrder(existingImages, images, request.body.imageOrder);
+    }
     const property = await Property.findByIdAndUpdate(id, update, { new: true, runValidators: true });
     if (!property) {
       await deleteUploadedImages(images);
