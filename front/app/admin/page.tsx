@@ -74,7 +74,7 @@ export default function AdminPage() {
 
           {error && (
             <p role="alert" className="text-sm font-semibold text-[#B71C1C]">
-              Usuario o contraseña incorrectos.
+              {error}
             </p>
           )}
 

@@ -50,7 +50,19 @@ export async function login(username: string, password: string) {
 }
 
 export function publicImageUrl(url?: string) { return url ? (url.startsWith("http") ? url : `${apiUrl}${url}`) : "/image1.webp"; }
-export const getPublicProperties = () => request<ApiProperty[]>("/api/properties");
+export type PublicPropertyFilters = {
+  type?: string;
+  operation?: string;
+};
+
+export const getPublicProperties = (filters: PublicPropertyFilters = {}) => {
+  const params = new URLSearchParams();
+  if (filters.type) params.set("type", filters.type);
+  if (filters.operation) params.set("operation", filters.operation);
+  const queryString = params.toString();
+  const query = queryString ? `?${queryString}` : "";
+  return request<ApiProperty[]>(`/api/properties${query}`);
+};
 export const getPublicProperty = (slug: string) => request<ApiProperty>(`/api/properties/${encodeURIComponent(slug)}`);
 export const getAdminProperties = () => request<ApiProperty[]>("/api/admin/properties");
 export const getAdminProperty = (id: string) => request<ApiProperty>(`/api/admin/properties/${encodeURIComponent(id)}`);

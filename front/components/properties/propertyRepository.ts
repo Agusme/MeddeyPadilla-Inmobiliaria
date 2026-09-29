@@ -1,5 +1,5 @@
 import type { Property } from "@/components/properties/propertyData";
-import { getPublicProperties, getPublicProperty, publicImageUrl, type ApiProperty } from "@/lib/api";
+import { getPublicProperties, getPublicProperty, publicImageUrl, type ApiProperty, type PublicPropertyFilters } from "@/lib/api";
 
 export type PublicProperty = Pick<
   Property,
@@ -49,8 +49,10 @@ function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
  * Adaptador temporal de datos. Cuando exista el backend, estas funciones se
  * reemplazan por llamadas HTTP sin cambiar las páginas que las consumen.
  */
-export async function listPublicProperties(): Promise<PublicProperty[]> {
-  return (await getPublicProperties()).map(toPublicProperty);
+export async function listPublicProperties(
+  filters: PublicPropertyFilters = {},
+): Promise<PublicProperty[]> {
+  return (await getPublicProperties(filters)).map(toPublicProperty);
 }
 
 export async function getPublicPropertyBySlug(

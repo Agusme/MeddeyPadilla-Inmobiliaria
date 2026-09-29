@@ -38,8 +38,21 @@ async function validateFeatured(featured: boolean, status: string, exceptId?: st
 export const propertiesRouter = Router();
 propertiesRouter.get("/", async (request, response) => {
   const filter: Record<string, unknown> = { status: "published" };
-  if (request.query.operation) filter.operation = request.query.operation;
-  if (request.query.type) filter.propertyType = request.query.type;
+
+  const operation = typeof request.query.operation === "string" ? request.query.operation.trim() : "";
+  const type = typeof request.query.type === "string" ? request.query.type.trim() : "";
+  const validOperations = ["Venta", "Alquiler"];
+  const validTypes = ["Casa", "Departamento", "Terreno", "Local"];
+
+  if (operation && !validOperations.includes(operation)) {
+    return response.status(400).json({ message: "Tipo de operación no válido." });
+  }
+  if (type && !validTypes.includes(type)) {
+    return response.status(400).json({ message: "Tipo de propiedad no válido." });
+  }
+
+  if (operation) filter.operation = operation;
+  if (type) filter.propertyType = type;
   response.json(await Property.find(filter).sort({ featured: -1, createdAt: -1 }));
 });
 propertiesRouter.get("/:slug", async (request, response) => {
