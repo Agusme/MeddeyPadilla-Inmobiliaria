@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { FormEvent, useEffect, useRef } from "react";
 
 type PropertyFilterProps = {
   overlay?: boolean;
+  onSearch?: (filters: { type?: string; operation?: string }) => void;
 };
 
 export default function PropertyFilter({
   overlay = false,
+  onSearch,
 }: PropertyFilterProps) {
   const typeSelect = useRef<HTMLSelectElement>(null);
   const operationSelect = useRef<HTMLSelectElement>(null);
@@ -19,6 +21,16 @@ export default function PropertyFilter({
       operationSelect.current.value = params.get("operation") ?? "";
     }
   }, []);
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    if (!onSearch) return;
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    onSearch({
+      type: String(formData.get("type") ?? "") || undefined,
+      operation: String(formData.get("operation") ?? "") || undefined,
+    });
+  }
 
   return (
     <section
@@ -32,6 +44,7 @@ export default function PropertyFilter({
       <form
         action="/propiedades#listado-propiedades"
         method="get"
+        onSubmit={handleSubmit}
         className={
           overlay
             ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"

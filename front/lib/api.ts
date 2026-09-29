@@ -1,6 +1,10 @@
 export const adminTokenStorageKey = "medde-padilla-admin-token";
 
-const apiUrl = (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000").replace(/\/$/, "");
+// In Vercel, browser requests use the shared public domain and are routed to
+// the backend by vercel.json. Keep the configurable URL for local development.
+const apiUrl = (process.env.NODE_ENV === "development"
+  ? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000"
+  : "").replace(/\/$/, "");
 
 export type ApiProperty = {
   _id: string;

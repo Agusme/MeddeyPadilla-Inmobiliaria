@@ -1,0 +1,33 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "back": {
+      "root": "back",
+      "framework": "express"
+    },
+    "front": {
+      "root": "front",
+      "framework": "nextjs"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "back"
+      }
+    },
+    {
+      "source": "/uploads/(.*)",
+      "destination": {
+        "service": "back"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "front"
+      }
+    }
+  ]
+}
