@@ -1,58 +1,58 @@
 "use client";
 
-import {
-  getFeaturedBasePropertyIds,
-  getHiddenBasePropertyIds,
-  getStoredAdminProperties,
-  type AdminProperty,
-} from "@/components/properties/adminPropertyStorage";
 import PropertyCard, {
   type PropertyCardData,
 } from "@/components/properties/PropertyCard";
+import { adminPropertyStorageChangeEvent } from "@/components/properties/adminPropertyStorage";
+import { getPublicProperties, publicImageUrl, type ApiProperty } from "@/lib/api";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type HomeFeaturedPropertiesProps = {
-  properties: PropertyCardData[];
-};
+function toFeaturedCard(property: ApiProperty): PropertyCardData {
+  return {
+    title: property.title,
+    location: [property.street, property.city].filter(Boolean).join(", ") || "Sin ubicación",
+    type: property.propertyType,
+    operation: property.operation,
+    price: `${property.currency} ${Number(property.price).toLocaleString("es-AR")}`,
+    image: publicImageUrl(property.images[0]?.url),
+    slug: property.slug,
+  };
+}
 
-export default function HomeFeaturedProperties({
-  properties,
-}: HomeFeaturedPropertiesProps) {
-  const [featuredIds, setFeaturedIds] = useState<string[]>([]);
-  const [hiddenIds, setHiddenIds] = useState<string[]>([]);
-  const [adminProperties, setAdminProperties] = useState<AdminProperty[]>([]);
+export default function HomeFeaturedProperties() {
+  const pathname = usePathname();
+  const [featuredProperties, setFeaturedProperties] = useState<PropertyCardData[]>([]);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      setFeaturedIds(getFeaturedBasePropertyIds());
-      setHiddenIds(getHiddenBasePropertyIds());
-      setAdminProperties(getStoredAdminProperties());
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
+    let isActive = true;
 
-  const featuredProperties = properties.filter(
-    (property) =>
-      featuredIds.includes(property.slug) && !hiddenIds.includes(property.slug),
-  );
-  const featuredAdminProperties: PropertyCardData[] = adminProperties
-    .filter((property) => property.featured && property.status === "Publicada")
-    .map((property) => ({
-      title: property.title,
-      location: property.city,
-      type: property.propertyType,
-      operation: property.operation,
-      price: `${property.currency} ${Number(property.price).toLocaleString("es-AR")}`,
-      image: "/image1.webp",
-      slug: property.id,
-      href: `/propiedades/${property.id}`,
-    }));
-  const allFeaturedProperties = [
-    ...featuredProperties,
-    ...featuredAdminProperties,
-  ];
+    const refreshProperties = () => {
+      void getPublicProperties()
+        .then((properties) => {
+          if (isActive) {
+            setFeaturedProperties(
+              properties.filter((property) => property.featured).map(toFeaturedCard),
+            );
+          }
+        })
+        .catch(() => {
+          if (isActive) setFeaturedProperties([]);
+        });
+    };
 
-  if (!allFeaturedProperties.length)
+    refreshProperties();
+    window.addEventListener(adminPropertyStorageChangeEvent, refreshProperties);
+    window.addEventListener("storage", refreshProperties);
+
+    return () => {
+      isActive = false;
+      window.removeEventListener(adminPropertyStorageChangeEvent, refreshProperties);
+      window.removeEventListener("storage", refreshProperties);
+    };
+  }, [pathname]);
+
+  if (!featuredProperties.length)
     return (
       <p className="text-sm text-black/60">
         No hay propiedades destacadas por el momento.
@@ -61,7 +61,7 @@ export default function HomeFeaturedProperties({
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {allFeaturedProperties.map((property) => (
+      {featuredProperties.map((property) => (
         <PropertyCard key={property.slug} property={property} />
       ))}
     </div>
