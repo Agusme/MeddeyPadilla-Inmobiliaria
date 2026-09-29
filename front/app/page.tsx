@@ -56,7 +56,7 @@ Hacemos simple encontrar tu hogar       </h1>
           </div>
           <Link
             href="/propiedades#listado-propiedades"
-            className="inline-flex shrink-0 self-end items-center text-sm font-semibold text-[#B71C1C] transition hover:translate-x-0.5 hover:text-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
+            className="inline-flex shrink-0 self-end items-center text-sm font-semibold text-[#B71C1C] transition hover:text-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
           >
             Ver todas <span aria-hidden="true" className="ml-2">→</span>
           </Link>
