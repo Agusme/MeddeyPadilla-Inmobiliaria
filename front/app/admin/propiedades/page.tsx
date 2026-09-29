@@ -50,6 +50,7 @@ const exampleProperties: TableProperty[] = properties.map((property) => ({
     property.features.find((item) => item.label === "Cochera")?.value ?? "—",
   description: property.description,
   imageCount: property.images.length,
+  images: property.images.map((url, position) => ({ url, position })),
   createdAt: "",
   isExample: true,
 }));
