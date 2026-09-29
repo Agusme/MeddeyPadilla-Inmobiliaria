@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
 type PropertyFilterProps = {
   overlay?: boolean;
 };
@@ -5,6 +9,17 @@ type PropertyFilterProps = {
 export default function PropertyFilter({
   overlay = false,
 }: PropertyFilterProps) {
+  const typeSelect = useRef<HTMLSelectElement>(null);
+  const operationSelect = useRef<HTMLSelectElement>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (typeSelect.current) typeSelect.current.value = params.get("type") ?? "";
+    if (operationSelect.current) {
+      operationSelect.current.value = params.get("operation") ?? "";
+    }
+  }, []);
+
   return (
     <section
       className={
@@ -14,7 +29,9 @@ export default function PropertyFilter({
       }
       aria-label="Filtros de propiedades"
     >
-      <div
+      <form
+        action="/propiedades#listado-propiedades"
+        method="get"
         className={
           overlay
             ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"
@@ -29,12 +46,17 @@ export default function PropertyFilter({
           }
         >
           <span className="sr-only">Propiedad</span>
-          <select className="w-full bg-transparent text-sm text-black outline-none">
-            <option>Propiedad</option>
-            <option>Casa</option>
-            <option>Departamento</option>
-            <option>Terreno</option>
-            <option>Local</option>
+          <select
+            ref={typeSelect}
+            name="type"
+            defaultValue=""
+            className="w-full cursor-pointer bg-transparent text-sm text-black outline-none"
+          >
+            <option value="" disabled>Propiedad</option>
+            <option value="Casa">Casa</option>
+            <option value="Departamento">Departamento</option>
+            <option value="Terreno">Terreno</option>
+            <option value="Local">Local</option>
           </select>
         </label>
         <label
@@ -45,14 +67,19 @@ export default function PropertyFilter({
           }
         >
           <span className="sr-only">Tipo de operación</span>
-          <select className="w-full bg-transparent text-sm text-black outline-none">
-            <option>Tipo de operación</option>
-            <option>Venta</option>
-            <option>Alquiler</option>
+          <select
+            ref={operationSelect}
+            name="operation"
+            defaultValue=""
+            className="w-full cursor-pointer bg-transparent text-sm text-black outline-none"
+          >
+            <option value="" disabled>Tipo de operación</option>
+            <option value="Venta">Venta</option>
+            <option value="Alquiler">Alquiler</option>
           </select>
         </label>
         <button
-          type="button"
+          type="submit"
           aria-label="Buscar propiedades"
           className={`flex items-center justify-center rounded-md shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${overlay ? "h-12 w-full bg-[#B71C1C] text-white shadow-[#B71C1C]/25 hover:bg-[#8F1616] sm:w-12" : "h-12 w-full border border-white/80 bg-white text-[#B71C1C] shadow-md hover:bg-[#fff7f7] sm:w-14 sm:justify-self-start lg:justify-self-end"}`}
         >
@@ -68,7 +95,7 @@ export default function PropertyFilter({
             <path d="m16 16 4.5 4.5" />
           </svg>
         </button>
-      </div>
+      </form>
     </section>
   );
 }

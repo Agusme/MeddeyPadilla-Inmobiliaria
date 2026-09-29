@@ -86,7 +86,7 @@ function EmailIcon() {
 }
 export default function Footer() {
   return (
-    <footer className="bg-[#B71C1C] text-white">
+    <footer className="bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] text-white">
       <div className="mx-auto grid max-w-7xl justify-items-center gap-12 px-6 py-14 text-center sm:grid-cols-2 sm:justify-items-start sm:text-left lg:grid-cols-4 lg:px-8">
         <div className="w-full">
           <Link

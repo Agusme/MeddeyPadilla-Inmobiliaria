@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import ImageOrderList from "@/components/properties/ImageOrderList";
 
 const inputClass =
   "mt-2 h-11 w-full rounded-md border border-black/15 bg-white px-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15";
@@ -12,7 +13,9 @@ const labelClass = "block text-sm font-semibold text-[#171717]";
 
 export default function NuevaPropiedadPage() {
   const [files, setFiles] = useState<File[]>([]);
+  const [imageOrder, setImageOrder] = useState<string[]>([]);
   const [published, setPublished] = useState(false);
+  const [currency, setCurrency] = useState("USD");
   const [hasFeaturedCapacity] = useState(true);
   const [saving, setSaving] = useState(false);
   const router = useRouter();
@@ -21,21 +24,10 @@ export default function NuevaPropiedadPage() {
     event.preventDefault();
     if (saving) return;
     const data = new FormData(event.currentTarget);
+    data.delete("images");
+    files.forEach((file) => data.append("images", file));
+    data.set("imageOrder", JSON.stringify(imageOrder));
     const featured = published && data.get("featured") === "on";
-    if (featured) {
-      const result = await Swal.fire({
-        title: "¿Destacar propiedad?",
-        text: "Se mostrará entre las propiedades destacadas del inicio.",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "Sí, destacar",
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#B71C1C",
-        cancelButtonColor: "#4B5563",
-        reverseButtons: true,
-      });
-      if (!result.isConfirmed) return;
-    }
     data.set("status", published ? "published" : "draft");
     data.set("featured", String(featured));
     setSaving(true);
@@ -48,6 +40,15 @@ export default function NuevaPropiedadPage() {
     } finally {
       setSaving(false);
     }
+  }
+
+  function reorderImages(from: number, to: number) {
+    setImageOrder((current) => {
+      const next = [...current];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
   }
 
   return (
@@ -105,17 +106,14 @@ export default function NuevaPropiedadPage() {
               </label>
               <label className={labelClass}>
                 Precio
-                <input
-                  required
-                  name="price"
-                  type="number"
-                  min="0"
-                  className={inputClass}
-                />
+                <span className="relative mt-2 block">
+                  <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-black/50">{currency === "ARS" ? "$" : "US$"}</span>
+                  <input required name="price" type="number" min="0" className={`${inputClass} pl-12`} />
+                </span>
               </label>
               <label className={labelClass}>
                 Moneda
-                <select name="currency" className={inputClass}>
+                <select name="currency" value={currency} onChange={(event) => setCurrency(event.target.value)} className={inputClass}>
                   <option>USD</option>
                   <option>ARS</option>
                 </select>
@@ -209,16 +207,15 @@ export default function NuevaPropiedadPage() {
                 accept="image/*"
                 multiple
                 className="sr-only"
-                onChange={(event) =>
-                  setFiles(Array.from(event.target.files ?? []))
-                }
+                onChange={(event) => {
+                  const selected = Array.from(event.target.files ?? []);
+                  setFiles(selected);
+                  setImageOrder(selected.map((_, index) => `new:${index}`));
+                }}
               />
             </label>
-            {files.length > 0 && (
-              <p className="mt-3 text-sm text-black/65">
-                {files.length} foto(s) seleccionada(s)
-              </p>
-            )}
+            {files.length > 0 && <p className="mt-3 text-sm text-black/65">Arrastrá las fotos para ordenarlas. La primera será la portada.</p>}
+            <ImageOrderList items={imageOrder.map((key) => { const file = files[Number(key.split(":")[1])]; return { key, label: file?.name ?? "", file }; })} onReorder={reorderImages} />
           </section>
           <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm">
             <h2 className="text-xl font-semibold text-[#171717]">

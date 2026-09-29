@@ -92,7 +92,7 @@ export default function PropertyDetailPage() {
             {property.address}
           </p>
         </div>
-        <div>
+        {property.features.length > 0 && <div>
           <h2 className="text-2xl font-semibold tracking-tight">
             Características
           </h2>
@@ -111,7 +111,7 @@ export default function PropertyDetailPage() {
               </div>
             ))}
           </dl>
-        </div>
+        </div>}
       </section>
     </main>
   );

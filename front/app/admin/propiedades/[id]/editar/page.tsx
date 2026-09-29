@@ -4,11 +4,12 @@ import {
   toAdminProperty,
   type AdminProperty,
 } from "@/components/properties/adminPropertyStorage";
-import { getAdminProperty, updateAdminProperty } from "@/lib/api";
+import { getAdminProperty, publicImageUrl, updateAdminProperty } from "@/lib/api";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import ImageOrderList from "@/components/properties/ImageOrderList";
 
 const inputClass =
   "mt-2 h-11 w-full rounded-md border border-black/15 bg-white px-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15";
@@ -19,10 +20,18 @@ export default function EditarPropiedadPage() {
   const router = useRouter();
   const [property, setProperty] = useState<AdminProperty | null>(null);
   const [featuredError, setFeaturedError] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [imageOrder, setImageOrder] = useState<string[]>([]);
+  const [currency, setCurrency] = useState("USD");
 
   useEffect(() => {
     void getAdminProperty(params.id)
-      .then((item) => setProperty(toAdminProperty(item)))
+      .then((item) => {
+        const mapped = toAdminProperty(item);
+        setProperty(mapped);
+        setCurrency(mapped.currency);
+        setImageOrder(mapped.images.map((_, index) => `existing:${index}`));
+      })
       .catch(() => setProperty(null));
   }, [params.id]);
 
@@ -30,6 +39,9 @@ export default function EditarPropiedadPage() {
     event.preventDefault();
     if (!property) return;
     const data = new FormData(event.currentTarget);
+    data.delete("images");
+    files.forEach((file) => data.append("images", file));
+    data.set("imageOrder", JSON.stringify(imageOrder));
     const published = data.get("status") === "published";
     const featured = published && data.get("featured") === "on";
     data.set("status", published ? "published" : "draft");
@@ -42,6 +54,15 @@ export default function EditarPropiedadPage() {
       setFeaturedError(true);
       await Swal.fire({ title: "No se pudo guardar", text: error instanceof Error ? error.message : "Intentá nuevamente.", icon: "error" });
     }
+  }
+
+  function reorderImages(from: number, to: number) {
+    setImageOrder((current) => {
+      const next = [...current];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
   }
 
   if (!property)
@@ -121,20 +142,17 @@ export default function EditarPropiedadPage() {
               </label>
               <label className={labelClass}>
                 Precio
-                <input
-                  required
-                  name="price"
-                  type="number"
-                  min="0"
-                  defaultValue={property.price}
-                  className={inputClass}
-                />
+                <span className="relative mt-2 block">
+                  <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-black/50">{currency === "ARS" ? "$" : "US$"}</span>
+                  <input required name="price" type="number" min="0" defaultValue={property.price} className={`${inputClass} pl-12`} />
+                </span>
               </label>
               <label className={labelClass}>
                 Moneda
                 <select
                   name="currency"
                   defaultValue={property.currency}
+                  onChange={(event) => setCurrency(event.target.value)}
                   className={inputClass}
                 >
                   <option>USD</option>
@@ -241,6 +259,40 @@ export default function EditarPropiedadPage() {
                 className="mt-2 w-full rounded-md border border-black/15 bg-white px-3 py-3 text-sm outline-none focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
               />
             </label>
+          </section>
+          <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm sm:p-7">
+            <h2 className="text-xl font-semibold text-[#171717]">Fotos</h2>
+            <p className="mt-2 text-sm text-black/60">Arrastrá las fotos para ordenarlas. La primera será la portada.</p>
+            <label className="mt-5 flex cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-[#B71C1C]/35 bg-[#B71C1C]/5 px-6 py-10 text-center text-sm text-[#B71C1C]">
+              <span className="font-semibold">Agregar fotos</span>
+              <span className="mt-1 text-black/55">JPG, PNG o WEBP</span>
+              <input
+                name="images"
+                type="file"
+                accept="image/*"
+                multiple
+                className="sr-only"
+                onChange={(event) => {
+                  const selected = Array.from(event.target.files ?? []);
+                  setFiles(selected);
+                  setImageOrder((current) => [
+                    ...current.filter((key) => key.startsWith("existing:")),
+                    ...selected.map((_, index) => `new:${index}`),
+                  ]);
+                }}
+              />
+            </label>
+            {files.length > 0 && (
+              <p className="mt-3 text-sm text-black/65">
+                {files.length} foto(s) nueva(s) seleccionada(s)
+              </p>
+            )}
+            <ImageOrderList items={imageOrder.map((key) => {
+              const [kind, rawIndex] = key.split(":");
+              const index = Number(rawIndex);
+              if (kind === "existing") return { key, label: "Foto guardada", src: publicImageUrl(property.images[index]?.url) };
+              return { key, label: files[index]?.name ?? "", file: files[index] };
+            })} onReorder={reorderImages} />
           </section>
           <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm">
             <label className="flex cursor-pointer items-start gap-3">

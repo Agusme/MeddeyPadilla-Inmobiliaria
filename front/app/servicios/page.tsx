@@ -56,17 +56,17 @@ export default function ServiciosPage() {
               key={service.title}
               href={service.href}
               aria-label={`${service.title}: ${service.description}`}
-              className="group relative isolate flex min-h-64 flex-col overflow-hidden rounded-xl border border-black/5 bg-white p-6 shadow-[0_10px_30px_-22px_rgba(0,0,0,0.4)] transition-[color,background-color,border-color,box-shadow] duration-300 hover:shadow-[0_20px_40px_-24px_rgba(0,0,0,0.42)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
+              className="group relative isolate flex min-h-64 flex-col overflow-hidden rounded-xl border border-white/15 bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] p-6 text-white shadow-[0_14px_34px_-20px_rgba(80,0,0,0.55)] transition-[border-color,box-shadow] duration-300 hover:border-white/30 hover:shadow-[0_20px_42px_-20px_rgba(80,0,0,0.5)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
             >
-              <span aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_92%_0%,rgba(183,28,28,0.13),transparent_42%),radial-gradient(ellipse_at_10%_100%,rgba(183,28,28,0.08),transparent_38%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" />
-              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-xl bg-[#B71C1C]/[0.08] text-[#B71C1C]">
+              <span aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_100%_0%,rgba(255,255,255,0.14),transparent_44%)]" />
+              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white">
                 <ServiceIcon type={service.icon} />
               </div>
-              <h2 className="relative z-10 mt-6 text-xl font-semibold leading-tight tracking-tight text-[#171717]">{service.title}</h2>
-              <p className="relative z-10 mt-3 text-sm leading-6 text-black/60">{service.description}</p>
-              <span className="relative z-10 mt-auto flex items-center justify-between pt-6 text-sm font-semibold text-[#B71C1C]">
+              <h2 className="relative z-10 mt-6 text-xl font-semibold leading-tight tracking-tight text-white">{service.title}</h2>
+              <p className="relative z-10 mt-3 text-sm leading-6 text-white/75">{service.description}</p>
+              <span className="relative z-10 mt-auto flex items-center justify-between pt-6 text-sm font-semibold text-white">
                 Consultanos
-                <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-full border border-[#B71C1C]/15 text-lg transition-colors duration-300 group-hover:border-[#B71C1C] group-hover:bg-[#B71C1C] group-hover:text-white">→</span>
+                <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/35 text-lg transition-colors duration-300 group-hover:border-white group-hover:bg-white group-hover:text-[#8F1616]">→</span>
               </span>
             </Link>
           ))}
