@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 type PropertyFilterProps = {
   overlay?: boolean;
@@ -9,13 +9,15 @@ type PropertyFilterProps = {
 export default function PropertyFilter({
   overlay = false,
 }: PropertyFilterProps) {
-  const [type, setType] = useState("");
-  const [operation, setOperation] = useState("");
+  const typeSelect = useRef<HTMLSelectElement>(null);
+  const operationSelect = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setType(params.get("type") ?? "");
-    setOperation(params.get("operation") ?? "");
+    if (typeSelect.current) typeSelect.current.value = params.get("type") ?? "";
+    if (operationSelect.current) {
+      operationSelect.current.value = params.get("operation") ?? "";
+    }
   }, []);
 
   return (
@@ -45,12 +47,12 @@ export default function PropertyFilter({
         >
           <span className="sr-only">Propiedad</span>
           <select
+            ref={typeSelect}
             name="type"
-            value={type}
-            onChange={(event) => setType(event.target.value)}
-            className="w-full bg-transparent text-sm text-black outline-none"
+            defaultValue=""
+            className="w-full cursor-pointer bg-transparent text-sm text-black outline-none"
           >
-            <option value="">Propiedad</option>
+            <option value="" disabled>Propiedad</option>
             <option value="Casa">Casa</option>
             <option value="Departamento">Departamento</option>
             <option value="Terreno">Terreno</option>
@@ -66,12 +68,12 @@ export default function PropertyFilter({
         >
           <span className="sr-only">Tipo de operación</span>
           <select
+            ref={operationSelect}
             name="operation"
-            value={operation}
-            onChange={(event) => setOperation(event.target.value)}
-            className="w-full bg-transparent text-sm text-black outline-none"
+            defaultValue=""
+            className="w-full cursor-pointer bg-transparent text-sm text-black outline-none"
           >
-            <option value="">Tipo de operación</option>
+            <option value="" disabled>Tipo de operación</option>
             <option value="Venta">Venta</option>
             <option value="Alquiler">Alquiler</option>
           </select>
