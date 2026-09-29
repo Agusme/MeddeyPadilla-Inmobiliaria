@@ -1,104 +1,167 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
 import GoogleMap from "@/components/contact/GoogleMap";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
   title: "Conocenos",
-  description: "Conocé a Medde & Padilla Inmobiliaria.",
+  description: "Conocé a Medde & Padilla: transparencia, respaldo profesional y acompañamiento inmobiliario en Tucumán.",
 };
 
-const reasons = [
-  { title: "Confianza", description: "Construimos relaciones claras y cercanas en cada operación.", icon: "shield" },
-  { title: "Conocimiento local", description: "Conocemos el mercado y las oportunidades de Tucumán.", icon: "home" },
-  { title: "Atención personalizada", description: "Te acompañamos de principio a fin, a tu ritmo.", icon: "people" },
+const commitments = [
+  {
+    icon: "transparency",
+    title: "Transparencia en cada paso",
+    description: "Te explicamos cada etapa con claridad para que puedas decidir con toda la información.",
+  },
+  {
+    icon: "security",
+    title: "Inversiones seguras",
+    description: "Operá con la confianza y el respaldo de profesionales matriculados.",
+  },
+  {
+    icon: "home",
+    title: "La tranquilidad de elegir bien",
+    description: "Te acompañamos para que encuentres el lugar indicado para tu próximo hogar.",
+  },
 ];
 
-function ReasonIcon({ type }: { type: string }) {
-  const props = { "aria-hidden": true, className: "h-10 w-10", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7 };
-  if (type === "shield") return <svg {...props}><path d="M12 3.5 19 6v5.2c0 4.4-2.8 7.7-7 9.3-4.2-1.6-7-4.9-7-9.3V6l7-2.5Z" /><path d="m8.7 12 2.1 2.1 4.6-4.6" /></svg>;
-  if (type === "handshake") return <svg {...props}><path d="m8.5 12.5 2 2a2 2 0 0 0 2.8 0l1.2-1.2" /><path d="m13 8.5 1.2-1.2a2.8 2.8 0 0 1 4 0l2.3 2.3-4.2 4.2a2 2 0 0 1-2.8 0l-2-2" /><path d="m10 9.5-1.2-1.2a2.8 2.8 0 0 0-4 0l-2.3 2.3 4.2 4.2a2 2 0 0 0 2.8 0l1.1-1.1" /></svg>;
-  if (type === "home") return <svg {...props}><path d="m3.5 10 8.5-7 8.5 7" /><path d="M5.5 9v11h13V9M9.5 20v-6h5v6" /></svg>;
-  return <svg {...props}><circle cx="9" cy="8" r="3" /><path d="M3.5 20a5.5 5.5 0 0 1 11 0M16 5.5a2.5 2.5 0 0 1 0 5M18.5 20a4.5 4.5 0 0 0-2.5-4" /></svg>;
+function CommitmentIcon({ type }: { type: string }) {
+  const props = { "aria-hidden": true, viewBox: "0 0 24 24", className: "h-12 w-12 fill-none stroke-current", strokeWidth: 1.7, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+
+  if (type === "transparency") {
+    return <svg {...props}><path d="M12 3 4.5 6v5.2c0 4.5 3 7.8 7.5 9.8 4.5-2 7.5-5.3 7.5-9.8V6L12 3Z" /><path d="m8.5 12 2.2 2.2 4.8-4.8" /></svg>;
+  }
+  if (type === "security") {
+    return <svg {...props}><path d="M4 20h16" /><path d="M6 17v-4M11 17V9M16 17V5" /><path d="m5 9 5-4 4 2 5-4" /><path d="M16 3h3v3" /></svg>;
+  }
+  return <svg {...props}><path d="m3 10 9-7 9 7" /><path d="M5 9v11h14V9M9 20v-6h6v6" /></svg>;
+}
+function CredentialIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6 fill-none stroke-current" strokeWidth="1.7">
+      <path d="M7 3.5h10v11H7z" />
+      <path d="M9.5 7h5M9.5 10h5" />
+      <circle cx="12" cy="17" r="3.2" />
+      <path d="m10.3 19.7-1 2 2.7-1.1 2.7 1.1-1-2" />
+    </svg>
+  );
 }
 
 function LocationIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6 shrink-0 fill-none stroke-current" strokeWidth="1.8"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" /><circle cx="12" cy="10" r="2.3" /></svg>;
-}
-
-function CredentialIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6 fill-none stroke-current" strokeWidth="1.7"><path d="M7 3.5h10v11H7z" /><path d="M9.5 7h5M9.5 10h5" /><circle cx="12" cy="17" r="3.2" /><path d="m10.3 19.7-1 2 2.7-1.1 2.7 1.1-1-2" /></svg>;
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 shrink-0 fill-none stroke-current" strokeWidth="1.8">
+      <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
+      <circle cx="12" cy="10" r="2.3" />
+    </svg>
+  );
 }
 
 function FacebookIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-current"><path d="M13.5 21v-8h2.75l.4-3h-3.15V8.08c0-.87.24-1.46 1.5-1.46h1.8V3.94c-.31-.04-1.37-.14-2.6-.14-2.57 0-4.33 1.57-4.33 4.46V10H7.1v3h2.77v8h3.63Z" /></svg>;
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-current">
+      <path d="M13.5 21v-8h2.75l.4-3h-3.15V8.08c0-.87.24-1.46 1.5-1.46h1.8V3.94c-.31-.04-1.37-.14-2.6-.14-2.57 0-4.33 1.57-4.33 4.46V10H7.1v3h2.77v8h3.63Z" />
+    </svg>
+  );
 }
 
 function InstagramIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="4" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.7" r="1" className="fill-current stroke-none" /></svg>;
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.8">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.7" r="1" className="fill-current stroke-none" />
+    </svg>
+  );
 }
 
 function WhatsappIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.8"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.56 7.46L4 20l1.1-3.72A8.5 8.5 0 1 1 20.5 11.5Z" /><path d="M9.4 8.5c.2-.4.4-.42.7-.42h.45c.2 0 .4.08.5.38l.65 1.55c.1.23.08.42-.08.62l-.5.62c-.12.15-.1.3 0 .5.3.53 1.1 1.65 2.5 2.25.2.08.35.06.48-.1l.63-.76c.15-.18.32-.2.55-.1l1.5.7c.25.12.38.24.35.47-.06.48-.3 1.3-.88 1.55-.45.2-1.05.28-1.7.08-1.15-.35-2.48-1.2-3.48-2.2-.8-.8-1.7-2.1-1.9-3.1-.13-.64-.03-1.18.23-1.64Z" /></svg>;
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.8">
+      <path d="M20.5 11.5a8.5 8.5 0 0 1-12.56 7.46L4 20l1.1-3.72A8.5 8.5 0 1 1 20.5 11.5Z" />
+      <path d="M9.4 8.5c.2-.4.4-.42.7-.42h.45c.2 0 .4.08.5.38l.65 1.55c.1.23.08.42-.08.62l-.5.62c-.12.15-.1.3 0 .5.3.53 1.1 1.65 2.5 2.25.2.08.35.06.48-.1l.63-.76c.15-.18.32-.2.55-.1l1.5.7c.25.12.38.24.35.47-.06.48-.3 1.3-.88 1.55-.45.2-1.05.28-1.7.08-1.15-.35-2.48-1.2-3.48-2.2-.8-.8-1.7-2.1-1.9-3.1-.13-.64-.03-1.18.23-1.64Z" />
+    </svg>
+  );
 }
 
 export default function NosotrosPage() {
   return (
     <div className="bg-white text-[#171717]">
-      <main className="mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-10 lg:px-10">
-        <section className="grid gap-8 md:grid-cols-2 md:items-center md:gap-12">
-          <div className="flex flex-col justify-center py-3 sm:py-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#B71C1C]">Quiénes somos</p>
-            <h1 className="mt-3 max-w-md text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">Somos una inmobiliaria ubicada en San Miguel de Tucumán con más de <span className="text-[#B71C1C]">10 años de experiencia</span> en el mercado.</h1>
-            <p className="mt-5 max-w-md text-sm leading-6 text-black/60">Acompañamos a nuestros clientes en la compra, venta y alquiler de propiedades, con atención profesional, cercana y transparente.</p>
-            <div className="mt-6 flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#B71C1C]/10 text-[#B71C1C]"><CredentialIcon /></span>
-              <p className="text-sm leading-5 text-black/65"><span className="block font-semibold text-[#171717]">Matrícula profesional</span><span className="mt-1 block">M.P. 666</span></p>
+     
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 pt-12 pb-14 sm:px-8 sm:pt-16 sm:pb-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-12 lg:pt-16 lg:pb-24">
+          <div>
+            <SectionHeading
+              eyebrow="INMOBILIARIA Medde &amp; Padilla "
+              title="Confianza que une. Espacios que inspiran."
+              titleAs="h1"
+              className="max-w-2xl"
+            />
+            <p className="mt-5 max-w-xl text-base leading-7 text-black/65 sm:text-lg">Somos una inmobiliaria ubicada en San Miguel de Tucumán. Acompañamos a quienes quieren comprar, vender o alquilar, con asesoramiento cercano, transparencia y respaldo profesional en cada etapa.</p>
+           
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/propiedades#listado-propiedades" className="inline-flex items-center justify-center rounded-full bg-[#B71C1C] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2">
+                Encontrá tu próximo hogar <span aria-hidden="true" className="ml-2">→</span>
+              </Link>
+              <Link href="/contacto#contact-form" className="inline-flex items-center justify-center rounded-full border border-black/15 px-6 py-3 text-sm font-semibold text-[#171717] transition hover:border-[#B71C1C] hover:text-[#B71C1C]">
+                Hablemos
+              </Link>
             </div>
           </div>
-          <div className="relative min-h-72 sm:min-h-96">
-            <Image src="/objetivos.webp" alt="Acompañamiento en una operación inmobiliaria" fill priority className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
-          </div>
-        </section>
-
-        <section className="border-b border-black/10 py-10 sm:py-12">
-          <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#B71C1C]">Por qué elegirnos</p>
-              <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight">Experiencia, compromiso y un trato cercano.</h2>
-              <p className="mt-4 max-w-md text-sm leading-6 text-black/60">Buscamos que cada decisión inmobiliaria sea más simple y segura.</p>
-            </div>
-            <div className="grid gap-x-7 gap-y-8 sm:grid-cols-3">
-              {reasons.map((reason) => (
-                <article key={reason.title}>
-                  <div className="w-fit text-[#B71C1C]"><ReasonIcon type={reason.icon} /></div>
-                  <h3 className="mt-4 font-semibold">{reason.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-black/60">{reason.description}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-10 sm:py-12" aria-labelledby="location-title">
-          <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#B71C1C]">Dónde encontrarnos</p>
-              <h2 id="location-title" className="mt-3 text-3xl font-semibold tracking-tight">Nuestra ubicación</h2>
-              <a href="https://www.google.com/maps/search/?api=1&query=Congreso%20603%2C%20piso%205%2C%20oficina%20C%2C%20San%20Miguel%20de%20Tucum%C3%A1n" target="_blank" rel="noreferrer" className="mt-5 flex items-start gap-3 text-sm leading-6 text-black/65 transition hover:text-[#B71C1C]">
-                <span className="mt-0.5 text-[#B71C1C]"><LocationIcon /></span>
-                <span>Congreso 603, piso 5, oficina C<br />San Miguel de Tucumán, Tucumán</span>
-              </a>
-              <div className="mt-6 flex items-center gap-3">
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-black/50">Seguinos</span>
-                <a aria-label="Facebook" href="https://www.facebook.com/profile.php?id=61587494125747&mibextid=wwXIfr&rdid=F78yUKJ9Y8y1A3Tt&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18DGxUozJ6%2F%3Fmibextid%3DwwXIfr#" target="_blank" rel="noreferrer" className="rounded-full border border-black/15 p-2.5 transition hover:border-[#B71C1C] hover:text-[#B71C1C]"><FacebookIcon /></a>
-                <a aria-label="Instagram" href="https://www.instagram.com/medde.padilla.inmob?igsh=eGI4ZXZ1bDd0dzh5&utm_source=qr" target="_blank" rel="noreferrer" className="rounded-full border border-black/15 p-2.5 transition hover:border-[#B71C1C] hover:text-[#B71C1C]"><InstagramIcon /></a>
-                <a aria-label="WhatsApp" href="https://wa.me/5493816806570" target="_blank" rel="noreferrer" className="rounded-full border border-black/15 p-2.5 transition hover:border-[#B71C1C] hover:text-[#B71C1C]"><WhatsappIcon /></a>
+          <div className="rounded-2xl bg-[#B71C1C] p-7 text-white sm:p-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/75">Tu inmobiliaria de confianza</p>
+            <p className="mt-5 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">Transparencia y acompañamiento para elegir con tranquilidad.</p>
+            <p className="mt-5 max-w-md leading-7 text-white/80">Estamos cerca para ayudarte a avanzar con seguridad en cada paso de tu operación inmobiliaria.</p>
+            <div className="mt-8">
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-white"><CredentialIcon /></span>
+                <p className="text-sm leading-5 text-white/80"><span className="block font-semibold text-white">Matrícula profesional</span><span className="mt-1 block">M.P. 666</span></p>
               </div>
             </div>
-            <div className="overflow-hidden rounded-xl border border-black/10 bg-[#171717] shadow-sm"><GoogleMap /></div>
           </div>
-        </section>
-      </main>
+        </div>
+      
+
+      <section className="relative isolate mx-auto max-w-7xl rounded-2xl bg-[#B71C1C]/[0.04] px-6 pb-16 pt-8 sm:px-8 sm:pb-20 sm:pt-10 lg:px-12">
+        <SectionHeading
+title="¿Por qué elegirnos?"
+          titleClassName="text-[#B71C1C]"
+          titleSize="compact"
+          className="relative z-10 mb-10 sm:mb-12"
+        />
+        <div className="relative z-10 grid gap-5 md:grid-cols-3">
+          {commitments.map((item) => (
+            <article key={item.title} className="rounded-xl border border-black/5 bg-white p-6 shadow-[0_12px_32px_-18px_rgba(0,0,0,0.28)] transition-shadow duration-200 hover:shadow-[0_18px_38px_-18px_rgba(0,0,0,0.32)] sm:p-8 lg:p-9">
+              <div className="flex justify-center text-[#B71C1C]">
+                <CommitmentIcon type={item.icon} />
+              </div>
+              <h2 className="mt-5 text-xl font-semibold leading-snug tracking-tight sm:text-2xl">{item.title}</h2>
+              <p className="mt-3 text-sm leading-6 text-black/60 sm:text-base">{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-8 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14 lg:px-12">
+        <div>
+          <SectionHeading
+            eyebrow="Estamos cerca"
+            title="Conocemos Tucumán y su gente."
+          />
+          <a href="https://www.google.com/maps/search/?api=1&query=Congreso%20603%2C%20piso%205%2C%20oficina%20C%2C%20San%20Miguel%20de%20Tucum%C3%A1n" target="_blank" rel="noreferrer" className="mt-6 flex w-fit items-start gap-3 text-sm leading-6 text-black/65 transition hover:text-[#B71C1C]">
+            <span className="mt-0.5 text-[#B71C1C]"><LocationIcon /></span>
+            <span>Congreso 603, piso 5, oficina C<br />San Miguel de Tucumán, Tucumán</span>
+          </a>
+          <div className="mt-7 flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-black/45">Seguinos</span>
+            <a aria-label="Facebook" href="https://www.facebook.com/profile.php?id=61587494125747&mibextid=wwXIfr&rdid=F78yUKJ9Y8y1A3Tt&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18DGxUozJ6%2F%3Fmibextid%3DwwXIfr#" target="_blank" rel="noreferrer" className="rounded-full border border-black/15 p-2.5 transition hover:border-[#B71C1C] hover:text-[#B71C1C]"><FacebookIcon /></a>
+            <a aria-label="Instagram" href="https://www.instagram.com/medde.padilla.inmob?igsh=eGI4ZXZ1bDd0dzh5&utm_source=qr" target="_blank" rel="noreferrer" className="rounded-full border border-black/15 p-2.5 transition hover:border-[#B71C1C] hover:text-[#B71C1C]"><InstagramIcon /></a>
+            <a aria-label="WhatsApp" href="https://wa.me/5493816806570" target="_blank" rel="noreferrer" className="rounded-full border border-black/15 p-2.5 transition hover:border-[#B71C1C] hover:text-[#B71C1C]"><WhatsappIcon /></a>
+          </div>
+        </div>
+        <div className="overflow-hidden rounded-xl border border-black/10 bg-[#171717] shadow-[0_22px_50px_-25px_rgba(0,0,0,0.3)]">
+          <GoogleMap />
+        </div>
+      </section>
     </div>
   );
 }

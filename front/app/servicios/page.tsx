@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import ContactCta from "@/components/ui/ContactCta";
-import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
@@ -12,20 +12,20 @@ type Service = {
   title: string;
   description: string;
   icon: "key" | "home" | "search" | "scale" | "document" | "briefcase";
-  image: string;
+  href: string;
 };
 
 const services: Service[] = [
-  { title: "Venta", description: "Te ayudamos a encontrar al comprador adecuado y a gestionar la publicación y cada paso del proceso.", icon: "home", image: "/servicios/venta.webp" },
-  { title: "Compra", description: "Te acompañamos a encontrar la propiedad ideal y a avanzar con seguridad en cada etapa de la compra.", icon: "search", image: "/servicios/compra.webp" },
-  { title: "Alquileres", description: "Encontramos oportunidades y te acompañamos durante todo el proceso.", icon: "key", image: "/servicios/alquiler.webp" },
-  { title: "Tasaciones", description: "Conocé el valor real de tu propiedad con un análisis profesional, actualizado y confiable.", icon: "scale", image: "/servicios/tasaciones.webp" },
-  { title: "Administración", description: "Nos ocupamos de la gestión y el seguimiento de tu inmueble con orden y transparencia.", icon: "document", image: "/servicios/administracion.webp" },
-  { title: "Asesoramiento", description: "Te brindamos orientación personalizada para tomar mejores decisiones en tu próxima operación.", icon: "briefcase", image: "/servicios/asesoramiento.jpg" },
+  { title: "Venta", description: "Te ayudamos a encontrar al comprador adecuado y a gestionar la publicación y cada paso del proceso.", icon: "home", href: "/contacto#contact-form" },
+  { title: "Compra", description: "Te acompañamos a encontrar la propiedad ideal y a avanzar con seguridad en cada etapa de la compra.", icon: "search", href: "/propiedades#listado-propiedades" },
+  { title: "Alquileres", description: "Encontramos oportunidades y te acompañamos durante todo el proceso.", icon: "key", href: "/contacto#contact-form" },
+  { title: "Tasaciones", description: "Conocé el valor real de tu propiedad con un análisis profesional, actualizado y confiable.", icon: "scale", href: "/contacto#contact-form" },
+  { title: "Administración", description: "Nos ocupamos de la gestión y el seguimiento de tu inmueble con orden y transparencia.", icon: "document", href: "/contacto#contact-form" },
+  { title: "Asesoramiento", description: "Te brindamos orientación personalizada para tomar mejores decisiones en tu próxima operación.", icon: "briefcase", href: "/contacto#contact-form" },
 ];
 
 function ServiceIcon({ type }: { type: Service["icon"] }) {
-  const common = { className: "h-7 w-7", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.55, "aria-hidden": true };
+  const common = { className: "h-9 w-9", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.55, "aria-hidden": true };
   if (type === "key") return <svg {...common}><circle cx="8" cy="15" r="3" /><path d="m10.2 12.8 7.3-7.3 2 2-1.5 1.5 1.2 1.2-2 2-1.2-1.2-4.6 4.6" /></svg>;
   if (type === "home") return <svg {...common}><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10Z" /><path d="M9 21v-6h6v6" /></svg>;
   if (type === "search") return <svg {...common}><circle cx="10.5" cy="10.5" r="5.5" /><path d="m15 15 5 5" /><path d="M8.5 10.5h4M10.5 8.5v4" /></svg>;
@@ -37,28 +37,43 @@ function ServiceIcon({ type }: { type: Service["icon"] }) {
 export default function ServiciosPage() {
   return (
     <div className="overflow-hidden bg-white">
-
-      <section className="mx-auto max-w-7xl px-6 py-10 sm:px-8 lg:px-12 lg:py-12" aria-label="Introducción a los servicios">
-        <SectionHeading eyebrow="Servicios inmobiliarios" title="Soluciones pensadas para cada etapa." description="Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad." />
+      <section className="mx-auto mb-8 max-w-7xl px-6 pb-4 pt-12 sm:mb-10 sm:px-8 sm:pb-6 sm:pt-16 lg:px-12" aria-label="Introducción a los servicios">
+        
+        <header>
+            <SectionHeading
+              eyebrow="Servicios inmobiliarios"
+              title="Soluciones pensadas para cada etapa."
+              description="Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad."
+           
+           />
+          </header>
       </section>
-
-      <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8 lg:px-12 lg:pb-16" aria-label="Listado de servicios">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-          {services.map((service, index) => (
-            <article key={service.title} className={`group relative isolate min-h-65 overflow-hidden rounded-md bg-[#171717] text-white lg:col-span-2 ${services.length === 5 && index === 3 ? "lg:col-start-2" : ""}`}>
-              <ImageWithSkeleton src={service.image} alt="" containerClassName="-z-10" imageClassName="transition duration-700 group-hover:scale-105" skeletonClassName="from-white/15 via-white/5 to-white/15" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
-              <div className="absolute inset-0 -z-10 bg-linear-to-tr from-black/78 via-black/55 to-black/18" />
-              <div className="flex h-full min-h-65 max-w-72.5 flex-col p-5 sm:p-6"><div className="flex items-center gap-3 text-[#d73b35]"><ServiceIcon type={service.icon} /><span className="h-7 w-px bg-[#d73b35]" /></div><div className="mt-auto"><h3 className="min-h-[3.24rem] text-2xl font-medium leading-[1.08] tracking-tight">{service.title}</h3><p className="mt-3 min-h-15 text-sm leading-5 text-white/78">{service.description}</p></div></div>
-            </article>
+  
+      <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8 lg:px-12" aria-label="Listado de servicios">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => (
+            <Link
+              key={service.title}
+              href={service.href}
+              aria-label={`${service.title}: ${service.description}`}
+              className="group relative isolate flex min-h-64 flex-col overflow-hidden rounded-xl border border-black/5 bg-white p-6 shadow-[0_10px_30px_-22px_rgba(0,0,0,0.4)] transition-[color,background-color,border-color,box-shadow] duration-300 hover:shadow-[0_20px_40px_-24px_rgba(0,0,0,0.42)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
+            >
+              <span aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_92%_0%,rgba(183,28,28,0.13),transparent_42%),radial-gradient(ellipse_at_10%_100%,rgba(183,28,28,0.08),transparent_38%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" />
+              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-xl bg-[#B71C1C]/[0.08] text-[#B71C1C]">
+                <ServiceIcon type={service.icon} />
+              </div>
+              <h2 className="relative z-10 mt-6 text-xl font-semibold leading-tight tracking-tight text-[#171717]">{service.title}</h2>
+              <p className="relative z-10 mt-3 text-sm leading-6 text-black/60">{service.description}</p>
+              <span className="relative z-10 mt-auto flex items-center justify-between pt-6 text-sm font-semibold text-[#B71C1C]">
+                Consultanos
+                <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-full border border-[#B71C1C]/15 text-lg transition-colors duration-300 group-hover:border-[#B71C1C] group-hover:bg-[#B71C1C] group-hover:text-white">→</span>
+              </span>
+            </Link>
           ))}
         </div>
       </section>
 
-      <ContactCta
-        title="¿Tenés una propiedad o buscás tu próximo lugar?"
-        description="Contanos qué necesitás. Te asesoramos de forma personalizada y sin compromiso."
-        ctaLabel="Quiero asesoramiento"
-      />
+      <ContactCta title="¿Tenés una propiedad o buscás tu próximo lugar?" description="Contanos qué necesitás. Te asesoramos de forma personalizada y sin compromiso." ctaLabel="Quiero asesoramiento" />
     </div>
   );
 }
