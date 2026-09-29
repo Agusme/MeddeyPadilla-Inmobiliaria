@@ -58,8 +58,8 @@ function InstagramIcon() {
 export default function ContactoPage() {
   return (
     <div className="overflow-hidden bg-white">
-      <section className="mx-auto max-w-7xl px-0 py-12 sm:px-8 sm:py-16 lg:px-12">
-        <header className="mb-9 px-6 sm:mb-10 sm:px-0">
+      <section className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
+        <header className="mb-8">
           <SectionHeading
             eyebrow="Hablemos"
             title="Estamos para acompañarte"
@@ -69,7 +69,7 @@ export default function ContactoPage() {
 
         <div className="grid overflow-hidden border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] sm:rounded-2xl lg:grid-cols-[0.95fr_1.05fr]">
           <section
-            className="overflow-hidden bg-[#B71C1C] p-6 text-white sm:p-8"
+            className="overflow-hidden bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] p-6 text-white sm:p-8"
             aria-labelledby="contact-details-title"
           >
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-white">

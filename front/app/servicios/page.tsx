@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ContactCta from "@/components/ui/ContactCta";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
   title: "Servicios",
@@ -24,7 +25,7 @@ const services: Service[] = [
 ];
 
 function ServiceIcon({ type }: { type: Service["icon"] }) {
-  const common = { className: "h-10 w-10", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.55, "aria-hidden": true };
+  const common = { className: "h-9 w-9", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.55, "aria-hidden": true };
   if (type === "key") return <svg {...common}><circle cx="8" cy="15" r="3" /><path d="m10.2 12.8 7.3-7.3 2 2-1.5 1.5 1.2 1.2-2 2-1.2-1.2-4.6 4.6" /></svg>;
   if (type === "home") return <svg {...common}><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10Z" /><path d="M9 21v-6h6v6" /></svg>;
   if (type === "search") return <svg {...common}><circle cx="10.5" cy="10.5" r="5.5" /><path d="m15 15 5 5" /><path d="M8.5 10.5h4M10.5 8.5v4" /></svg>;
@@ -36,24 +37,37 @@ function ServiceIcon({ type }: { type: Service["icon"] }) {
 export default function ServiciosPage() {
   return (
     <div className="overflow-hidden bg-white">
-      <section className="mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-12 lg:py-20" aria-label="Introducción a los servicios">
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#B71C1C]">Servicios inmobiliarios</p>
-          <h1 className="mt-4 text-4xl font-semibold leading-[1.05] tracking-tight text-[#171717] sm:text-5xl">Soluciones pensadas<br />para cada etapa.</h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-black/65 sm:text-lg">Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad.</p>
-        </div>
+      <section className="mx-auto mb-8 max-w-7xl px-6 pb-4 pt-12 sm:mb-10 sm:px-8 sm:pb-6 sm:pt-16 lg:px-12" aria-label="Introducción a los servicios">
+        
+        <header>
+            <SectionHeading
+              eyebrow="Servicios inmobiliarios"
+              title="Soluciones pensadas para cada etapa."
+              description="Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad."
+           
+           />
+          </header>
       </section>
-
-      <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8 lg:px-12 lg:pb-16" aria-label="Listado de servicios">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  
+      <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8 lg:px-12" aria-label="Listado de servicios">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
-            <Link key={service.title} href={service.href} aria-label={`${service.title}: ${service.description}`} className="flex min-h-52 flex-col rounded-md border border-[#B71C1C]/10 bg-[#B71C1C]/8 p-5 shadow-[0_12px_28px_-22px_rgba(0,0,0,0.38)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]">
-                <div className="text-[#B71C1C]">
-                  <ServiceIcon type={service.icon} />
-                </div>
-                <h2 className="mt-5 text-xl font-semibold leading-[1.08] tracking-tight text-[#171717]">{service.title}</h2>
-                <p className="mt-3 text-sm leading-5 text-black/62">{service.description}</p>
-                <span aria-hidden="true" className="mt-auto self-end pt-5 text-2xl leading-none text-[#B71C1C]">→</span>
+            <Link
+              key={service.title}
+              href={service.href}
+              aria-label={`${service.title}: ${service.description}`}
+              className="group relative isolate flex min-h-64 flex-col overflow-hidden rounded-xl border border-black/5 bg-white p-6 shadow-[0_10px_30px_-22px_rgba(0,0,0,0.4)] transition-[color,background-color,border-color,box-shadow] duration-300 hover:shadow-[0_20px_40px_-24px_rgba(0,0,0,0.42)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
+            >
+              <span aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_92%_0%,rgba(183,28,28,0.13),transparent_42%),radial-gradient(ellipse_at_10%_100%,rgba(183,28,28,0.08),transparent_38%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" />
+              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-xl bg-[#B71C1C]/[0.08] text-[#B71C1C]">
+                <ServiceIcon type={service.icon} />
+              </div>
+              <h2 className="relative z-10 mt-6 text-xl font-semibold leading-tight tracking-tight text-[#171717]">{service.title}</h2>
+              <p className="relative z-10 mt-3 text-sm leading-6 text-black/60">{service.description}</p>
+              <span className="relative z-10 mt-auto flex items-center justify-between pt-6 text-sm font-semibold text-[#B71C1C]">
+                Consultanos
+                <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-full border border-[#B71C1C]/15 text-lg transition-colors duration-300 group-hover:border-[#B71C1C] group-hover:bg-[#B71C1C] group-hover:text-white">→</span>
+              </span>
             </Link>
           ))}
         </div>

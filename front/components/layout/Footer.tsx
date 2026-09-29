@@ -71,19 +71,6 @@ function LocationIcon() {
   );
 }
 
-function PhoneIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5 shrink-0 fill-none stroke-current"
-      strokeWidth="1.8"
-    >
-      <path d="M7.5 4.5 10 4l1.5 4-2 1.5a13 13 0 0 0 5 5L16 12.5l4 1.5-.5 2.5a2 2 0 0 1-2.1 1.5A14.5 14.5 0 0 1 6 6.6 2 2 0 0 1 7.5 4.5Z" />
-    </svg>
-  );
-}
-
 function EmailIcon() {
   return (
     <svg
@@ -97,7 +84,6 @@ function EmailIcon() {
     </svg>
   );
 }
-
 export default function Footer() {
   return (
     <footer className="bg-[#B71C1C] text-white">
@@ -197,14 +183,6 @@ export default function Footer() {
             >
               <LocationIcon />
               <span>Congreso 603, piso 5, oficina C</span>
-            </a>
-            <a
-              href="tel:+5493816806570"
-              aria-label="Llamar al +54 9 3816 80-6570"
-              className="flex items-center gap-3 transition hover:text-white"
-            >
-              <PhoneIcon />
-              <span>+54 9 3816 80-6570</span>
             </a>
             <a
               href="mailto:meddepadillainmo@gmail.com"
