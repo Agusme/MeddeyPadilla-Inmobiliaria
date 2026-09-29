@@ -4,37 +4,6 @@ import ButtonLink from "@/components/ui/ButtonLink";
 import ContactCta from "@/components/ui/ContactCta";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import HomeFeaturedProperties from "@/components/properties/HomeFeaturedProperties";
-import { type PropertyCardData } from "@/components/properties/PropertyCard";
-
-const featuredProperties: PropertyCardData[] = [
-  {
-    title: "Casa con jardín y piscina",
-    location: "Yerba Buena, Tucumán",
-    type: "Casa",
-    operation: "Venta",
-    price: "USD 185.000",
-    image: "/image1.webp",
-    slug: "casa-con-jardin-y-piscina",
-  },
-  {
-    title: "Departamento luminoso",
-    location: "San Miguel de Tucumán",
-    type: "Departamento",
-    operation: "Alquiler",
-    price: "$ 650.000 / mes",
-    image: "/image2.webp",
-    slug: "departamento-luminoso",
-  },
-  {
-    title: "Terreno con excelente ubicación",
-    location: "Lomas de Tafí, Tucumán",
-    type: "Terreno",
-    operation: "Venta",
-    price: "USD 72.000",
-    image: "/image.jpg",
-    slug: "terreno-con-excelente-ubicacion",
-  },
-];
 
 export default function Home() {
   return (
@@ -92,7 +61,7 @@ Hacemos simple encontrar tu hogar       </h1>
             Ver todas <span aria-hidden="true" className="ml-2">→</span>
           </Link>
         </div>
-        <HomeFeaturedProperties properties={featuredProperties} />
+        <HomeFeaturedProperties />
       </section>
       <ContactCta
         title="¿Buscás vender, comprar o alquilar?"

@@ -47,6 +47,7 @@ export function toAdminProperty(property: ApiProperty): AdminProperty {
 }
 
 export const adminPropertiesStorageKey = "medde-padilla-admin-properties";
+export const adminPropertyStorageChangeEvent = "admin-property-storage-change";
 const featuredBasePropertiesStorageKey =
   "medde-padilla-featured-base-properties";
 const hiddenBasePropertiesStorageKey = "medde-padilla-hidden-base-properties";
@@ -55,6 +56,12 @@ const defaultFeaturedBaseProperties = [
   "departamento-luminoso",
   "terreno-con-excelente-ubicacion",
 ];
+
+function notifyAdminPropertyStorageChanged() {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event(adminPropertyStorageChangeEvent));
+  }
+}
 
 export function getStoredAdminProperties(): AdminProperty[] {
   if (typeof window === "undefined") return [];
@@ -72,6 +79,7 @@ export function saveAdminProperty(property: AdminProperty) {
     adminPropertiesStorageKey,
     JSON.stringify([property, ...getStoredAdminProperties()]),
   );
+  notifyAdminPropertyStorageChanged();
 }
 
 export function removeStoredAdminProperty(id: string) {
@@ -81,6 +89,7 @@ export function removeStoredAdminProperty(id: string) {
       getStoredAdminProperties().filter((property) => property.id !== id),
     ),
   );
+  notifyAdminPropertyStorageChanged();
 }
 
 export function updateStoredAdminProperty(property: AdminProperty) {
@@ -92,6 +101,7 @@ export function updateStoredAdminProperty(property: AdminProperty) {
       ),
     ),
   );
+  notifyAdminPropertyStorageChanged();
 }
 
 export function setAdminPropertyFeatured(id: string, featured: boolean) {
@@ -131,6 +141,7 @@ export function setBasePropertyFeatured(id: string, featured: boolean) {
     featuredBasePropertiesStorageKey,
     JSON.stringify(nextIds),
   );
+  notifyAdminPropertyStorageChanged();
 }
 
 export function getHiddenBasePropertyIds() {
@@ -150,4 +161,5 @@ export function hideBaseProperty(id: string) {
     JSON.stringify([...new Set([...ids, id])]),
   );
   setBasePropertyFeatured(id, false);
+  notifyAdminPropertyStorageChanged();
 }
