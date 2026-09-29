@@ -12,13 +12,13 @@ const upload = multer({
   fileFilter: (_request, file, done) => done(null, file.mimetype.startsWith("image/")),
 });
 
-type StoredImage = { url: string; publicId?: string; position: number };
+type StoredImage = { url: string; publicId?: string | null; position: number };
 
 async function deleteUploadedImages(images: StoredImage[]) {
   await Promise.all(
     images.map(async (image) => {
       try {
-        await deletePropertyImage(image.publicId);
+        await deletePropertyImage(image.publicId ?? undefined);
       } catch (error) {
         console.error(`No se pudo limpiar la imagen ${image.publicId}:`, error);
       }
