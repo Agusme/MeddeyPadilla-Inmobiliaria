@@ -1,5 +1,6 @@
 "use client";
 
+
 import PropertyCard from "@/components/properties/PropertyCard";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import {
@@ -18,17 +19,23 @@ export default function PropiedadesPage() {
 
   return (
     <div className="overflow-hidden bg-white">
-      <div className="relative z-10 bg-white shadow-[0_-6px_18px_rgba(0,0,0,0.08)]">
+      <section className="bg-white">
         <div className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
-          <header className="mb-9 sm:mb-10">
+          <header className="mb-10">
             <SectionHeading
               eyebrow="Encontrá tu próximo lugar"
               title="La propiedad indicada está más cerca."
-              description="Explorá nuestra selección de propiedades y encontrá una opción que se adapte a tu próxima etapa."
             />
           </header>
-          <PropertyFilter />
-          <div className="py-8">
+          <div className="max-w-4xl">
+            <PropertyFilter />
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-10 bg-white shadow-[0_-6px_18px_rgba(0,0,0,0.08)]">
+        <div className="mx-auto max-w-7xl px-6 pt-8 pb-12 sm:px-8 lg:px-12">
+          <div className="pb-6">
             <p className="text-sm text-black/55">
               {properties.length} propiedades encontradas
             </p>
@@ -43,7 +50,7 @@ export default function PropiedadesPage() {
             ))}
           </section>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

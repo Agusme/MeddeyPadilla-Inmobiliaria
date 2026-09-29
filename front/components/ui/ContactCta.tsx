@@ -41,12 +41,12 @@ export default function ContactCta({
             </ButtonLink>
             {showWhatsApp && (
               <a
-                href="https://wa.me/5493816806570"
+                    href="tel:+5493816806570"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center rounded-full border border-[#B71C1C] px-7 py-3.5 text-sm font-semibold text-[#B71C1C] transition hover:bg-[#B71C1C] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
               >
-                Escribinos por WhatsApp
+                Hablar con un asesor
               </a>
             )}
           </div>
