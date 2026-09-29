@@ -19,6 +19,7 @@ export default function EditarPropiedadPage() {
   const router = useRouter();
   const [property, setProperty] = useState<AdminProperty | null>(null);
   const [featuredError, setFeaturedError] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
 
   useEffect(() => {
     void getAdminProperty(params.id)
@@ -241,6 +242,29 @@ export default function EditarPropiedadPage() {
                 className="mt-2 w-full rounded-md border border-black/15 bg-white px-3 py-3 text-sm outline-none focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
               />
             </label>
+          </section>
+          <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm sm:p-7">
+            <h2 className="text-xl font-semibold text-[#171717]">Fotos</h2>
+            <p className="mt-2 text-sm text-black/60">
+              Esta propiedad tiene {property.imageCount} foto(s). Las nuevas se agregarán al final.
+            </p>
+            <label className="mt-5 flex cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-[#B71C1C]/35 bg-[#B71C1C]/5 px-6 py-10 text-center text-sm text-[#B71C1C]">
+              <span className="font-semibold">Agregar fotos</span>
+              <span className="mt-1 text-black/55">JPG, PNG o WEBP</span>
+              <input
+                name="images"
+                type="file"
+                accept="image/*"
+                multiple
+                className="sr-only"
+                onChange={(event) => setFiles(Array.from(event.target.files ?? []))}
+              />
+            </label>
+            {files.length > 0 && (
+              <p className="mt-3 text-sm text-black/65">
+                {files.length} foto(s) nueva(s) seleccionada(s)
+              </p>
+            )}
           </section>
           <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm">
             <label className="flex cursor-pointer items-start gap-3">

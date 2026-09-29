@@ -12,6 +12,35 @@ const upload = multer({
   fileFilter: (_request, file, done) => done(null, file.mimetype.startsWith("image/")),
 });
 
+type StoredImage = { url: string; publicId: string; position: number };
+
+async function deleteUploadedImages(images: StoredImage[]) {
+  await Promise.all(
+    images.map(async (image) => {
+      try {
+        await deletePropertyImage(image.publicId);
+      } catch (error) {
+        console.error(`No se pudo limpiar la imagen ${image.publicId}:`, error);
+      }
+    }),
+  );
+}
+
+async function uploadImages(files: Express.Multer.File[]): Promise<StoredImage[]> {
+  const images: StoredImage[] = [];
+
+  try {
+    for (const [position, file] of files.entries()) {
+      const image = await uploadPropertyImage(file);
+      images.push({ ...image, position });
+    }
+    return images;
+  } catch (error) {
+    await deleteUploadedImages(images);
+    throw error;
+  }
+}
+
 function bodyToProperty(body: Record<string, unknown>) {
   const required = ["title", "operation", "propertyType", "price", "currency", "city", "description"];
   if (required.some((key) => !body[key])) throw new Error("Completá todos los campos obligatorios.");
@@ -70,29 +99,38 @@ adminPropertiesRouter.get("/:id", async (request, response) => {
   response.json(property);
 });
 adminPropertiesRouter.post("/", upload.array("images", 12), async (request, response) => {
+  let images: StoredImage[] = [];
   try {
     const data = bodyToProperty(request.body);
     data.featured = await validateFeatured(data.featured, data.status);
-    const images = ((request.files as Express.Multer.File[]) ?? []).map((file, position) => ({ url: `/uploads/${file.filename}`, position }));
+    images = await uploadImages((request.files as Express.Multer.File[]) ?? []);
     const slug = `${createSlug(data.title) || "propiedad"}-${randomUUID().slice(0, 8)}`;
     response.status(201).json(await Property.create({ ...data, slug, images }));
-  } catch (error) { response.status(400).json({ message: error instanceof Error ? error.message : "Datos inválidos." }); }
+  } catch (error) { await deleteUploadedImages(images); response.status(400).json({ message: error instanceof Error ? error.message : "Datos inválidos." }); }
 });
 adminPropertiesRouter.patch("/:id", upload.array("images", 12), async (request, response) => {
+  let images: StoredImage[] = [];
   try {
     const data = bodyToProperty(request.body);
     const id = String(request.params.id);
     data.featured = await validateFeatured(data.featured, data.status, id);
-    const newImages = ((request.files as Express.Multer.File[]) ?? []).map((file, position) => ({ url: `/uploads/${file.filename}`, position }));
+    images = await uploadImages((request.files as Express.Multer.File[]) ?? []);
     const update: Record<string, unknown> = { ...data };
-    if (newImages.length) update.$push = { images: { $each: newImages } };
+    if (images.length) update.$push = { images: { $each: images } };
     const property = await Property.findByIdAndUpdate(id, update, { new: true, runValidators: true });
-    if (!property) return response.status(404).json({ message: "Propiedad no encontrada." });
+    if (!property) {
+      await deleteUploadedImages(images);
+      return response.status(404).json({ message: "Propiedad no encontrada." });
+    }
     response.json(property);
-  } catch (error) { response.status(400).json({ message: error instanceof Error ? error.message : "Datos inválidos." }); }
+  } catch (error) { await deleteUploadedImages(images); response.status(400).json({ message: error instanceof Error ? error.message : "Datos inválidos." }); }
 });
 adminPropertiesRouter.delete("/:id", async (request, response) => {
   const property = await Property.findByIdAndDelete(String(request.params.id));
   if (!property) return response.status(404).json({ message: "Propiedad no encontrada." });
+  const images: StoredImage[] = property.images.flatMap((image, position) =>
+    image.publicId ? [{ url: image.url, publicId: image.publicId, position }] : [],
+  );
+  await deleteUploadedImages(images);
   response.status(204).send();
 });
