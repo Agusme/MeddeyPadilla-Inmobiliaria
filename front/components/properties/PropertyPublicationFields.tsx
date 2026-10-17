@@ -37,8 +37,8 @@ export default function PropertyPublicationFields({ published, onPublishedChange
         <legend className="sr-only">Estado de publicación</legend>
         <div className={compact ? "grid gap-2 sm:max-w-xl sm:grid-cols-2" : "mt-3 grid gap-3 sm:grid-cols-2"}>
           {[
-            { value: false, title: "Borrador", text: "Solo en administración" },
             { value: true, title: "Publicada", text: "Visible en la web" },
+            { value: false, title: "Borrador", text: "Solo en administración" },
           ].map((option) => (
             <label key={String(option.value)} className={`flex cursor-pointer items-start gap-3 rounded-lg border ${compact ? "p-3 focus-within:ring-2 focus-within:ring-[#B71C1C]/20" : "p-4"} ${published === option.value ? "border-[#B71C1C] bg-[#B71C1C]/5" : "border-black/15"}`}>
               <input type="radio" name="status" value={option.value ? "published" : "draft"} checked={published === option.value}

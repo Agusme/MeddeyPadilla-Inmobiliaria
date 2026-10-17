@@ -52,7 +52,7 @@ export default function PropertyFilter({
       className={
         overlay
           ? "mx-0 w-full max-w-7xl sm:w-17/20"
-          : "rounded-xl border border-black/10 bg-white p-1.5 shadow-[0_4px_14px_-12px_rgba(0,0,0,0.18)] sm:p-2"
+          : "rounded-xl border border-black/10 bg-white p-1.5 shadow-[0_4px_14px_-12px_rgba(0,0,0,0.18)] sm:p-2 md:p-1.5 lg:p-2"
       }
       aria-label="Filtros de propiedades"
     >
@@ -63,7 +63,7 @@ export default function PropertyFilter({
         className={
           overlay
             ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"
-            : "grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-center lg:gap-1"
+            : "grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-center lg:gap-1"
         }
       >
         <label
@@ -117,7 +117,7 @@ export default function PropertyFilter({
         ) : (
           <Button
             type="submit"
-            className="w-full sm:col-span-2 lg:col-span-1 lg:w-auto lg:min-w-28"
+            className="w-full md:col-span-2 md:w-auto md:justify-self-end lg:col-span-1 lg:w-auto lg:min-w-28"
           >
             {searchIcon}
             <span>Buscar</span>

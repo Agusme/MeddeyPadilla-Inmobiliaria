@@ -22,7 +22,7 @@ export default function NuevaPropiedadPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [files, setFiles] = useState<File[]>([]);
   const [imageOrder, setImageOrder] = useState<string[]>([]);
-  const [published, setPublished] = useState(false);
+  const [published, setPublished] = useState(true);
   const [quantities, setQuantities] = useState({ bedrooms: "", bathrooms: "", parkingSpaces: "" });
   const [propertyType, setPropertyType] = useState("Propiedad");
   const hasBedrooms = ["Propiedad", "Finca", "PH"].includes(propertyType);
