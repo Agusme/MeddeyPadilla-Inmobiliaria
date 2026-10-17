@@ -3,7 +3,9 @@
   "services": {
     "back": {
       "root": "back",
-      "framework": "express"
+      "framework": "express",
+      "entrypoint": "src/server.ts",
+      "installCommand": "npm ci"
     },
     "front": {
       "root": "front",
