@@ -1,4 +1,5 @@
 import SectionHeading from "@/components/ui/SectionHeading";
+import Button from "@/components/ui/Button";
 import GoogleMap from "@/components/contact/GoogleMap";
 
 function LocationIcon() {
@@ -225,15 +226,15 @@ export default function ContactoPage() {
                   className="mt-2 w-full resize-y rounded-md border border-black/15 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
                 />
               </label>
-              <button
+              <Button
                 type="submit"
-                className="inline-flex w-full items-center justify-center rounded-full bg-[#B71C1C] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#B71C1C]/25 transition duration-200  hover:bg-[#8F1616] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] sm:w-fit"
+                className="w-full sm:w-fit"
               >
                 Enviar consulta{" "}
                 <span aria-hidden="true" className="ml-2">
                   →
                 </span>
-              </button>
+              </Button>
             </form>
           </section>
         </div>

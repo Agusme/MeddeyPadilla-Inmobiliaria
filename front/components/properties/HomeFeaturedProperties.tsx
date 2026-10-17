@@ -18,6 +18,11 @@ function toFeaturedCard(property: ApiProperty): PropertyCardData {
     price: formatPropertyPrice(property.price, property.currency),
     image: publicImageUrl(property.images[0]?.url),
     slug: property.slug,
+    details: [
+      property.bedrooms !== undefined ? `${property.bedrooms} ${property.bedrooms === 1 ? "dormitorio" : "dormitorios"}` : undefined,
+      property.bathrooms !== undefined ? `${property.bathrooms} ${property.bathrooms === 1 ? "baño" : "baños"}` : undefined,
+      property.coveredArea !== undefined ? `${property.coveredArea} m²` : undefined,
+    ].filter((detail): detail is string => Boolean(detail)),
   };
 }
 
@@ -61,7 +66,7 @@ export default function HomeFeaturedProperties() {
     );
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid w-full max-w-[69rem] gap-6 md:grid-cols-2 lg:grid-cols-3">
       {featuredProperties.map((property) => (
         <PropertyCard key={property.slug} property={property} />
       ))}

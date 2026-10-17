@@ -6,6 +6,7 @@ export type PublicProperty = Pick<
   Property,
   "slug" | "title" | "location" | "type" | "operation" | "price" | "image"
 > & {
+  details?: string[];
   isStored?: boolean;
 };
 
@@ -26,6 +27,12 @@ function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
   if (property.totalArea !== undefined) features.push({ label: "Superficie total", value: `${property.totalArea} m²` });
   if (property.parkingSpaces !== undefined) features.push({ label: "Cochera", value: property.parkingSpaces });
 
+  const details = [
+    property.bedrooms !== undefined ? `${property.bedrooms} ${property.bedrooms === 1 ? "dormitorio" : "dormitorios"}` : undefined,
+    property.bathrooms !== undefined ? `${property.bathrooms} ${property.bathrooms === 1 ? "baño" : "baños"}` : undefined,
+    property.coveredArea !== undefined ? `${property.coveredArea} m²` : undefined,
+  ].filter((detail): detail is string => Boolean(detail));
+
   return {
     slug: property.slug,
     title: property.title,
@@ -38,6 +45,7 @@ function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
     description: property.description,
     address: location || "Sin ubicación",
     features,
+    details,
   };
 }
 

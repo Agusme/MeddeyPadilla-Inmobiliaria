@@ -1,6 +1,7 @@
 "use client";
 
 import { authenticateAdmin } from "@/components/auth/adminAuth";
+import Button from "@/components/ui/Button";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -106,13 +107,13 @@ export default function AdminPage() {
             </p>
           )}
 
-          <button
+          <Button
             type="submit"
             disabled={loading}
-            className="inline-flex w-full items-center justify-center rounded-full bg-[#B71C1C] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#B71C1C]/25 transition duration-200 hover:-translate-y-0.5 hover:bg-[#8F1616] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
+            className="w-full"
           >
             {loading ? "Ingresando..." : "Ingresar"}
-          </button>
+          </Button>
         </form>
       </section>
     </div>

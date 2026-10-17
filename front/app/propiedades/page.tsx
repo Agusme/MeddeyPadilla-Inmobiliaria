@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
 
 import PropertyCard from "@/components/properties/PropertyCard";
 import PropertyFilter from "@/components/properties/PropertyFilter";
+import Button from "@/components/ui/Button";
 import {
   listPublicProperties,
   type PublicProperty,
@@ -10,45 +11,19 @@ import {
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useCallback, useEffect, useState } from "react";
 
-const propertyTypeLabels: Record<string, string> = {
-  casa: "Casas",
-  departamento: "Departamentos",
-  terreno: "Terrenos",
-  local: "Locales",
-  oficina: "Oficinas",
-  "galpón": "Galpones",
-};
-
-const propertyTypeOrder = ["casa", "departamento", "terreno", "local", "oficina", "galpón"];
+const propertiesPerPage = 9;
 
 export default function PropiedadesPage() {
   const [properties, setProperties] = useState<PublicProperty[]>([]);
+  const [visibleCount, setVisibleCount] = useState(propertiesPerPage);
   const [isLoading, setIsLoading] = useState(true);
   const [hasActiveFilter, setHasActiveFilter] = useState(false);
   const [filterResetKey, setFilterResetKey] = useState(0);
-  const groupedProperties = Array.from(
-    properties.reduce((groups, property) => {
-      const key = property.type.trim().toLocaleLowerCase("es");
-      groups.set(key, [...(groups.get(key) ?? []), property]);
-      return groups;
-    }, new Map<string, PublicProperty[]>()).entries(),
-  )
-    .sort(([first], [second]) => {
-      const firstOrder = propertyTypeOrder.indexOf(first);
-      const secondOrder = propertyTypeOrder.indexOf(second);
-      if (firstOrder === -1 && secondOrder === -1) return first.localeCompare(second, "es");
-      if (firstOrder === -1) return 1;
-      if (secondOrder === -1) return -1;
-      return firstOrder - secondOrder;
-    })
-    .map(([key, items]) => ({
-      key,
-      title: propertyTypeLabels[key] ?? `${items[0]?.type ?? key}s`,
-      items,
-    }));
+  const visibleProperties = properties.slice(0, visibleCount);
 
   const loadProperties = useCallback((filters: { type?: string; operation?: string }) => {
     setHasActiveFilter(Boolean(filters.type || filters.operation));
+    setVisibleCount(propertiesPerPage);
     setIsLoading(true);
     void listPublicProperties(filters)
       .then(setProperties)
@@ -100,65 +75,73 @@ export default function PropiedadesPage() {
   return (
     <div className="overflow-hidden bg-white">
       <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
-          <header className="mb-10">
+        <div className="mx-auto max-w-7xl px-6 pt-4 pb-5 sm:px-8 sm:pt-6 lg:px-12">
+          <header className="mb-6">
             <SectionHeading
-              eyebrow="Encontrá tu próximo lugar"
-              title="La propiedad indicada está más cerca."
+              titleSize="compact"
+              title="Encontrá tu próxima propiedad"
             />
           </header>
-          <div className="max-w-4xl">
+          <div className="max-w-5xl">
             <PropertyFilter key={filterResetKey} onSearch={searchProperties} />
           </div>
         </div>
       </section>
 
-      <section className="relative z-10 bg-white shadow-[0_-6px_18px_rgba(0,0,0,0.08)]">
-        <div className="mx-auto max-w-7xl px-6 pt-8 pb-12 sm:px-8 lg:px-12">
-          {hasActiveFilter && properties.length > 0 && (
-            <div className="flex flex-wrap items-center justify-between gap-4 pb-6">
-              <p className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-[#fafafa] px-4 py-2 text-sm text-black/60">
-                <span className="font-semibold text-[#171717]">{properties.length}</span>
-                {properties.length === 1 ? "propiedad encontrada" : "propiedades encontradas"}
-              </p>
-              {hasActiveFilter && (
-                <button
-                  type="button"
-                  onClick={showAllProperties}
-                  className="inline-flex shrink-0 items-center text-sm font-semibold text-[#B71C1C] transition hover:text-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
-                >
-                  Ver todas <span aria-hidden="true" className="ml-2">→</span>
-                </button>
+      <section className="relative z-10 bg-white">
+        <div className="mx-auto max-w-7xl px-6 pt-5 pb-12 sm:px-8 sm:pt-5 lg:px-12">
+          <div className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h2 className="text-xl font-semibold tracking-tight text-[#171717] sm:text-2xl">Propiedades</h2>
+              {!isLoading && properties.length > 0 && (
+                <span className="text-sm text-black/50">
+                  {properties.length} {properties.length === 1 ? "propiedad" : "propiedades"}
+                </span>
               )}
             </div>
-          )}
+            {hasActiveFilter && properties.length > 0 && (
+              <Button
+                type="button"
+                variant="text"
+                size="sm"
+                onClick={showAllProperties}
+              >
+                Ver todas <span aria-hidden="true" className="ml-2">→</span>
+              </Button>
+            )}
+          </div>
           <section
             id="listado-propiedades"
-            className="scroll-mt-24 space-y-12"
+            className="scroll-mt-24"
             aria-label="Listado de propiedades"
           >
-            {groupedProperties.map((group) => (
-              <section key={group.key} aria-labelledby={`property-type-${group.key}`}>
-                <h2 id={`property-type-${group.key}`} className="mb-5 text-xl font-semibold tracking-tight text-[#171717] sm:text-2xl">
-                  {group.title}
-                </h2>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {group.items.map((property) => (
-                    <PropertyCard key={property.slug} property={property} />
-                  ))}
-                </div>
-              </section>
-            ))}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {visibleProperties.map((property) => (
+                <PropertyCard key={property.slug} property={property} />
+              ))}
+            </div>
           </section>
+          {properties.length > visibleCount && (
+            <div className="mt-8 flex justify-center">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setVisibleCount((count) => Math.min(count + propertiesPerPage, properties.length))}
+                aria-controls="listado-propiedades"
+              >
+                Cargar más
+              </Button>
+            </div>
+          )}
           {!isLoading && properties.length === 0 && (
             <div
-              className="mx-auto flex max-w-2xl flex-col items-center px-6 py-4 text-center sm:px-10 sm:py-5"
+              className="mx-auto flex max-w-2xl flex-col items-center px-6 py-3 text-center sm:px-10 sm:py-4"
               role="status"
             >
-              <span className="flex h-14 w-14 items-center justify-center text-[#B71C1C]">
+              <span className="flex h-10 w-10 items-center justify-center text-black/45">
                 <svg
                   aria-hidden="true"
-                  className="h-9 w-9"
+                  className="h-6 w-6"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -168,19 +151,17 @@ export default function PropiedadesPage() {
                   <path d="m15.5 15.5 4.2 4.2M8.5 10.8h4.6" />
                 </svg>
               </span>
-              <h2 className="mt-3 text-xl font-semibold tracking-tight text-[#171717] sm:text-2xl">
-                No encontramos propiedades con esa combinación
+              <h2 className="mt-2 text-base font-medium tracking-tight text-[#171717] sm:text-lg">
+                No encontramos propiedades con esos filtros
               </h2>
-              <p className="mt-1 max-w-md text-sm leading-6 text-black/60 sm:text-base">
-                Probá cambiar los filtros o explorá todas las propiedades disponibles.
-              </p>
-              <button
+              <Button
                 type="button"
+                variant="secondary"
                 onClick={showAllProperties}
-                className="mt-4 inline-flex items-center justify-center rounded-full bg-[#B71C1C] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2"
+                className="mt-3"
               >
                 Ver todas las propiedades
-              </button>
+              </Button>
             </div>
           )}
         </div>

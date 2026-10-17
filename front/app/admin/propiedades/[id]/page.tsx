@@ -7,7 +7,7 @@ import {
 import { getAdminProperty, publicImageUrl } from "@/lib/api";
 import PropertyGallery from "@/components/properties/PropertyGallery";
 import { formatPropertyPrice } from "@/lib/formatPrice";
-import Link from "next/link";
+import ButtonLink from "@/components/ui/ButtonLink";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -77,12 +77,12 @@ export default function AdminPropertyDetailPage() {
             <p className="mt-2 text-sm leading-6 text-black/60">
               Escribinos para recibir más información o coordinar una visita.
             </p>
-            <Link
+            <ButtonLink
               href="/contacto#contact-form"
-              className="mt-5 inline-flex w-full justify-center rounded-full bg-[#B71C1C] px-5 py-3 text-sm font-semibold text-white"
+              className="mt-5 w-full"
             >
               Consultar propiedad
-            </Link>
+            </ButtonLink>
           </div>
         </aside>
       </div>

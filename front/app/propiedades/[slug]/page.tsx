@@ -2,7 +2,7 @@
 
 import PropertyGallery from "@/components/properties/PropertyGallery";
 import { getPublicPropertyBySlug } from "@/components/properties/propertyRepository";
-import Link from "next/link";
+import ButtonLink from "@/components/ui/ButtonLink";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -29,9 +29,9 @@ export default function PropertyDetailPage() {
     return (
       <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
 
-        <Link href="/propiedades" className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#B71C1C] bg-[#B71C1C] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-[#8F1616] hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2">
+        <ButtonLink href="/propiedades">
           Ver todas las propiedades
-        </Link>
+        </ButtonLink>
         <h1 className="mt-8 text-2xl font-semibold">
           Propiedad no encontrada
         </h1>
@@ -62,12 +62,12 @@ export default function PropertyDetailPage() {
             <p className="mt-2 text-sm leading-6 text-black/60">
               Escribinos para recibir más información o coordinar una visita.
             </p>
-            <Link
+            <ButtonLink
               href="/contacto#contact-form"
-              className="mt-5 inline-flex w-full justify-center rounded-full bg-[#B71C1C] px-5 py-3 text-sm font-semibold text-white"
+              className="mt-5 w-full"
             >
               Consultar propiedad
-            </Link>
+            </ButtonLink>
           </div>
         </aside>
       </div>
@@ -107,9 +107,9 @@ export default function PropertyDetailPage() {
         </div>}
       </section>
       <div className="mt-10 flex justify-end">
-      <Link href="/propiedades" className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#B71C1C] bg-[#B71C1C] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-[#8F1616] hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2">
+      <ButtonLink href="/propiedades">
         Ver todas las propiedades
-      </Link>
+      </ButtonLink>
       </div>
     </main>
   );

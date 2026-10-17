@@ -1,20 +1,19 @@
-import Image from "next/image";
 import Link from "next/link";
 import ButtonLink from "@/components/ui/ButtonLink";
 import ContactCta from "@/components/ui/ContactCta";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import HomeFeaturedProperties from "@/components/properties/HomeFeaturedProperties";
+import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 
 export default function Home() {
   return (
     <>
       <section className="relative isolate min-h-[82dvh] overflow-hidden sm:min-h-[calc(100dvh-73px)]">
-        <Image
+        <ImageWithSkeleton
           src="/home/herohom.jpg"
           alt="Casa con piscina y espacios exteriores"
-          fill
           priority
-          className="object-cover object-[42%_center] sm:scale-105 sm:object-center"
+          imageClassName="object-[42%_center] sm:scale-105 sm:object-center"
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-linear-to-r from-black/75 via-black/40 to-black/20 sm:bg-black/45" />
@@ -44,21 +43,21 @@ Hacemos simple encontrar tu hogar       </h1>
       >
         <div className="mb-8 flex flex-col items-start gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#B71C1C]">
-              Una selección para vos
-            </p>
             <h2
               id="featured-properties-title"
-              className="text-3xl font-semibold tracking-tight text-black sm:text-4xl"
+              className="text-2xl font-medium tracking-tight text-black sm:text-3xl"
             >
               Propiedades destacadas
             </h2>
           </div>
           <Link
             href="/propiedades#listado-propiedades"
-            className="inline-flex shrink-0 self-end items-center text-sm font-semibold text-[#B71C1C] transition hover:text-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
+            className="inline-flex shrink-0 self-end items-center gap-2 text-sm font-medium tracking-wide text-black/70 transition-colors duration-250 hover:text-[#B71C1C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
           >
-            Ver todas <span aria-hidden="true" className="ml-2">→</span>
+            Ver todas
+            <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
+              <path d="M4 10h12m-5-5 5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </Link>
         </div>
         <HomeFeaturedProperties />
