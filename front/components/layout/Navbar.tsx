@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { logoutAdmin } from "@/components/auth/adminAuth";
 import { useAdminAuthenticated } from "@/components/auth/useAdminAuthenticated";
+import Button from "@/components/ui/Button";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -101,17 +102,18 @@ export default function Navbar({
             </Link>
           ))}
           {authenticated && (
-            <button
+            <Button
               type="button"
+              size="md"
+              className="w-full lg:w-auto"
               onClick={() => {
                 logoutAdmin();
                 setIsOpen(false);
                 router.replace("/");
               }}
-              className="rounded-full border border-[#B71C1C] bg-[#B71C1C] px-4 py-2.5 text-left text-base font-medium lg:text-sm text-white transition hover:border-[#8F1616] hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2"
             >
               Cerrar sesión
-            </button>
+            </Button>
           )}
         </div>
       </nav>

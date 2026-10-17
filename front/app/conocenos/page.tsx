@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import GoogleMap from "@/components/contact/GoogleMap";
 import SectionHeading from "@/components/ui/SectionHeading";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 export const metadata: Metadata = {
   title: "Conocenos",
@@ -99,12 +100,12 @@ export default function NosotrosPage() {
             <p className="mt-5 max-w-xl text-base leading-7 text-black/65 sm:text-lg">Somos una inmobiliaria ubicada en San Miguel de Tucumán. Acompañamos a quienes quieren comprar, vender o alquilar, con asesoramiento cercano, transparencia y respaldo profesional en cada etapa.</p>
            
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/propiedades#listado-propiedades" className="inline-flex items-center justify-center rounded-full bg-[#B71C1C] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2">
+              <ButtonLink href="/propiedades#listado-propiedades">
                 Encontrá tu próximo hogar <span aria-hidden="true" className="ml-2">→</span>
-              </Link>
-              <Link href="/contacto#contact-form" className="inline-flex items-center justify-center rounded-full border border-black/15 px-6 py-3 text-sm font-semibold text-[#171717] transition hover:border-[#B71C1C] hover:text-[#B71C1C]">
+              </ButtonLink>
+              <ButtonLink href="/contacto#contact-form" variant="secondary">
                 Hablemos
-              </Link>
+              </ButtonLink>
             </div>
           </div>
           <div className="rounded-2xl bg-[#B71C1C] p-7 text-white sm:p-10">

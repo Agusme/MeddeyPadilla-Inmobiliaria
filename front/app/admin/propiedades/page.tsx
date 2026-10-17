@@ -14,15 +14,18 @@ import { deleteAdminProperty, getAdminProperties } from "@/lib/api";
 import { formatPropertyPrice } from "@/lib/formatPrice";
 import { properties } from "@/components/properties/propertyData";
 import Link from "next/link";
+import ButtonLink from "@/components/ui/ButtonLink";
+import Button from "@/components/ui/Button";
+import { buttonClassName } from "@/components/ui/buttonVariants";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 type TableProperty = AdminProperty & { isExample?: boolean };
 
-const statusStyles: Record<string, string> = {
-  Publicada: "border border-emerald-200 bg-emerald-50 text-emerald-700",
-  "No publicada": "border border-amber-200 bg-amber-50 text-amber-700",
+const statusDotStyles: Record<string, string> = {
+  Publicada: "bg-emerald-600",
+  "No publicada": "bg-amber-500",
 };
 
 const exampleProperties: TableProperty[] = properties.map((property) => ({
@@ -144,12 +147,12 @@ export default function AdminPropertiesPage() {
               {listedProperties.length} {listedProperties.length === 1 ? "propiedad" : "propiedades"} en total
             </p>
           </div>
-          <Link
+          <ButtonLink
             href="/admin/propiedades/nueva"
-            className="inline-flex justify-center rounded-full bg-[#B71C1C] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#B71C1C]/20 transition hover:bg-[#8F1616]"
+            className="w-full sm:w-auto"
           >
             + Nueva propiedad
-          </Link>
+          </ButtonLink>
         </div>
 
         <div className="mt-8 rounded-md border border-black/10 bg-white shadow-sm">
@@ -227,17 +230,19 @@ export default function AdminPropertiesPage() {
                       </p>
                     </td>
                     <td className="px-5 py-5">
-                      <div className="flex flex-col items-start gap-2">
-                      <span
-                        className={`inline-flex min-w-28 justify-center whitespace-nowrap rounded-full px-3 py-1.5 text-center text-xs font-semibold ${statusStyles[property.status] ?? "border border-black/10 bg-black/5 text-black/65"}`}
-                      >
-                        {property.status}
-                      </span>
-                      {property.featured && (
-                        <span className="inline-flex rounded-full bg-[#B71C1C]/10 px-2.5 py-1 text-xs font-semibold text-[#B71C1C]">
-                          Destacada
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                        <span className="inline-flex items-center gap-2 whitespace-nowrap text-sm font-medium text-[#171717]">
+                          <span aria-hidden="true" className={`h-2 w-2 rounded-full ${statusDotStyles[property.status] ?? "bg-black/30"}`} />
+                          {property.status}
                         </span>
-                      )}
+                        {property.featured && (
+                          <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#8B2635]/15 bg-[#8B2635]/5 px-2.5 py-1 text-xs font-medium text-[#8B2635]">
+                            <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
+                              <path d="m10 1.7 2.55 5.17 5.7.83-4.12 4.02.97 5.68L10 14.72l-5.1 2.68.97-5.68L1.75 7.7l5.7-.83L10 1.7Z" />
+                            </svg>
+                            Destacada
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-5 py-5">
@@ -247,22 +252,24 @@ export default function AdminPropertiesPage() {
                           onClick={() => prepareExampleForEdit(property)}
                           aria-label={`Editar ${property.title}`}
                           title="Editar propiedad"
-                          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-orange-700 transition hover:bg-orange-50 hover:text-orange-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-700"
+                          className={buttonClassName({ variant: "ghost", size: "icon", className: "text-orange-700 hover:bg-orange-50 hover:text-orange-800" })}
                         >
                           <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
                             <path d="m15 5 4 4" />
                           </svg>
                         </Link>
-                        <button
+                        <Button
                           type="button"
+                          variant="ghost"
+                          size="icon"
                           aria-label={`Eliminar ${property.title}`}
                           title="Eliminar propiedad"
                           onClick={(event) => {
                             event.stopPropagation();
                             void handleDelete(property);
                           }}
-                          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-red-700 transition hover:bg-red-50 hover:text-red-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-700"
+                          className="text-red-700 hover:bg-red-50 hover:text-red-800"
                         >
                           <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M10 11v6" />
@@ -271,7 +278,7 @@ export default function AdminPropertiesPage() {
                             <path d="M3 6h18" />
                             <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                           </svg>
-                        </button>
+                        </Button>
                       </div>
                     </td>
                   </tr>

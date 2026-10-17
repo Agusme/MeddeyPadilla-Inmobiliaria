@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { propertyTypeOptions } from "@/lib/propertyTypes";
 
 const navigationLinks = [
   { label: "Inicio", href: "/" },
@@ -9,13 +10,10 @@ const navigationLinks = [
   { label: "Contacto", href: "/contacto" },
 ];
 
-const propertyLinks = [
-  { label: "Casa", href: "/propiedades?type=Casa" },
-  { label: "Departamento", href: "/propiedades?type=Departamento" },
-  { label: "Terreno", href: "/propiedades?type=Terreno" },
-  { label: "Locales", href: "/propiedades?type=Local" },
-  { label: "Galpones", href: `/propiedades?type=${encodeURIComponent("Galpón")}` },
-];
+const propertyLinks = propertyTypeOptions.map(({ value, groupLabel }) => ({
+  label: groupLabel,
+  href: `/propiedades?type=${encodeURIComponent(value)}`,
+}));
 
 function FacebookIcon() {
   return (

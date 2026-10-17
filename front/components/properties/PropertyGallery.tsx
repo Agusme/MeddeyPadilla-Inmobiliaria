@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 
 export default function PropertyGallery({ images, title }: { images: string[]; title: string }) {
   const [active, setActive] = useState(0);
@@ -14,13 +14,12 @@ export default function PropertyGallery({ images, title }: { images: string[]; t
   return (
     <div className="min-w-0">
       <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-[#f4f4f4] sm:aspect-[16/10] lg:aspect-auto lg:h-[min(38vw,32rem)]">
-        <Image
+        <ImageWithSkeleton
           src={images[active]}
           alt={`${title} — foto ${active + 1}`}
-          fill
           priority
           sizes="(min-width: 1024px) 58vw, 100vw"
-          className="object-contain"
+          fit="contain"
         />
         {images.length > 1 && (
           <>
@@ -58,12 +57,10 @@ export default function PropertyGallery({ images, title }: { images: string[]; t
               aria-current={index === active}
               className={`relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-sm sm:w-28 ${index === active ? "ring-2 ring-[#B71C1C]" : "opacity-70"}`}
             >
-              <Image
+              <ImageWithSkeleton
                 src={image}
                 alt=""
-                fill
                 sizes="112px"
-                className="object-cover"
               />
             </button>
           ))}

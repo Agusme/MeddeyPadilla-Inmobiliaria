@@ -12,6 +12,9 @@ import Swal from "sweetalert2";
 import PropertyQuantityField from "@/components/properties/PropertyQuantityField";
 import ImageOrderList from "@/components/properties/ImageOrderList";
 import PropertyPublicationFields from "@/components/properties/PropertyPublicationFields";
+import { propertyTypeOptions } from "@/lib/propertyTypes";
+import Button from "@/components/ui/Button";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 const inputClass =
   "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none mt-1.5 h-11 min-w-0 w-full rounded-lg aria-[invalid=true]:border-red-600 aria-[invalid=true]:ring-1 aria-[invalid=true]:ring-red-600 border border-black/15 bg-white px-3 text-base font-normal outline-none transition sm:text-sm focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15";
@@ -30,8 +33,8 @@ export default function EditarPropiedadPage() {
   const [currency, setCurrency] = useState("USD");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [quantities, setQuantities] = useState({ bedrooms: "", bathrooms: "", parkingSpaces: "" });
-  const [propertyType, setPropertyType] = useState("Casa");
-  const hasBedrooms = propertyType === "Casa" || propertyType === "Departamento";
+  const [propertyType, setPropertyType] = useState("Propiedad");
+  const hasBedrooms = ["Propiedad", "Finca", "PH"].includes(propertyType);
   const hasBuilding = propertyType !== "Terreno";
 
   useEffect(() => {
@@ -150,12 +153,9 @@ export default function EditarPropiedadPage() {
               <label className={`${labelClass} col-span-2 sm:col-span-1`}>
                 Tipo de propiedad <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
                 <select required name="propertyType" value={propertyType} onChange={(event) => setPropertyType(event.target.value)} className={inputClass}>
-                  <option>Casa</option>
-                  <option>Departamento</option>
-                  <option>Terreno</option>
-                  <option>Local</option>
-                  <option>Oficina</option>
-                  <option>Galpón</option>
+                  {propertyTypeOptions.map(({ value, label }) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
                 </select>
               </label>
               <div className="col-span-2 grid min-w-0 grid-cols-[minmax(0,2fr)_minmax(5.5rem,1fr)] items-start gap-3 sm:gap-4">
@@ -292,19 +292,18 @@ export default function EditarPropiedadPage() {
           </section>
           </div>
           <div className="flex flex-col-reverse gap-3 border-t border-black/10 bg-[#fafafa] p-5 sm:flex-row sm:justify-end sm:p-6">
-            <Link
+            <ButtonLink
               href="/admin/propiedades"
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-black/15 bg-white px-5 py-2.5 text-sm font-semibold text-black/70 transition hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2"
+              variant="secondary"
             >
               Cancelar
-            </Link>
-            <button
+            </ButtonLink>
+            <Button
               type="submit"
               disabled={saving}
-              className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[#B71C1C] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-60"
             >
               {saving ? "Guardando..." : published ? "Guardar cambios y publicar" : "Guardar cambios como borrador"}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

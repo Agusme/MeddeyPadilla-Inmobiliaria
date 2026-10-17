@@ -1,21 +1,41 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 type ImageOrderItem = { key: string; label: string; src?: string; file?: File };
 
 function FileThumbnail({ file }: { file: File }) {
-  const thumbnail = useRef<HTMLImageElement>(null);
+  const [src, setSrc] = useState("");
 
   useEffect(() => {
     const objectUrl = URL.createObjectURL(file);
-    if (thumbnail.current) thumbnail.current.src = objectUrl;
+    setSrc(objectUrl);
     return () => URL.revokeObjectURL(objectUrl);
   }, [file]);
 
+  return <ImagePreview src={src} />;
+}
+
+function ImagePreview({ src }: { src: string }) {
+  const [loadedSrc, setLoadedSrc] = useState("");
+  const [errorSrc, setErrorSrc] = useState("");
+  const loaded = src !== "" && loadedSrc === src;
+  const failed = src !== "" && errorSrc === src;
+
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img ref={thumbnail} alt="" className="h-16 w-20 shrink-0 rounded bg-black/5 object-cover" />
+    <span className="relative h-16 w-20 shrink-0 overflow-hidden rounded bg-black/5" aria-busy={Boolean(src) && !loaded && !failed}>
+      {!loaded && <span aria-hidden="true" className={`absolute inset-0 bg-linear-to-br from-black/10 via-black/5 to-black/10 ${failed || !src ? "" : "animate-pulse"}`} />}
+      {src && !failed && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt=""
+          onLoad={() => setLoadedSrc(src)}
+          onError={() => setErrorSrc(src)}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+        />
+      )}
+    </span>
   );
 }
 
@@ -58,8 +78,7 @@ export default function ImageOrderList({
           {item.file ? (
             <FileThumbnail file={item.file} />
           ) : item.src ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={item.src} alt="" className="h-16 w-20 shrink-0 rounded object-cover" />
+            <ImagePreview src={item.src} />
           ) : (
             <span className="flex h-16 w-20 shrink-0 items-center justify-center rounded bg-[#B71C1C]/5 text-xs font-semibold text-[#B71C1C]">Foto nueva</span>
           )}

@@ -52,12 +52,13 @@ export default function PropertyPublicationFields({ published, onPublishedChange
         </div>
       </fieldset>
       {(published || !compact) && <div className={compact ? "mt-4" : "mt-6 border-t border-black/10 pt-5"}>
-        <label className={`flex items-start gap-3 ${featuredDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}>
+        <label className={`group flex items-start gap-3 rounded-lg border px-3.5 py-3 transition-colors ${featuredDisabled ? "cursor-not-allowed border-black/10 bg-black/[0.02]" : "cursor-pointer border-black/10 bg-white hover:border-[#B71C1C]/35 hover:bg-[#B71C1C]/[0.02]"} ${featured && published ? "border-[#B71C1C]/35 bg-[#B71C1C]/[0.03]" : ""}`}>
           <input type="checkbox" name="featured" checked={published && featured} disabled={featuredDisabled}
             onChange={(event) => setFeatured(event.target.checked)} aria-describedby={`${id}-featured-help`}
-            className="mt-1 h-5 w-5 shrink-0 accent-[#B71C1C]" />
-          <span><span className="block text-sm font-semibold">Destacar en el inicio</span>
-            <span id={`${id}-featured-help`} className="mt-1 block text-sm leading-6 text-black/60">
+            className="mt-0.5 h-4 w-4 shrink-0 accent-[#B71C1C] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B71C1C]" />
+          <span className="min-w-0">
+            <span className={`block text-sm font-medium leading-5 ${featuredDisabled ? "text-black/55" : "text-[#171717]"}`}>Destacar en el inicio</span>
+            <span id={`${id}-featured-help`} className="mt-1 block text-xs leading-5 text-black/55">
               {!published ? "Publicá la propiedad para destacarla." : capacityError ? "No se pudo consultar el cupo. Recargá la página." : featuredCount === null ? "Consultando cupo…" : featuredCount >= 3 ? "Ya tenés 3 destacadas." : "Hasta 3 propiedades destacadas."}
             </span>
           </span>

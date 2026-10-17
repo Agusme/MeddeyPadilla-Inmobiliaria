@@ -14,6 +14,25 @@ const upload = multer({
 
 type StoredImage = { url: string; publicId?: string | null; position: number };
 
+const validPropertyTypes = [
+  "Propiedad", "Depósito", "Galpón", "Fondo de comercio", "Cochera", "Finca",
+  "Terreno", "Local comercial", "PH",
+];
+const legacyPropertyTypeAliases: Record<string, string> = {
+  Casa: "Propiedad",
+  Departamento: "Propiedad",
+  Local: "Local comercial",
+  Oficina: "Local comercial",
+};
+
+function serializeProperty(property: unknown) {
+  const document = property as { toObject?: () => Record<string, unknown> } & Record<string, unknown>;
+  const data = typeof document.toObject === "function" ? document.toObject() : document;
+  const storedType = String(data.propertyType ?? "");
+  const propertyType = legacyPropertyTypeAliases[storedType] ?? storedType;
+  return { ...data, propertyType };
+}
+
 async function deleteUploadedImages(images: StoredImage[]) {
   await Promise.all(
     images.map(async (image) => {
@@ -44,10 +63,12 @@ async function uploadImages(files: Express.Multer.File[]): Promise<StoredImage[]
 function bodyToProperty(body: Record<string, unknown>) {
   const required = ["title", "operation", "propertyType", "price", "currency", "city", "description"];
   if (required.some((key) => !body[key])) throw new Error("Completá todos los campos obligatorios.");
+  const propertyType = String(body.propertyType);
+  if (!validPropertyTypes.includes(propertyType)) throw new Error("Tipo de propiedad no válido.");
   const price = optionalNumber(body.price);
   if (price === undefined) throw new Error("El precio debe ser válido.");
   return {
-    title: String(body.title), operation: String(body.operation), propertyType: String(body.propertyType), price,
+    title: String(body.title), operation: String(body.operation), propertyType, price,
     currency: String(body.currency), status: body.status === "published" ? "published" : "draft",
     street: String(body.street ?? ""), city: String(body.city), description: String(body.description),
     totalArea: optionalNumber(body.totalArea), coveredArea: optionalNumber(body.coveredArea),
@@ -91,32 +112,42 @@ propertiesRouter.get("/", async (request, response) => {
   const operation = typeof request.query.operation === "string" ? request.query.operation.trim() : "";
   const type = typeof request.query.type === "string" ? request.query.type.trim() : "";
   const validOperations = ["Venta", "Alquiler"];
-  const validTypes = ["Casa", "Departamento", "Terreno", "Local", "Oficina", "Galpón"];
 
   if (operation && !validOperations.includes(operation)) {
     return response.status(400).json({ message: "Tipo de operación no válido." });
   }
-  if (type && !validTypes.includes(type)) {
+  if (type && !validPropertyTypes.includes(type)) {
     return response.status(400).json({ message: "Tipo de propiedad no válido." });
   }
 
   if (operation) filter.operation = operation;
-  if (type) filter.propertyType = type;
-  response.json(await Property.find(filter).sort({ featured: -1, createdAt: -1 }));
+  if (type) {
+    const legacyTypes = type === "Propiedad"
+      ? ["Casa", "Departamento"]
+      : type === "Local comercial"
+        ? ["Local", "Oficina"]
+        : [];
+    filter.propertyType = { $in: [type, ...legacyTypes] };
+  }
+  const properties = await Property.find(filter).sort({ featured: -1, createdAt: -1 });
+  response.json(properties.map(serializeProperty));
 });
 propertiesRouter.get("/:slug", async (request, response) => {
   const property = await Property.findOne({ slug: request.params.slug, status: "published" });
   if (!property) return response.status(404).json({ message: "Propiedad no encontrada." });
-  response.json(property);
+  response.json(serializeProperty(property));
 });
 
 export const adminPropertiesRouter = Router();
 adminPropertiesRouter.use(requireAdmin);
-adminPropertiesRouter.get("/", async (_request, response) => response.json(await Property.find().sort({ createdAt: -1 })));
+adminPropertiesRouter.get("/", async (_request, response) => {
+  const properties = await Property.find().sort({ createdAt: -1 });
+  response.json(properties.map(serializeProperty));
+});
 adminPropertiesRouter.get("/:id", async (request, response) => {
   const property = await Property.findById(String(request.params.id));
   if (!property) return response.status(404).json({ message: "Propiedad no encontrada." });
-  response.json(property);
+  response.json(serializeProperty(property));
 });
 adminPropertiesRouter.post("/", upload.array("images", 12), async (request, response) => {
   let images: StoredImage[] = [];
@@ -126,7 +157,7 @@ adminPropertiesRouter.post("/", upload.array("images", 12), async (request, resp
     images = await uploadImages((request.files as Express.Multer.File[]) ?? []);
     const slug = `${createSlug(data.title) || "propiedad"}-${randomUUID().slice(0, 8)}`;
     const orderedImages = applyImageOrder([], images, request.body.imageOrder);
-    response.status(201).json(await Property.create({ ...data, slug, images: orderedImages }));
+    response.status(201).json(serializeProperty(await Property.create({ ...data, slug, images: orderedImages })));
   } catch (error) { await deleteUploadedImages(images); response.status(400).json({ message: error instanceof Error ? error.message : "Datos inválidos." }); }
 });
 adminPropertiesRouter.patch("/:id", upload.array("images", 12), async (request, response) => {
@@ -146,7 +177,7 @@ adminPropertiesRouter.patch("/:id", upload.array("images", 12), async (request, 
       await deleteUploadedImages(images);
       return response.status(404).json({ message: "Propiedad no encontrada." });
     }
-    response.json(property);
+    response.json(serializeProperty(property));
   } catch (error) { await deleteUploadedImages(images); response.status(400).json({ message: error instanceof Error ? error.message : "Datos inválidos." }); }
 });
 adminPropertiesRouter.delete("/:id", async (request, response) => {
