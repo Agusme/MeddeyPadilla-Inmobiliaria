@@ -28,11 +28,9 @@ export default function PropertyDetailPage() {
   if (!property) {
     return (
       <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
-        <Link
-          href="/propiedades"
-          className="inline-flex text-sm font-semibold text-[#B71C1C]"
-        >
-          ← Volver a propiedades
+
+        <Link href="/propiedades" className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#B71C1C] bg-[#B71C1C] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-[#8F1616] hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2">
+          Ver todas las propiedades
         </Link>
         <h1 className="mt-8 text-2xl font-semibold">
           Propiedad no encontrada
@@ -43,12 +41,7 @@ export default function PropertyDetailPage() {
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
-      <Link
-        href="/propiedades"
-        className="inline-flex text-sm font-semibold text-[#B71C1C]"
-      >
-        ← Volver a propiedades
-      </Link>
+
       <div className="mt-7 grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.55fr)]">
         <PropertyGallery images={property.images} title={property.title} />
         <aside className="h-fit border border-black/10 bg-white p-6 shadow-sm sm:p-7">
@@ -113,6 +106,11 @@ export default function PropertyDetailPage() {
           </dl>
         </div>}
       </section>
+      <div className="mt-10 flex justify-end">
+      <Link href="/propiedades" className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#B71C1C] bg-[#B71C1C] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-[#8F1616] hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2">
+        Ver todas las propiedades
+      </Link>
+      </div>
     </main>
   );
 }

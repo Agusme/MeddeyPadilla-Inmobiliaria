@@ -1,34 +1,12 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import { useAdminAuthenticated } from "@/components/auth/useAdminAuthenticated";
 
 export default function FloatingWhatsapp() {
-  const router = useRouter();
-  const pathname = usePathname();
   const authenticated = useAdminAuthenticated();
 
   return (
     <>
-      {pathname !== "/" && (
-      <button
-        type="button"
-        aria-label="Volver a la página anterior"
-        title="Volver atrás"
-        onClick={() => {
-          if (window.history.length > 1) {
-            router.back();
-          } else {
-            router.replace("/");
-          }
-        }}
-        className={`fixed right-6 ${authenticated === false ? "bottom-24" : "bottom-6"} z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#B71C1C] text-white shadow-lg shadow-black/20 transition hover:-translate-y-1 hover:bg-[#8F1616] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2`}
-      >
-        <svg aria-hidden="true" className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m12 5-7 7 7 7M5 12h14" />
-        </svg>
-      </button>
-      )}
     {authenticated === false && (
     <a
       href="https://wa.me/5493816806570"

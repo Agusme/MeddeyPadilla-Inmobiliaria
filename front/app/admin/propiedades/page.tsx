@@ -158,7 +158,7 @@ export default function AdminPropertiesPage() {
               <caption className="sr-only">
                 Listado de propiedades cargadas
               </caption>
-              <thead className="border-b border-black/10 bg-white text-sm text-[#171717]">
+              <thead className="bg-[#B71C1C] text-sm text-white">
                 <tr>
                   <th className="px-5 py-4 font-semibold">Propiedad</th>
                   <th className="px-5 py-4 font-semibold">Operación</th>
