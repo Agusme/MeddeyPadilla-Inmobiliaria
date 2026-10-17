@@ -7,7 +7,11 @@ import { authRouter } from "./routes/auth";
 import { adminPropertiesRouter, propertiesRouter } from "./routes/properties";
 
 async function start() {
-  fs.mkdirSync(path.resolve("uploads"), { recursive: true });
+  // Vercel deployments must not create directories in the application bundle.
+  // New images are uploaded to Cloudinary; keep this directory for local use.
+  if (process.env.VERCEL !== "1") {
+    fs.mkdirSync(path.resolve("uploads"), { recursive: true });
+  }
   mongoose.connection.on("error", (error) => console.error("Error de MongoDB:", error));
   await mongoose.connect(config.mongoUri, { serverSelectionTimeoutMS: 10_000 });
   console.log(`MongoDB conectado: ${mongoose.connection.host}/${mongoose.connection.name}`);
