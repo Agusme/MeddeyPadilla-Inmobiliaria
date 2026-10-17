@@ -203,11 +203,6 @@ export default function AdminPropertiesPage() {
                           {property.propertyType} · {property.imageCount} foto
                           {property.imageCount === 1 ? "" : "s"}
                         </p>
-                        {property.featured && (
-                          <span className="mt-2 inline-flex rounded-full bg-[#B71C1C]/10 px-2.5 py-1 text-xs font-semibold text-[#B71C1C]">
-                            Destacada
-                          </span>
-                        )}
                       </div>
                     </td>
                     <td className="px-5 py-5 text-black/70">
@@ -232,11 +227,18 @@ export default function AdminPropertiesPage() {
                       </p>
                     </td>
                     <td className="px-5 py-5">
+                      <div className="flex flex-col items-start gap-2">
                       <span
                         className={`inline-flex min-w-28 justify-center whitespace-nowrap rounded-full px-3 py-1.5 text-center text-xs font-semibold ${statusStyles[property.status] ?? "border border-black/10 bg-black/5 text-black/65"}`}
                       >
                         {property.status}
                       </span>
+                      {property.featured && (
+                        <span className="inline-flex rounded-full bg-[#B71C1C]/10 px-2.5 py-1 text-xs font-semibold text-[#B71C1C]">
+                          Destacada
+                        </span>
+                      )}
+                      </div>
                     </td>
                     <td className="px-5 py-5">
                       <div className="flex items-center justify-start gap-3 whitespace-nowrap">
