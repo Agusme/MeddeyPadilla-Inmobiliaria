@@ -41,7 +41,10 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   });
   if (!response.ok) {
     const body = await response.json().catch(() => null);
-    if (response.status === 401 && typeof window !== "undefined") sessionStorage.removeItem(adminTokenStorageKey);
+    if (response.status === 401 && typeof window !== "undefined") {
+      sessionStorage.removeItem(adminTokenStorageKey);
+      window.dispatchEvent(new Event("admin-auth-change"));
+    }
     throw new ApiError(body?.message ?? "No se pudo completar la solicitud.", response.status);
   }
   return response.status === 204 ? undefined as T : response.json() as Promise<T>;

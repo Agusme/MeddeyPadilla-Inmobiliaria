@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { logoutAdmin } from "@/components/auth/adminAuth";
+import { useAdminAuthenticated } from "@/components/auth/useAdminAuthenticated";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -29,6 +31,8 @@ export default function Navbar({
 }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const authenticated = useAdminAuthenticated();
 
   return (
     <header className="relative z-50 border-b border-black/10 bg-white shadow-sm">
@@ -78,19 +82,37 @@ export default function Navbar({
 
         <div
           id="main-navigation"
-          className={`${isOpen ? "flex" : "hidden"} absolute left-0 right-0 top-full z-10 max-h-[calc(100dvh-4.5rem)] flex-col gap-1 overflow-y-auto border-b border-black/10 bg-white px-6 py-4 shadow-sm lg:static lg:flex lg:max-h-none lg:flex-row lg:items-center lg:gap-10 lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
+          className={`${isOpen ? "flex" : "hidden"} absolute left-0 right-0 top-full z-10 max-h-[calc(100dvh-4.5rem)] flex-col gap-1 overflow-y-auto border-b border-black/10 bg-white px-6 py-4 shadow-sm lg:static lg:flex lg:max-h-none lg:flex-row lg:items-center lg:gap-1 xl:gap-4 lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
         >
-          {items.map((item) => (
+          {[
+            ...items.filter((item) => authenticated || !/^\/admin(?:\/|$)/.test(item.href)),
+            ...(authenticated && !items.some((item) => item.href === "/admin/propiedades")
+              ? [{ label: "Administrar propiedades", href: "/admin/propiedades" }]
+              : []),
+          ].map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={item.href === pathname ? "page" : undefined}
-              className={`rounded px-4 py-2.5 text-base font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${item.href === pathname ? "text-[#B71C1C]" : "text-black hover:text-[#B71C1C]"}`}
+              className={`rounded px-4 py-2.5 text-base font-medium lg:px-2 lg:text-sm xl:px-4 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] ${item.href === pathname ? "text-[#B71C1C]" : "text-black hover:text-[#B71C1C]"}`}
               onClick={() => setIsOpen(false)}
             >
               {item.label}
             </Link>
           ))}
+          {authenticated && (
+            <button
+              type="button"
+              onClick={() => {
+                logoutAdmin();
+                setIsOpen(false);
+                router.replace("/");
+              }}
+              className="rounded-full border border-[#B71C1C] bg-[#B71C1C] px-4 py-2.5 text-left text-base font-medium lg:text-sm text-white transition hover:border-[#8F1616] hover:bg-[#8F1616] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] focus-visible:ring-offset-2"
+            >
+              Cerrar sesión
+            </button>
+          )}
         </div>
       </nav>
     </header>

@@ -135,23 +135,13 @@ export default function AdminPropertiesPage() {
   return (
     <main className="min-h-screen bg-[#fafafa] py-10">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-        <div className="flex flex-col gap-5 border-b border-black/10 pb-7 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-5 pb-7 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <Link
-              href="/admin"
-              className="text-sm font-semibold text-[#B71C1C]"
-            >
-              ← Volver a administración
-            </Link>
-            <p className="mt-6 text-xs font-bold uppercase tracking-[0.22em] text-[#B71C1C]">
-              Administración
-            </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[#171717]">
+            <h1 className="text-3xl font-semibold tracking-tight text-[#171717]">
               Propiedades cargadas
             </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-black/60">
-              Consultá el estado y la información principal de cada propiedad
-              publicada o guardada como borrador.
+            <p className="mt-2 text-sm text-black/55">
+              {listedProperties.length} {listedProperties.length === 1 ? "propiedad" : "propiedades"} en total
             </p>
           </div>
           <Link
@@ -163,20 +153,12 @@ export default function AdminPropertiesPage() {
         </div>
 
         <div className="mt-8 rounded-md border border-black/10 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-black/10 px-5 py-4 sm:px-6">
-            <p className="text-sm font-semibold text-[#171717]">
-              Listado de propiedades
-            </p>
-            <p className="text-sm text-black/55">
-              {listedProperties.length} en total
-            </p>
-          </div>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1050px] text-left text-sm">
               <caption className="sr-only">
                 Listado de propiedades cargadas
               </caption>
-              <thead className="bg-[#fafafa] text-xs uppercase tracking-wide text-black/50">
+              <thead className="border-b border-black/10 bg-white text-sm text-[#171717]">
                 <tr>
                   <th className="px-5 py-4 font-semibold">Propiedad</th>
                   <th className="px-5 py-4 font-semibold">Operación</th>
@@ -184,8 +166,8 @@ export default function AdminPropertiesPage() {
                   <th className="px-5 py-4 font-semibold">Precio</th>
                   <th className="px-5 py-4 font-semibold">Detalles</th>
                   <th className="px-5 py-4 font-semibold">Estado</th>
-                  <th className="px-5 py-4 font-semibold">
-                    <span className="sr-only">Acciones</span>
+                  <th className="px-5 py-4 text-start font-semibold">
+                    Acciones
                   </th>
                 </tr>
               </thead>
@@ -257,11 +239,11 @@ export default function AdminPropertiesPage() {
                       </span>
                     </td>
                     <td className="px-5 py-5">
-                      <div className="flex justify-end gap-3 whitespace-nowrap">
+                      <div className="flex justify-start gap-3 whitespace-nowrap">
                         <Link
                           href={`/admin/propiedades/${property.id}/editar`}
                           onClick={() => prepareExampleForEdit(property)}
-                          className="text-sm font-semibold text-[#B71C1C]"
+                          className="text-sm font-semibold text-orange-700 transition hover:text-orange-800"
                         >
                           Editar
                         </Link>
@@ -271,7 +253,7 @@ export default function AdminPropertiesPage() {
                             event.stopPropagation();
                             void handleDelete(property);
                           }}
-                          className="text-sm font-semibold text-[#B71C1C]"
+                          className="text-sm font-semibold text-red-700 transition hover:text-red-800"
                         >
                           Eliminar
                         </button>
@@ -283,11 +265,6 @@ export default function AdminPropertiesPage() {
             </table>
           </div>
         </div>
-        <p className="mt-4 text-xs leading-5 text-black/50">
-          Las propiedades creadas desde esta maqueta se guardan en este
-          navegador. Al conectar el backend, el listado se alimentará de la base
-          de datos.
-        </p>
       </div>
     </main>
   );
