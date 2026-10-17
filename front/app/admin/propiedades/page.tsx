@@ -239,23 +239,36 @@ export default function AdminPropertiesPage() {
                       </span>
                     </td>
                     <td className="px-5 py-5">
-                      <div className="flex justify-start gap-3 whitespace-nowrap">
+                      <div className="flex items-center justify-start gap-3 whitespace-nowrap">
                         <Link
                           href={`/admin/propiedades/${property.id}/editar`}
                           onClick={() => prepareExampleForEdit(property)}
-                          className="text-sm font-semibold text-orange-700 transition hover:text-orange-800"
+                          aria-label={`Editar ${property.title}`}
+                          title="Editar propiedad"
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-orange-700 transition hover:bg-orange-50 hover:text-orange-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-700"
                         >
-                          Editar
+                          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                            <path d="m15 5 4 4" />
+                          </svg>
                         </Link>
                         <button
                           type="button"
+                          aria-label={`Eliminar ${property.title}`}
+                          title="Eliminar propiedad"
                           onClick={(event) => {
                             event.stopPropagation();
                             void handleDelete(property);
                           }}
-                          className="text-sm font-semibold text-red-700 transition hover:text-red-800"
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-red-700 transition hover:bg-red-50 hover:text-red-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-700"
                         >
-                          Eliminar
+                          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M10 11v6" />
+                            <path d="M14 11v6" />
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                            <path d="M3 6h18" />
+                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                          </svg>
                         </button>
                       </div>
                     </td>
