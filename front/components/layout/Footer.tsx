@@ -10,10 +10,11 @@ const navigationLinks = [
 ];
 
 const propertyLinks = [
-  { label: "Casa", href: "/propiedades?tipo=casa" },
-  { label: "Departamento", href: "/propiedades?tipo=departamento" },
-  { label: "Terreno", href: "/propiedades?tipo=terreno" },
-  { label: "Locales", href: "/propiedades?tipo=locales" },
+  { label: "Casa", href: "/propiedades?type=Casa" },
+  { label: "Departamento", href: "/propiedades?type=Departamento" },
+  { label: "Terreno", href: "/propiedades?type=Terreno" },
+  { label: "Locales", href: "/propiedades?type=Local" },
+  { label: "Galpones", href: `/propiedades?type=${encodeURIComponent("Galpón")}` },
 ];
 
 function FacebookIcon() {

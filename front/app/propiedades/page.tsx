@@ -16,9 +16,10 @@ const propertyTypeLabels: Record<string, string> = {
   terreno: "Terrenos",
   local: "Locales",
   oficina: "Oficinas",
+  "galpón": "Galpones",
 };
 
-const propertyTypeOrder = ["casa", "departamento", "terreno", "local", "oficina"];
+const propertyTypeOrder = ["casa", "departamento", "terreno", "local", "oficina", "galpón"];
 
 export default function PropiedadesPage() {
   const [properties, setProperties] = useState<PublicProperty[]>([]);
