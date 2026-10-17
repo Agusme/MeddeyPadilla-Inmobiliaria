@@ -5,6 +5,7 @@ import {
   type AdminProperty,
 } from "@/components/properties/adminPropertyStorage";
 import { getAdminProperty, publicImageUrl } from "@/lib/api";
+import PropertyGallery from "@/components/properties/PropertyGallery";
 import { formatPropertyPrice } from "@/lib/formatPrice";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -51,19 +52,14 @@ export default function AdminPropertyDetailPage() {
     <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
 
       <div className="mt-7 grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.55fr)]">
-        <section>
-          <div className="flex aspect-4/3 items-center justify-center border border-dashed border-[#B71C1C]/35 bg-[#B71C1C]/5 p-8 text-center">
-            <div>
-              <p className="font-semibold text-[#B71C1C]">
-                {property.imageCount} foto{property.imageCount === 1 ? "" : "s"}{" "}
-                cargada{property.imageCount === 1 ? "" : "s"}
-              </p>
-              <p className="mt-2 text-sm text-black/55">
-                Las imágenes aparecerán aquí al conectar el almacenamiento de
-                archivos.
-              </p>
+        <section className="min-w-0" aria-label="Fotos de la propiedad">
+          {property.images.length > 0 ? (
+            <PropertyGallery key={property.id} images={[...property.images].sort((a, b) => a.position - b.position).map((image) => publicImageUrl(image.url))} title={property.title} />
+          ) : (
+            <div className="flex aspect-4/3 items-center justify-center rounded-md border border-black/10 bg-[#fafafa] p-8 text-center text-sm text-black/55">
+              Esta propiedad no tiene fotos cargadas.
             </div>
-          </div>
+          )}
         </section>
         <aside className="h-fit border border-black/10 bg-white p-6 shadow-sm sm:p-7">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#B71C1C]">

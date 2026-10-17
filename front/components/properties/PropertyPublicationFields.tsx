@@ -8,9 +8,12 @@ type Props = {
   onPublishedChange: (published: boolean) => void;
   defaultFeatured?: boolean;
   propertyId?: string;
+  embedded?: boolean;
+  title?: string;
+  compact?: boolean;
 };
 
-export default function PropertyPublicationFields({ published, onPublishedChange, defaultFeatured = false, propertyId }: Props) {
+export default function PropertyPublicationFields({ published, onPublishedChange, defaultFeatured = false, propertyId, embedded = false, title = "Visibilidad en la web", compact = false }: Props) {
   const [featured, setFeatured] = useState(defaultFeatured);
   const [featuredCount, setFeaturedCount] = useState<number | null>(null);
   const [capacityError, setCapacityError] = useState(false);
@@ -28,16 +31,16 @@ export default function PropertyPublicationFields({ published, onPublishedChange
   }, [propertyId]);
 
   return (
-    <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm sm:p-7">
-      <h2 className="text-xl font-semibold text-[#171717]">Visibilidad en la web</h2>
-      <fieldset className="mt-5">
+    <section className={embedded ? (compact ? "" : "mt-6") : "rounded-md border border-black/10 bg-white p-6 shadow-sm sm:p-7"}>
+      <h2 className={compact ? "text-xl font-semibold tracking-tight text-[#B71C1C]" : "text-xl font-semibold text-[#171717]"}>{title}</h2>
+      <fieldset className={compact ? "mt-4" : "mt-5"}>
         <legend className="sr-only">Estado de publicación</legend>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <div className={compact ? "grid gap-2 sm:max-w-xl sm:grid-cols-2" : "mt-3 grid gap-3 sm:grid-cols-2"}>
           {[
             { value: false, title: "Borrador", text: "Solo en administración" },
             { value: true, title: "Publicada", text: "Visible en la web" },
           ].map((option) => (
-            <label key={String(option.value)} className={`flex cursor-pointer items-start gap-3 rounded-lg border p-4 ${published === option.value ? "border-[#B71C1C] bg-[#B71C1C]/5" : "border-black/15"}`}>
+            <label key={String(option.value)} className={`flex cursor-pointer items-start gap-3 rounded-lg border ${compact ? "p-3 focus-within:ring-2 focus-within:ring-[#B71C1C]/20" : "p-4"} ${published === option.value ? "border-[#B71C1C] bg-[#B71C1C]/5" : "border-black/15"}`}>
               <input type="radio" name="status" value={option.value ? "published" : "draft"} checked={published === option.value}
                 onChange={() => {
                   onPublishedChange(option.value);
@@ -48,7 +51,7 @@ export default function PropertyPublicationFields({ published, onPublishedChange
           ))}
         </div>
       </fieldset>
-      <div className="mt-6 border-t border-black/10 pt-5">
+      {(published || !compact) && <div className={compact ? "mt-4" : "mt-6 border-t border-black/10 pt-5"}>
         <label className={`flex items-start gap-3 ${featuredDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}>
           <input type="checkbox" name="featured" checked={published && featured} disabled={featuredDisabled}
             onChange={(event) => setFeatured(event.target.checked)} aria-describedby={`${id}-featured-help`}
@@ -59,7 +62,7 @@ export default function PropertyPublicationFields({ published, onPublishedChange
             </span>
           </span>
         </label>
-      </div>
+      </div>}
     </section>
   );
 }
