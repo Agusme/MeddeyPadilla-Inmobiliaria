@@ -5,7 +5,8 @@
       "root": "back",
       "framework": "express",
       "entrypoint": "src/server.ts",
-      "installCommand": "npm ci"
+      "installCommand": "npm ci",
+      "buildCommand": "npm run typecheck"
     },
     "front": {
       "root": "front",
