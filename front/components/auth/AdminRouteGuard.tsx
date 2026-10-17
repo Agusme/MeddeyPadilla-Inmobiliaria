@@ -12,13 +12,16 @@ export default function AdminRouteGuard({
   const pathname = usePathname();
   const router = useRouter();
   const authenticated = useAdminAuthenticated();
-  const authorized = pathname === "/admin" || authenticated === true;
+  const isLoginPage = pathname === "/admin";
+  const authorized = isLoginPage ? authenticated === false : authenticated === true;
 
   useEffect(() => {
-    if (pathname !== "/admin" && authenticated === false) {
+    if (isLoginPage && authenticated === true) {
+      router.replace("/admin/propiedades");
+    } else if (!isLoginPage && authenticated === false) {
       router.replace("/admin");
     }
-  }, [pathname, router, authenticated]);
+  }, [isLoginPage, router, authenticated]);
 
   if (!authorized) {
     return <main className="min-h-screen bg-[#fafafa]" aria-busy="true" />;

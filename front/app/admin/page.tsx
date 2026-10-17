@@ -17,7 +17,7 @@ export default function AdminPage() {
     const data = new FormData(event.currentTarget);
     try {
       await authenticateAdmin(String(data.get("username") ?? ""), String(data.get("password") ?? ""));
-      router.push("/admin/propiedades");
+      router.replace("/admin/propiedades");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "No se pudo iniciar sesión.");
     } finally {

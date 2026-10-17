@@ -54,12 +54,7 @@ export default function NuevaPropiedadPage() {
   return (
     <main className="min-h-screen bg-[#fafafa] py-10">
       <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-12">
-        <Link
-          href="/admin/propiedades"
-          className="ml-auto flex w-fit items-center justify-end text-right text-sm font-semibold text-[#B71C1C]"
-        >
-          ← Volver a propiedades
-        </Link>
+
         <header className="mt-6 border-b border-black/10 pb-7">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#B71C1C]">
             Administración

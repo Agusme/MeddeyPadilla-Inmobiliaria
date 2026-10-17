@@ -31,12 +31,7 @@ export default function AdminPropertyDetailPage() {
   if (!property)
     return (
       <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
-        <Link
-          href="/admin/propiedades"
-          className="inline-flex text-sm font-semibold text-[#B71C1C]"
-        >
-          ← Volver a propiedades
-        </Link>
+
         <h1 className="mt-8 text-2xl font-semibold">Propiedad no encontrada</h1>
       </main>
     );
@@ -54,12 +49,7 @@ export default function AdminPropertyDetailPage() {
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
-      <Link
-        href="/admin/propiedades"
-        className="inline-flex text-sm font-semibold text-[#B71C1C]"
-      >
-        ← Volver a propiedades
-      </Link>
+
       <div className="mt-7 grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.55fr)]">
         <section>
           <div className="flex aspect-4/3 items-center justify-center border border-dashed border-[#B71C1C]/35 bg-[#B71C1C]/5 p-8 text-center">
