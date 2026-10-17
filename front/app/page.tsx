@@ -1,5 +1,4 @@
-import Link from "next/link";
-import ButtonLink from "@/components/ui/ButtonLink";
+﻿import Link from "next/link";
 import ContactCta from "@/components/ui/ContactCta";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import HomeFeaturedProperties from "@/components/properties/HomeFeaturedProperties";
@@ -8,7 +7,7 @@ import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 export default function Home() {
   return (
     <>
-      <section className="relative isolate min-h-[82dvh] overflow-hidden sm:min-h-[calc(100dvh-73px)]">
+      <section className="relative isolate min-h-[380px] overflow-hidden sm:min-h-[calc(100dvh-73px)] md:min-h-[min(54svh,500px)] xl:min-h-[calc(100dvh-73px)]">
         <ImageWithSkeleton
           src="/home/herohom.jpg"
           alt="Casa con piscina y espacios exteriores"
@@ -16,32 +15,35 @@ export default function Home() {
           imageClassName="object-[42%_center] sm:scale-105 sm:object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-black/75 via-black/40 to-black/20 sm:bg-black/45" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/45 to-black/20 sm:bg-black/45" />
 
-        <div className="relative mx-auto flex min-h-[82dvh] max-w-7xl flex-col px-6 pb-6 pt-[14vh] sm:min-h-[calc(100dvh-73px)] sm:px-8 sm:py-14 lg:px-12 lg:py-16">
-        <div className="max-w-2xl text-white lg:max-w-4xl">
-            <p className="mb-3 max-w-xs text-xs font-semibold uppercase tracking-[0.18em] text-white/80 sm:text-sm sm:tracking-[0.22em]">
-              Medde &amp; Padilla Inmobiliaria
+        <div className="relative mx-auto flex min-h-[380px] max-w-7xl flex-col justify-center px-5 pt-6 pb-10 sm:min-h-[calc(100dvh-73px)] sm:justify-start sm:px-8 sm:py-14 md:min-h-[min(54svh,500px)] md:justify-center md:py-8 xl:min-h-[calc(100dvh-73px)] xl:justify-start xl:px-12 xl:pt-32 xl:pb-0">
+        <div className="max-w-2xl translate-y-3.5 text-white sm:translate-y-0 xl:max-w-4xl">
+            <h1 className="max-w-[18rem] text-[32px] font-semibold leading-[1.18] sm:max-w-xl sm:text-5xl sm:leading-tight xl:text-6xl xl:leading-[1.1]">
+              Hacemos simple encontrar tu hogar
+            </h1>
+            <p className="mt-18 max-w-[19rem] text-[15px] leading-[1.55] text-white/85 sm:mt-4 sm:max-w-lg sm:text-lg sm:leading-7 lg:mt-6 xl:mt-4">
+              <span className="sm:hidden">Te acompañamos en cada etapa de compra, venta o alquiler, con transparencia y respaldo legal.</span>
+              <span className="hidden sm:inline">Te acompañamos en cada etapa de la compra, venta o alquiler de tu propiedad con total transparencia y respaldo legal</span>
             </p>
-            <h1 className="max-w-[20rem] text-3xl font-semibold leading-[1.12] sm:max-w-xl sm:text-5xl sm:leading-tight lg:text-6xl">
-Hacemos simple encontrar tu hogar       </h1>
-            <p className="mt-6 max-w-xs text-sm leading-6 text-white/85 sm:mt-4 sm:max-w-lg sm:text-lg sm:leading-7">
-           Te acompañamos en cada etapa de la compra, venta o alquiler de tu propiedad con total transparencia y respaldo legal
-            </p>
-            <ButtonLink href="/propiedades#listado-propiedades" className="mt-8 sm:mt-6">
-              Ver propiedades 
-            </ButtonLink>
           </div>
-          <div className="mt-auto w-full pt-12">
-            <PropertyFilter overlay />
+          <div className="mt-10 hidden w-full xl:block">
+            <div className="w-full max-w-6xl">
+              <PropertyFilter overlay />
+            </div>
           </div>
         </div>
       </section>
+      <section className="bg-white px-5 pt-4 pb-1 sm:px-8 sm:pt-6 sm:pb-2 md:pt-4 md:pb-0 xl:hidden" aria-label="Buscar propiedades">
+        <div className="mx-auto flex w-full max-w-7xl justify-center">
+          <PropertyFilter overlay />
+        </div>
+      </section>
       <section
-        className="mx-auto max-w-7xl px-6 py-8 sm:px-8 sm:py-14 lg:px-12"
+        className="mx-auto max-w-7xl px-6 py-8 sm:px-8 sm:py-14 md:py-10 lg:px-12 lg:py-14"
         aria-labelledby="featured-properties-title"
       >
-        <div className="mb-8 flex flex-col items-start gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mb-8 flex flex-col items-start gap-5 md:mb-6 lg:mb-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <h2
               id="featured-properties-title"

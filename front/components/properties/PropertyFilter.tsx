@@ -62,14 +62,14 @@ export default function PropertyFilter({
         onSubmit={handleSubmit}
         className={
           overlay
-            ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]"
+            ? "grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] md:items-center md:gap-3"
             : "grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-center lg:gap-1"
         }
       >
         <label
           className={
             overlay
-              ? "flex h-12 w-full flex-col justify-center rounded-md border border-black/10 bg-white px-5 text-sm font-semibold text-black shadow-lg"
+              ? "flex h-12 w-full flex-col justify-center rounded-[11px] border border-black/10 bg-white px-4 text-sm font-normal text-black shadow-sm transition-colors focus-within:ring-2 focus-within:ring-[#B71C1C]/50"
               : "flex h-11 w-full items-center rounded-lg px-3 text-sm font-normal text-[#171717] transition-colors focus-within:bg-black/[0.02] focus-within:ring-2 focus-within:ring-inset focus-within:ring-[#B71C1C]/35 sm:px-4 lg:rounded-none lg:border-r lg:border-black/10"
           }
         >
@@ -89,7 +89,7 @@ export default function PropertyFilter({
         <label
           className={
             overlay
-              ? "flex h-12 w-full flex-col justify-center rounded-md border border-black/10 bg-white px-5 text-sm font-semibold text-black shadow-lg"
+              ? "flex h-12 w-full flex-col justify-center rounded-[11px] border border-black/10 bg-white px-4 text-sm font-normal text-black shadow-sm transition-colors focus-within:ring-2 focus-within:ring-[#B71C1C]/50"
               : "flex h-11 w-full items-center rounded-lg px-3 text-sm font-normal text-[#171717] transition-colors focus-within:bg-black/[0.02] focus-within:ring-2 focus-within:ring-inset focus-within:ring-[#B71C1C]/35 sm:px-4 lg:rounded-none"
           }
         >
@@ -108,11 +108,12 @@ export default function PropertyFilter({
         {overlay ? (
           <Button
             type="submit"
-            size="icon"
+            size="lg"
             aria-label="Buscar propiedades"
-            className="h-12 w-full shadow-lg shadow-[#B71C1C]/25 sm:w-12"
+            className="h-12 w-full shadow-sm md:col-span-1 md:w-auto md:justify-self-auto lg:w-12 lg:px-0"
           >
             {searchIcon}
+            <span className="lg:hidden">Buscar</span>
           </Button>
         ) : (
           <Button

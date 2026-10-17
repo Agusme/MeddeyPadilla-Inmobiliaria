@@ -66,7 +66,7 @@ export default function HomeFeaturedProperties() {
     );
 
   return (
-    <div className="grid w-full max-w-[69rem] gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="mx-auto grid w-full max-w-[69rem] grid-cols-1 gap-5 md:w-[96%] md:grid-cols-2 md:gap-6 lg:w-full lg:grid-cols-3">
       {featuredProperties.map((property) => (
         <PropertyCard key={property.slug} property={property} />
       ))}
