@@ -70,6 +70,8 @@ export default function PropertyFilter({
             <option value="Departamento">Departamento</option>
             <option value="Terreno">Terreno</option>
             <option value="Local">Local</option>
+            <option value="Oficina">Oficina</option>
+            <option value="Galpón">Galpón</option>
           </select>
         </label>
         <label

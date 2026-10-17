@@ -138,6 +138,7 @@ export default function EditarPropiedadPage() {
                   <option>Terreno</option>
                   <option>Local</option>
                   <option>Oficina</option>
+                  <option>Galpón</option>
                 </select>
               </label>
               <label className={labelClass}>

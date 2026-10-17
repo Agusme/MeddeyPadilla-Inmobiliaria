@@ -102,6 +102,7 @@ export default function NuevaPropiedadPage() {
                   <option>Terreno</option>
                   <option>Local</option>
                   <option>Oficina</option>
+                  <option>Galpón</option>
                 </select>
               </label>
               <label className={labelClass}>

@@ -91,7 +91,7 @@ propertiesRouter.get("/", async (request, response) => {
   const operation = typeof request.query.operation === "string" ? request.query.operation.trim() : "";
   const type = typeof request.query.type === "string" ? request.query.type.trim() : "";
   const validOperations = ["Venta", "Alquiler"];
-  const validTypes = ["Casa", "Departamento", "Terreno", "Local"];
+  const validTypes = ["Casa", "Departamento", "Terreno", "Local", "Oficina", "Galpón"];
 
   if (operation && !validOperations.includes(operation)) {
     return response.status(400).json({ message: "Tipo de operación no válido." });
