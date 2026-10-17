@@ -10,6 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import ImageOrderList from "@/components/properties/ImageOrderList";
+import PropertyPublicationFields from "@/components/properties/PropertyPublicationFields";
 
 const inputClass =
   "mt-2 h-11 w-full rounded-md border border-black/15 bg-white px-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15";
@@ -19,7 +20,8 @@ export default function EditarPropiedadPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [property, setProperty] = useState<AdminProperty | null>(null);
-  const [featuredError, setFeaturedError] = useState(false);
+  const [published, setPublished] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [imageOrder, setImageOrder] = useState<string[]>([]);
   const [currency, setCurrency] = useState("USD");
@@ -29,6 +31,7 @@ export default function EditarPropiedadPage() {
       .then((item) => {
         const mapped = toAdminProperty(item);
         setProperty(mapped);
+        setPublished(mapped.status === "Publicada");
         setCurrency(mapped.currency);
         setImageOrder(mapped.images.map((_, index) => `existing:${index}`));
       })
@@ -37,22 +40,23 @@ export default function EditarPropiedadPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!property) return;
+    if (!property || saving) return;
     const data = new FormData(event.currentTarget);
     data.delete("images");
     files.forEach((file) => data.append("images", file));
     data.set("imageOrder", JSON.stringify(imageOrder));
-    const published = data.get("status") === "published";
     const featured = published && data.get("featured") === "on";
     data.set("status", published ? "published" : "draft");
     data.set("featured", String(featured));
+    setSaving(true);
     try {
       await updateAdminProperty(property.id, data);
       await Swal.fire({ title: "Propiedad editada correctamente", icon: "success", showConfirmButton: false, timer: 1800, timerProgressBar: true });
       router.push("/admin/propiedades");
     } catch (error) {
-      setFeaturedError(true);
       await Swal.fire({ title: "No se pudo guardar", text: error instanceof Error ? error.message : "Intentá nuevamente.", icon: "error" });
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -71,7 +75,7 @@ export default function EditarPropiedadPage() {
         <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-12">
           <Link
             href="/admin/propiedades"
-            className="text-sm font-semibold text-[#B71C1C]"
+            className="ml-auto flex w-fit items-center justify-end text-right text-sm font-semibold text-[#B71C1C]"
           >
             ← Volver a propiedades
           </Link>
@@ -85,7 +89,7 @@ export default function EditarPropiedadPage() {
       <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-12">
         <Link
           href="/admin/propiedades"
-          className="text-sm font-semibold text-[#B71C1C]"
+          className="ml-auto flex w-fit items-center justify-end text-right text-sm font-semibold text-[#B71C1C]"
         >
           ← Volver a propiedades
         </Link>
@@ -96,9 +100,6 @@ export default function EditarPropiedadPage() {
           <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[#171717]">
             Editar propiedad
           </h1>
-          <p className="mt-3 text-sm leading-6 text-black/60">
-            Modificá la información y guardá los cambios.
-          </p>
         </header>
         <form onSubmit={handleSubmit} className="mt-8 space-y-7">
           <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm sm:p-7">
@@ -160,21 +161,7 @@ export default function EditarPropiedadPage() {
                   <option>ARS</option>
                 </select>
               </label>
-              <label className={labelClass}>
-                Estado
-                <select
-                  name="status"
-                  defaultValue={
-                    property.status === "Publicada"
-                      ? "published"
-                      : "unpublished"
-                  }
-                  className={inputClass}
-                >
-                  <option value="unpublished">No publicada</option>
-                  <option value="published">Publicada</option>
-                </select>
-              </label>
+
             </div>
           </section>
           <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm sm:p-7">
@@ -295,34 +282,7 @@ export default function EditarPropiedadPage() {
               return { key, label: files[index]?.name ?? "", file: files[index] };
             })} onReorder={reorderImages} />
           </section>
-          <section className="rounded-md border border-black/10 bg-white p-6 shadow-sm">
-            <label className="flex cursor-pointer items-start gap-3">
-              <input
-                name="featured"
-                type="checkbox"
-                defaultChecked={property.featured}
-                className="mt-1 h-4 w-4 accent-[#B71C1C]"
-              />
-              <span>
-                <span className="block text-sm font-semibold text-[#171717]">
-                  Propiedad destacada
-                </span>
-                <span className="mt-1 block text-sm text-black/60">
-                  Mostrala entre las propiedades destacadas. Podés seleccionar
-                  hasta 3.
-                </span>
-              </span>
-            </label>
-            {featuredError && (
-              <p
-                role="alert"
-                className="mt-4 text-sm font-semibold text-[#B71C1C]"
-              >
-                Ya hay 3 propiedades destacadas. Quitá una antes de seleccionar
-                otra.
-              </p>
-            )}
-          </section>
+          <PropertyPublicationFields key={property.id} propertyId={property.id} published={published} onPublishedChange={setPublished} defaultFeatured={property.featured} />
           <div className="flex justify-end gap-3">
             <Link
               href="/admin/propiedades"
@@ -332,9 +292,10 @@ export default function EditarPropiedadPage() {
             </Link>
             <button
               type="submit"
+              disabled={saving}
               className="rounded-full bg-[#B71C1C] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#B71C1C]/20"
             >
-              Guardar cambios
+              {saving ? "Guardando..." : published ? "Guardar cambios y publicar" : "Guardar cambios como borrador"}
             </button>
           </div>
         </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { isAdminAuthenticated } from "@/components/auth/adminAuth";
+import { useAdminAuthenticated } from "@/components/auth/useAdminAuthenticated";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -11,13 +11,14 @@ export default function AdminRouteGuard({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const authorized = pathname === "/admin" || isAdminAuthenticated();
+  const authenticated = useAdminAuthenticated();
+  const authorized = pathname === "/admin" || authenticated === true;
 
   useEffect(() => {
-    if (pathname !== "/admin" && !isAdminAuthenticated()) {
+    if (pathname !== "/admin" && authenticated === false) {
       router.replace("/admin");
     }
-  }, [pathname, router]);
+  }, [pathname, router, authenticated]);
 
   if (!authorized) {
     return <main className="min-h-screen bg-[#fafafa]" aria-busy="true" />;
