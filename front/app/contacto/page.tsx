@@ -1,6 +1,6 @@
 import SectionHeading from "@/components/ui/SectionHeading";
-import Button from "@/components/ui/Button";
 import GoogleMap from "@/components/contact/GoogleMap";
+import ContactForm from "@/components/contact/ContactForm";
 import { ArrowRight, MapPin, Phone } from "lucide-react";
 
 function FacebookIcon() {
@@ -146,56 +146,7 @@ export default function ContactoPage() {
             <p className="mt-3 leading-7 text-black/60">
               Completá el formulario y nos comunicaremos con vos a la brevedad.
             </p>
-            <form id="contact-form" className="mt-8 space-y-5">
-              <div className="grid gap-5 sm:grid-cols-2">
-                <label className="block text-sm font-semibold text-[#171717]">
-                  Nombre y apellido
-                  <input
-                    required
-                    name="name"
-                    type="text"
-                    autoComplete="name"
-                    className="mt-2 h-12 w-full rounded-md border border-black/15 bg-white px-4 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
-                  />
-                </label>
-                <label className="block text-sm font-semibold text-[#171717]">
-                  Teléfono
-                  <input
-                    required
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    className="mt-2 h-12 w-full rounded-md border border-black/15 bg-white px-4 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
-                  />
-                </label>
-              </div>
-              <label className="block text-sm font-semibold text-[#171717]">
-                Correo electrónico
-                <input
-                  required
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className="mt-2 h-12 w-full rounded-md border border-black/15 bg-white px-4 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
-                />
-              </label>
-              <label className="block text-sm font-semibold text-[#171717]">
-                Mensaje
-                <textarea
-                  required
-                  name="message"
-                  rows={5}
-                  className="mt-2 w-full resize-y rounded-md border border-black/15 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
-                />
-              </label>
-              <Button
-                type="submit"
-                className="w-full sm:w-fit"
-              >
-                Enviar consulta{" "}
-                <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" strokeWidth={1.8} />
-              </Button>
-            </form>
+            <ContactForm />
           </section>
         </div>
       </section>
