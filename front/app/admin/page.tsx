@@ -4,6 +4,7 @@ import { authenticateAdmin } from "@/components/auth/adminAuth";
 import Button from "@/components/ui/Button";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -79,25 +80,9 @@ export default function AdminPage() {
               aria-pressed={showPassword}
               className="absolute bottom-0 right-0 flex h-12 w-12 items-center justify-center text-black/50 transition-colors hover:text-[#B71C1C] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#B71C1C]"
             >
-              <svg
-                aria-hidden="true"
-                className="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {showPassword ? (
-                  <path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.2A10.8 10.8 0 0 1 12 5c5.4 0 9 7 9 7a15 15 0 0 1-3.1 3.8M6.2 6.2C3.9 7.7 3 12 3 12s3.6 7 9 7a9 9 0 0 0 3-.5" />
-                ) : (
-                  <>
-                    <path d="M2.5 12s3.4-7 9.5-7 9.5 7 9.5 7-3.4 7-9.5 7-9.5-7-9.5-7Z" />
-                    <circle cx="12" cy="12" r="2.5" />
-                  </>
-                )}
-              </svg>
+              {showPassword
+                ? <EyeOff aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
+                : <Eye aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />}
             </button>
           </label>
 

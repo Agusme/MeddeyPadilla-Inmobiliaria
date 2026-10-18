@@ -7,6 +7,7 @@ import { useAdminAuthenticated } from "@/components/auth/useAdminAuthenticated";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
 import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export type NavbarItem = {
   label: string;
@@ -65,20 +66,9 @@ export default function Navbar({
           className="rounded-md p-2 text-black transition hover:bg-black/5 hover:text-[#B71C1C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C] lg:hidden"
           onClick={() => setIsOpen((open) => !open)}
         >
-          <svg
-            aria-hidden="true"
-            className="h-6 w-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            {isOpen ? (
-              <path d="M6 6l12 12M18 6L6 18" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
+          {isOpen
+            ? <X aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} />
+            : <Menu aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} />}
         </button>
 
         <div

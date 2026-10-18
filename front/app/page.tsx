@@ -3,6 +3,7 @@ import ContactCta from "@/components/ui/ContactCta";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import HomeFeaturedProperties from "@/components/properties/HomeFeaturedProperties";
 import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
+import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
@@ -57,9 +58,7 @@ export default function Home() {
             className="inline-flex shrink-0 self-end items-center gap-2 text-sm font-medium tracking-wide text-black/70 transition-colors duration-250 hover:text-[#B71C1C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
           >
             Ver todas
-            <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
-              <path d="M4 10h12m-5-5 5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <ArrowRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} />
           </Link>
         </div>
         <HomeFeaturedProperties />

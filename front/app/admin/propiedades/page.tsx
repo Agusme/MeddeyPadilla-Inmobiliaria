@@ -20,6 +20,7 @@ import { buttonClassName } from "@/components/ui/buttonVariants";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { Pencil, Plus, Star, Trash2 } from "lucide-react";
 
 type TableProperty = AdminProperty & { isExample?: boolean };
 
@@ -151,7 +152,7 @@ export default function AdminPropertiesPage() {
             href="/admin/propiedades/nueva"
             className="w-full sm:w-auto"
           >
-            + Nueva propiedad
+            <Plus aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} /> Nueva propiedad
           </ButtonLink>
         </div>
 
@@ -237,9 +238,7 @@ export default function AdminPropertiesPage() {
                         </span>
                         {property.featured && (
                           <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#8B2635]/15 bg-[#8B2635]/5 px-2.5 py-1 text-xs font-medium text-[#8B2635]">
-                            <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
-                              <path d="m10 1.7 2.55 5.17 5.7.83-4.12 4.02.97 5.68L10 14.72l-5.1 2.68.97-5.68L1.75 7.7l5.7-.83L10 1.7Z" />
-                            </svg>
+                            <Star aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={1.8} />
                             Destacada
                           </span>
                         )}
@@ -254,10 +253,7 @@ export default function AdminPropertiesPage() {
                           title="Editar propiedad"
                           className={buttonClassName({ variant: "ghost", size: "icon", className: "text-orange-700 hover:bg-orange-50 hover:text-orange-800" })}
                         >
-                          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-                            <path d="m15 5 4 4" />
-                          </svg>
+                          <Pencil aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
                         </Link>
                         <Button
                           type="button"
@@ -271,13 +267,7 @@ export default function AdminPropertiesPage() {
                           }}
                           className="text-red-700 hover:bg-red-50 hover:text-red-800"
                         >
-                          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M10 11v6" />
-                            <path d="M14 11v6" />
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                            <path d="M3 6h18" />
-                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                          </svg>
+                          <Trash2 aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
                         </Button>
                       </div>
                     </td>

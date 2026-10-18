@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function PropertyGallery({ images, title }: { images: string[]; title: string }) {
   const [active, setActive] = useState(0);
@@ -29,7 +30,7 @@ export default function PropertyGallery({ images, title }: { images: string[]; t
               aria-label="Foto anterior"
               className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 text-xl shadow-sm"
             >
-              ←
+              <ChevronLeft aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
             </button>
             <button
               type="button"
@@ -37,7 +38,7 @@ export default function PropertyGallery({ images, title }: { images: string[]; t
               aria-label="Foto siguiente"
               className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-3 py-2 text-xl shadow-sm"
             >
-              →
+              <ChevronRight aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
             </button>
             <span className="absolute bottom-3 right-3 rounded bg-black/65 px-2 py-1 text-xs text-white">
               {active + 1} / {images.length}

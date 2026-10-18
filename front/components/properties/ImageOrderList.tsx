@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ArrowDown, ArrowUp, GripVertical } from "lucide-react";
 
 type ImageOrderItem = { key: string; label: string; src?: string; file?: File };
 
@@ -87,9 +88,9 @@ export default function ImageOrderList({
             <p className="truncate text-xs text-black/55">{item.label}</p>
           </div>
           {compact ? <div className="flex shrink-0">
-            <button type="button" disabled={index === 0} aria-label={`Mover foto ${index + 1} antes`} onClick={() => onReorder(index, index - 1)} className="flex h-11 w-9 items-center justify-center rounded text-black/60 hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C] disabled:opacity-25">↑</button>
-            <button type="button" disabled={index === items.length - 1} aria-label={`Mover foto ${index + 1} después`} onClick={() => onReorder(index, index + 1)} className="flex h-11 w-9 items-center justify-center rounded text-black/60 hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C] disabled:opacity-25">↓</button>
-          </div> : <span aria-hidden="true" className="select-none px-1 text-lg text-black/35">⠿</span>}
+            <button type="button" disabled={index === 0} aria-label={`Mover foto ${index + 1} antes`} onClick={() => onReorder(index, index - 1)} className="flex h-11 w-9 items-center justify-center rounded text-black/60 hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C] disabled:opacity-25"><ArrowUp aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} /></button>
+            <button type="button" disabled={index === items.length - 1} aria-label={`Mover foto ${index + 1} después`} onClick={() => onReorder(index, index + 1)} className="flex h-11 w-9 items-center justify-center rounded text-black/60 hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C] disabled:opacity-25"><ArrowDown aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} /></button>
+          </div> : <span aria-hidden="true" className="select-none px-1 text-black/35"><GripVertical className="h-5 w-5" strokeWidth={1.8} /></span>}
         </li>
       ))}
     </ol>

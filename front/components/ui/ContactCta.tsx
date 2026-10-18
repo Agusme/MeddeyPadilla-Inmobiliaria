@@ -1,6 +1,7 @@
 import ButtonLink from "@/components/ui/ButtonLink";
 import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 import { buttonClassName } from "@/components/ui/buttonVariants";
+import { ArrowRight } from "lucide-react";
 
 type ContactCtaProps = {
   title: string;
@@ -27,16 +28,13 @@ export default function ContactCta({
           />
           </div>
           <div className="px-6 py-10 sm:px-10 sm:py-12 md:px-8 md:py-8 lg:px-14 lg:py-12">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#B71C1C]">
-            Nuestro compromiso
-          </p>
-          <h2 id="contact-cta-title" className="mt-3 max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl md:text-3xl lg:text-4xl">
+          <h2 id="contact-cta-title" className="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl md:text-3xl lg:text-4xl">
             {title}
           </h2>
           <p className="mt-4 max-w-xl leading-7 text-black/65">{description}</p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center lg:flex-col lg:items-stretch xl:flex-row xl:items-center">
             <ButtonLink href="/contacto" size="lg" className="justify-center">
-            {ctaLabel} <span aria-hidden="true" className="ml-2">→</span>
+            {ctaLabel} <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" strokeWidth={1.8} />
             </ButtonLink>
             {showWhatsApp && (
               <a
