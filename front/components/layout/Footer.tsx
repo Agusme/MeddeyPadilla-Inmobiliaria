@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { propertyTypeOptions } from "@/lib/propertyTypes";
+import { Mail, MapPin } from "lucide-react";
 
 const navigationLinks = [
   { label: "Inicio", href: "/" },
@@ -9,11 +9,6 @@ const navigationLinks = [
   { label: "Conocénos", href: "/conocenos" },
   { label: "Contacto", href: "/contacto" },
 ];
-
-const propertyLinks = propertyTypeOptions.map(({ value, groupLabel }) => ({
-  label: groupLabel,
-  href: `/propiedades?type=${encodeURIComponent(value)}`,
-}));
 
 function FacebookIcon() {
   return (
@@ -56,37 +51,10 @@ function WhatsappIcon() {
   );
 }
 
-function LocationIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5 shrink-0 fill-none stroke-current"
-      strokeWidth="1.8"
-    >
-      <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
-      <circle cx="12" cy="10" r="2.3" />
-    </svg>
-  );
-}
-
-function EmailIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5 shrink-0 fill-none stroke-current"
-      strokeWidth="1.8"
-    >
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="m4 7 8 6 8-6" />
-    </svg>
-  );
-}
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] text-white">
-      <div className="mx-auto grid max-w-7xl justify-items-center gap-12 px-6 py-14 text-center sm:grid-cols-2 sm:justify-items-start sm:text-left lg:px-8 xl:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl justify-items-center gap-10 px-6 py-10 text-center sm:grid-cols-2 sm:justify-items-start sm:text-left lg:px-8 xl:grid-cols-3">
         <div className="w-full">
           <Link
             href="/"
@@ -122,28 +90,7 @@ export default function Footer() {
         </div>
 
         <div className="w-full">
-          <h2 className="mb-5 text-sm font-semibold uppercase tracking-widest text-white">
-            Propiedades
-          </h2>
-          <ul className="space-y-3 text-sm text-white/75">
-            {propertyLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  className="transition hover:text-white"
-                  href={link.href}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="w-full">
-          <h2 className="mb-5 text-sm font-semibold uppercase tracking-widest text-white">
-            Seguinos
-          </h2>
-          <div className="flex justify-center gap-3 sm:justify-start">
+          <div className="mb-5 flex justify-center gap-3 sm:justify-start">
             <a
               aria-label="Facebook"
               href="https://www.facebook.com/profile.php?id=61587494125747&mibextid=wwXIfr&rdid=F78yUKJ9Y8y1A3Tt&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18DGxUozJ6%2F%3Fmibextid%3DwwXIfr#"
@@ -180,7 +127,7 @@ export default function Footer() {
               aria-label="Ver ubicación en Google Maps"
               className="flex items-center gap-3 transition hover:text-white"
             >
-              <LocationIcon />
+              <MapPin aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />
               <span>Congreso 603, piso 5, oficina C</span>
             </a>
             <a
@@ -188,7 +135,7 @@ export default function Footer() {
               aria-label="Enviar un correo a meddepadillainmo@gmail.com"
               className="flex items-center gap-3 transition hover:text-white"
             >
-              <EmailIcon />
+              <Mail aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />
               <span>meddepadillainmo@gmail.com</span>
             </a>
           </address>

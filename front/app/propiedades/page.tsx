@@ -10,6 +10,7 @@ import {
 } from "@/components/properties/propertyRepository";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { Fragment, useCallback, useEffect, useState } from "react";
+import { ArrowRight, ChevronLeft, ChevronRight, Search } from "lucide-react";
 
 const desktopPageSize = 9;
 const tabletPageSize = 6;
@@ -163,7 +164,7 @@ export default function PropiedadesPage() {
                 size="sm"
                 onClick={showAllProperties}
               >
-                Ver todas <span aria-hidden="true" className="ml-2">→</span>
+                Ver todas <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" strokeWidth={1.8} />
               </Button>
             )}
           </div>
@@ -184,9 +185,7 @@ export default function PropiedadesPage() {
                 disabled={displayedPage === 1}
                 onClick={() => navigateToPage(displayedPage - 1)}
               >
-                <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="m14.5 5-7 7 7 7" />
-                </svg>
+                <ChevronLeft aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
               </Button>
               {firstVisiblePage > 1 && (
                 <span aria-hidden="true" className="px-1 text-sm text-black/45">…</span>
@@ -219,9 +218,7 @@ export default function PropiedadesPage() {
                 disabled={displayedPage === totalPages}
                 onClick={() => navigateToPage(displayedPage + 1)}
               >
-                <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <path d="m9.5 5 7 7-7 7" />
-                </svg>
+                <ChevronRight aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
               </Button>
             </nav>
           )}
@@ -231,17 +228,7 @@ export default function PropiedadesPage() {
               role="status"
             >
               <span className="flex h-10 w-10 items-center justify-center text-black/45">
-                <svg
-                  aria-hidden="true"
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                >
-                  <circle cx="10.8" cy="10.8" r="6.3" />
-                  <path d="m15.5 15.5 4.2 4.2M8.5 10.8h4.6" />
-                </svg>
+                <Search aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} />
               </span>
               <h2 className="mt-2 text-base font-medium tracking-tight text-[#171717] sm:text-lg">
                 No encontramos propiedades con esos filtros

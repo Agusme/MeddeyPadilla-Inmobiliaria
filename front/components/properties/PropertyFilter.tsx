@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useRef } from "react";
 import { propertyTypeOptions } from "@/lib/propertyTypes";
 import Button from "@/components/ui/Button";
+import { Search } from "lucide-react";
 
 type PropertyFilterProps = {
   overlay?: boolean;
@@ -15,19 +16,7 @@ export default function PropertyFilter({
 }: PropertyFilterProps) {
   const typeSelect = useRef<HTMLSelectElement>(null);
   const operationSelect = useRef<HTMLSelectElement>(null);
-  const searchIcon = (
-    <svg
-      aria-hidden="true"
-      className="h-5 w-5 shrink-0"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-    >
-      <circle cx="11" cy="11" r="6.5" />
-      <path d="m16 16 4.5 4.5" />
-    </svg>
-  );
+  const searchIcon = <Search aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />;
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

@@ -1,5 +1,6 @@
 import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 import Link from "next/link";
+import { ArrowUpRight, Bath, BedDouble, Ruler } from "lucide-react";
 
 export type PropertyCardData = {
   title: string;
@@ -18,17 +19,12 @@ type PropertyCardProps = {
 };
 
 function FeatureIcon({ detail }: { detail: string }) {
-  const paths = detail.includes("dormitorio")
-    ? "M3 15V6m0 6h14v3M5 12V9h4a2 2 0 0 1 2 2v1m0 0V8h4a2 2 0 0 1 2 2v2M3 17v-2m14 2v-2"
+  const Icon = detail.includes("dormitorio")
+    ? BedDouble
     : detail.includes("baño")
-      ? "M3 10h14v2a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-2Zm2 0V5a2 2 0 0 1 4 0v1m-6 10-.8 1.5M15 16l.8 1.5"
-      : "M4 4h12v12H4zM4 9h12M9 4v12";
-
-  return (
-    <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.4" className="h-4 w-4">
-      <path d={paths} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+      ? Bath
+      : Ruler;
+  return <Icon aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} />;
 }
 
 export default function PropertyCard({ property }: PropertyCardProps) {
@@ -51,9 +47,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             <p className="text-[11px] font-medium uppercase tracking-wide text-[#8B2635]">
               {property.type} en {property.operation}
             </p>
-            <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4 shrink-0 text-black/55 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5">
-              <path d="M7 13 14 6M7 6h7v7" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <ArrowUpRight aria-hidden="true" className="h-4 w-4 shrink-0 text-black/55 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5" strokeWidth={1.8} />
           </div>
           <h2 className="mt-3 line-clamp-2 min-h-[2.75rem] text-lg font-medium leading-[1.3] tracking-tight text-black sm:text-xl">
             {property.title}

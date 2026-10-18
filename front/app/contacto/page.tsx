@@ -1,33 +1,7 @@
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import GoogleMap from "@/components/contact/GoogleMap";
-
-function LocationIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5 shrink-0 fill-none stroke-current"
-      strokeWidth="1.8"
-    >
-      <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
-      <circle cx="12" cy="10" r="2.3" />
-    </svg>
-  );
-}
-
-function PhoneIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5 shrink-0 fill-none stroke-current"
-      strokeWidth="1.8"
-    >
-      <path d="M7.5 4.5 10 4l1.5 4-2 1.5a13 13 0 0 0 5 5L16 12.5l4 1.5-.5 2.5a2 2 0 0 1-2.1 1.5A14.5 14.5 0 0 1 6 6.6 2 2 0 0 1 7.5 4.5Z" />
-    </svg>
-  );
-}
+import { ArrowRight, MapPin, Phone } from "lucide-react";
 
 function FacebookIcon() {
   return (
@@ -62,7 +36,6 @@ export default function ContactoPage() {
       <section className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
         <header className="mb-8">
           <SectionHeading
-            eyebrow="Hablemos"
             title="Estamos para acompañarte"
             description="Contanos qué necesitás y te ayudamos a dar el próximo paso con la atención personalizada que buscás."
           />
@@ -73,12 +46,9 @@ export default function ContactoPage() {
             className="overflow-hidden bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] p-6 text-white sm:p-8"
             aria-labelledby="contact-details-title"
           >
-            <p className="text-xs font-bold uppercase tracking-[0.24em] text-white">
-              Nuestra oficina
-            </p>
             <h2
               id="contact-details-title"
-              className="mt-3 text-3xl font-semibold tracking-tight"
+              className="text-3xl font-semibold tracking-tight"
             >
               Dónde encontrarnos
             </h2>
@@ -93,11 +63,11 @@ export default function ContactoPage() {
                 rel="noreferrer"
                 className="flex items-start gap-3 transition hover:text-[#e16a62]"
               >
-                <LocationIcon />
+                <MapPin aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />
                 <span>Congreso 603, piso 5</span>
               </a>
               <div className="flex items-start gap-3">
-                <PhoneIcon />
+                <Phone aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />
 
                 <div className="flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:gap-3">
                   <a
@@ -134,18 +104,13 @@ export default function ContactoPage() {
               className="mt-7 inline-flex w-full items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#B71C1C] shadow-lg shadow-black/30 transition  hover:bg-white/90 sm:w-fit"
             >
               Escribinos por WhatsApp{" "}
-              <span aria-hidden="true" className="ml-2">
-                →
-              </span>
+              <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" strokeWidth={1.8} />
             </a>
             <div className="mt-8 overflow-hidden rounded-xl border border-white/15">
               <GoogleMap />
             </div>
             <div className="mt-7 border-t border-white/15 pt-6">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/55">
-                Seguinos
-              </p>
-              <div className="mt-3 flex gap-3">
+              <div className="flex gap-3">
                 <a
                   aria-label="Facebook"
                   href="https://www.facebook.com/profile.php?id=61587494125747&mibextid=wwXIfr&rdid=F78yUKJ9Y8y1A3Tt&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18DGxUozJ6%2F%3Fmibextid%3DwwXIfr#"
@@ -172,12 +137,9 @@ export default function ContactoPage() {
             className="p-6 sm:p-8 lg:p-10"
             aria-labelledby="contact-form-title"
           >
-            <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#B71C1C]">
-              Consulta personalizada
-            </p>
             <h2
               id="contact-form-title"
-              className="mt-3 text-3xl font-semibold tracking-tight text-[#171717]"
+              className="text-3xl font-semibold tracking-tight text-[#171717]"
             >
               Dejanos tu mensaje
             </h2>
@@ -231,9 +193,7 @@ export default function ContactoPage() {
                 className="w-full sm:w-fit"
               >
                 Enviar consulta{" "}
-                <span aria-hidden="true" className="ml-2">
-                  →
-                </span>
+                <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" strokeWidth={1.8} />
               </Button>
             </form>
           </section>
