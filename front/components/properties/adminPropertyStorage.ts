@@ -15,7 +15,24 @@ export type AdminProperty = {
   bedrooms: string | number;
   bathrooms: string | number;
   parkingSpaces: string | number;
+  floors?: string | number;
+  hasExpenses?: boolean;
+  expenses?: string | number;
+  balcony?: boolean;
+  serviceRoom?: boolean;
+  backyard?: boolean;
+  patio?: boolean;
+  laundryRoom?: boolean;
+  grill?: boolean;
+  quincho?: boolean;
+  pool?: boolean;
+  kitchen?: boolean;
+  livingRoom?: boolean;
+  diningRoom?: boolean;
+  toilette?: boolean;
+  furnished?: boolean;
   description: string;
+  hasAmenities?: boolean;
   amenities?: string;
   imageCount: number;
   images: ApiProperty["images"];
@@ -39,6 +56,23 @@ export function toAdminProperty(property: ApiProperty): AdminProperty {
     bedrooms: property.bedrooms === undefined ? "" : String(property.bedrooms),
     bathrooms: property.bathrooms === undefined ? "" : String(property.bathrooms),
     parkingSpaces: property.parkingSpaces === undefined ? "" : String(property.parkingSpaces),
+    floors: property.floors === undefined ? "" : String(property.floors),
+    hasExpenses: property.hasExpenses,
+    hasAmenities: property.hasAmenities,
+    expenses: property.expenses === undefined ? "" : String(property.expenses),
+    balcony: property.balcony,
+    serviceRoom: property.serviceRoom,
+    backyard: property.backyard,
+    patio: property.patio,
+    laundryRoom: property.laundryRoom,
+    grill: property.grill,
+    quincho: property.quincho,
+    pool: property.pool,
+    kitchen: property.kitchen,
+    livingRoom: property.livingRoom,
+    diningRoom: property.diningRoom,
+    toilette: property.toilette,
+    furnished: property.furnished,
     description: property.description,
     amenities: property.amenities,
     imageCount: property.images.length,

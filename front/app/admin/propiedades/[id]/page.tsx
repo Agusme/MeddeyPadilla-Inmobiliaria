@@ -7,6 +7,7 @@ import {
 import { getAdminProperty, publicImageUrl } from "@/lib/api";
 import PropertyGallery from "@/components/properties/PropertyGallery";
 import { formatPropertyPrice } from "@/lib/formatPrice";
+import { formatExpenses, formatAmenities } from "@/lib/propertyAdditionalData";
 import ButtonLink from "@/components/ui/ButtonLink";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -39,14 +40,22 @@ export default function AdminPropertyDetailPage() {
 
   const location = [property.street, property.city].filter(Boolean).join(", ");
   const price = formatPropertyPrice(property.price, property.currency);
+  const amenities = formatAmenities(property);
   const features = ([
     ["Dormitorios", property.bedrooms],
     ["Baños", property.bathrooms],
     ["Superficie cubierta", property.coveredArea === "" ? "" : `${property.coveredArea} m²`],
     ["Superficie total", property.totalArea === "" ? "" : `${property.totalArea} m²`],
     ["Cochera", property.parkingSpaces],
+    ["Plantas", property.floors],
+    ["Expensas", formatExpenses(property) ?? ""],
     ["Estado", property.status],
   ] as [string, string | number][]).filter(([, value]) => value !== "" && value !== undefined && value !== null);
+  const comforts = ([
+    ["Balcón", property.balcony], ["Dependencia de servicio", property.serviceRoom], ["Fondo", property.backyard], ["Patio", property.patio],
+    ["Lavadero", property.laundryRoom], ["Asador", property.grill], ["Quincho", property.quincho], ["Pileta", property.pool],
+    ["Cocina", property.kitchen], ["Living", property.livingRoom], ["Comedor", property.diningRoom], ["Toilette", property.toilette], ["Amoblado", property.furnished],
+  ] as [string, boolean | undefined][]).filter(([, value]) => value === true).map(([label]) => label);
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
@@ -99,12 +108,12 @@ export default function AdminPropertyDetailPage() {
             <span className="text-[#B71C1C]">●</span>
             {location}
           </p>
-          {property.amenities && (
+          {amenities && (
             <>
               <h2 className="mt-10 text-2xl font-semibold tracking-tight">
-                Comodidades
+                Amenities
               </h2>
-              <p className="mt-4 text-black/65">{property.amenities}</p>
+              <p className="mt-4 whitespace-pre-line text-black/65">{amenities}</p>
             </>
           )}
         </div>
@@ -127,6 +136,10 @@ export default function AdminPropertyDetailPage() {
               </div>
             ))}
           </dl>
+          {comforts.length > 0 && <div className="mt-7">
+            <h3 className="text-lg font-semibold">Ambientes y comodidades</h3>
+            <ul className="mt-4 grid grid-cols-2 gap-x-5 gap-y-3 text-sm text-black/70">{comforts.map((label) => <li key={label}>✓ {label}</li>)}</ul>
+          </div>}
         </div>
       </section>
     </main>

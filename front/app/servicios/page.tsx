@@ -22,7 +22,7 @@ const services: Service[] = [
   { title: "Compra", description: "Te acompañamos a encontrar la propiedad ideal y a avanzar con seguridad en cada etapa de la compra.", icon: "purchase", href: "/propiedades#listado-propiedades" },
   { title: "Alquileres", description: "Encontramos oportunidades y te acompañamos durante todo el proceso.", icon: "rental", href: "/contacto#contact-form" },
   { title: "Tasaciones", description: "Conocé el valor real de tu propiedad con un análisis profesional, actualizado y confiable.", icon: "appraisal", href: "/contacto#contact-form" },
-  { title: "Administración", description: "Nos ocupamos de la gestión y el seguimiento de tu inmueble con orden y transparencia.", icon: "administration", href: "/contacto#contact-form" },
+  { title: "Administración", description: "Nos ocupamos de la gestión y el seguimiento de tu inmueble con orden y transparencia.", icon: "administration", href: "/contacto?servicio=administracion" },
   { title: "Asesoramiento", description: "Te brindamos orientación personalizada para tomar mejores decisiones en tu próxima operación.", icon: "advice", href: "/contacto#contact-form" },
 ];
 

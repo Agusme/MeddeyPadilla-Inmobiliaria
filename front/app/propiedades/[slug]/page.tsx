@@ -5,6 +5,7 @@ import { getPublicPropertyBySlug } from "@/components/properties/propertyReposit
 import ButtonLink from "@/components/ui/ButtonLink";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Check } from "lucide-react";
 
 export default function PropertyDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -85,11 +86,11 @@ export default function PropertyDetailPage() {
             {property.address}
           </p>
         </div>
-        {property.features.length > 0 && <div>
+        {(property.features.length > 0 || property.comforts.length > 0 || property.amenities) && <div>
           <h2 className="text-2xl font-semibold tracking-tight">
             Características
           </h2>
-          <dl className="mt-5 grid grid-cols-2 border-l border-t border-black/10">
+          {property.features.length > 0 && <dl className="mt-5 grid grid-cols-2 border-l border-t border-black/10">
             {property.features.map((feature) => (
               <div
                 key={feature.label}
@@ -103,7 +104,14 @@ export default function PropertyDetailPage() {
                 </dd>
               </div>
             ))}
-          </dl>
+          </dl>}
+          {(property.comforts.length > 0 || property.amenities) && <div className="mt-7">
+            <h3 className="text-lg font-semibold tracking-tight">Ambientes y comodidades</h3>
+            {property.comforts.length > 0 && <ul className="mt-4 grid grid-cols-2 gap-x-5 gap-y-3">
+              {property.comforts.map((comfort) => <li key={comfort} className="flex items-center gap-2 text-sm text-black/70"><Check aria-hidden="true" className="h-4 w-4 shrink-0 text-[#B71C1C]" strokeWidth={2} />{comfort}</li>)}
+            </ul>}
+            {property.amenities && <p className="mt-4 whitespace-pre-line text-sm leading-6 text-black/65"><span className="font-semibold text-[#171717]">Amenities: </span>{property.amenities}</p>}
+          </div>}
         </div>}
       </section>
       <div className="mt-10 flex justify-end">

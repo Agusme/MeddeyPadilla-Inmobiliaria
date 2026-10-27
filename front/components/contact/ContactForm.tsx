@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 
 type FormStatus = "idle" | "sending" | "success" | "error";
 
-export default function ContactForm() {
+export default function ContactForm({ initialMessage = "" }: { initialMessage?: string }) {
   const [status, setStatus] = useState<FormStatus>("idle");
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function ContactForm() {
       </label>
       <label className="block text-sm font-semibold text-[#171717]">
         Mensaje
-        <textarea required name="message" rows={5} className="mt-2 w-full resize-y rounded-md border border-black/15 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15" />
+        <textarea required name="message" defaultValue={initialMessage} rows={5} className="mt-2 w-full resize-y rounded-md border border-black/15 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15" />
       </label>
       <Button type="submit" disabled={status === "sending"} className="w-full sm:w-fit">
         {status === "sending" ? "Enviando…" : "Enviar consulta"}{" "}

@@ -1,29 +1,27 @@
 "use client";
 
 import { useId } from "react";
-import { Minus, Plus } from "lucide-react";
 
-type Props = { name: string; label: string; value: string; onChange: (value: string) => void; invalid?: boolean };
+type Props = { name: string; label: string; value: string; onChange: (value: string) => void; invalid?: boolean; min?: number };
 
-export default function PropertyQuantityField({ name, label, value, onChange, invalid = false }: Props) {
+const quantityOptions = Array.from({ length: 11 }, (_, value) => String(value));
+
+export default function PropertyQuantityField({ name, label, value, onChange, invalid = false, min = 0 }: Props) {
   const id = useId();
-  const number = Number(value || 0);
+  const hasExtraValue = value !== "" && !quantityOptions.includes(value);
   return (
     <div className="min-w-0">
       <label htmlFor={id} className="block text-sm font-medium leading-5 text-[#171717]">
-        {label} <span className="font-normal text-black/45">(opcional)</span>
+        {label} <span className="sr-only">(opcional)</span>
       </label>
-      <div className={`mt-1.5 flex h-11 w-full max-w-48 overflow-hidden rounded-lg border bg-white focus-within:border-[#B71C1C] focus-within:ring-2 focus-within:ring-[#B71C1C]/15 ${invalid ? "border-red-600" : "border-black/15"}`}>
-        <button type="button" aria-label={`Restar ${label.toLowerCase()}`} disabled={value === "" || number <= 0}
-          onClick={() => onChange(String(Math.max(0, number - 1)))}
-          className="flex w-11 shrink-0 items-center justify-center hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C] disabled:opacity-30"><Minus aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} /></button>
-        <input id={id} name={name} type="number" min="0" step="1" inputMode="numeric" placeholder="—" value={value}
-          aria-invalid={invalid} aria-describedby={invalid ? `error-${name}` : undefined}
-          onChange={(event) => onChange(event.target.value)}
-          className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none min-w-0 flex-1 border-x border-black/10 bg-transparent px-1 text-center text-base outline-none sm:text-sm" />
-        <button type="button" aria-label={`Sumar ${label.toLowerCase()}`} onClick={() => onChange(String(number + 1))}
-          className="flex w-11 shrink-0 items-center justify-center hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C]"><Plus aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} /></button>
-      </div>
+      <select id={id} name={name} value={value}
+        aria-invalid={invalid} aria-describedby={invalid ? `error-${name}` : undefined}
+        onChange={(event) => onChange(event.target.value)}
+        className={`mt-1.5 h-11 min-w-0 w-full rounded-lg border bg-white px-3 text-base outline-none transition sm:text-sm focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15 ${invalid ? "border-red-600" : "border-black/15"}`}>
+        <option value="">{"\u2014"}</option>
+        {quantityOptions.map((option) => <option key={option} value={option} disabled={Number(option) < min}>{option}</option>)}
+        {hasExtraValue && <option value={value}>{value}</option>}
+      </select>
     </div>
   );
 }

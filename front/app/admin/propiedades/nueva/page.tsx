@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 import PropertyQuantityField from "@/components/properties/PropertyQuantityField";
+import PropertyFeaturesFields from "@/components/properties/PropertyFeaturesFields";
+import { hasResidentialFeatures } from "@/lib/propertyTypes";
 import ImageOrderList from "@/components/properties/ImageOrderList";
 import PropertyPublicationFields from "@/components/properties/PropertyPublicationFields";
 import { propertyTypeOptions } from "@/lib/propertyTypes";
@@ -25,7 +27,7 @@ export default function NuevaPropiedadPage() {
   const [published, setPublished] = useState(true);
   const [quantities, setQuantities] = useState({ bedrooms: "", bathrooms: "", parkingSpaces: "" });
   const [propertyType, setPropertyType] = useState("Propiedad");
-  const hasBedrooms = ["Propiedad", "Finca", "PH"].includes(propertyType);
+  const hasBedrooms = hasResidentialFeatures(propertyType);
   const hasBuilding = propertyType !== "Terreno";
   const [currency, setCurrency] = useState("USD");
   const [saving, setSaving] = useState(false);
@@ -82,7 +84,7 @@ export default function NuevaPropiedadPage() {
 
   return (
     <main className="min-h-screen bg-[#fafafa] py-6 sm:py-8">
-      <div className="mx-auto max-w-6xl px-4 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
 
         <header className="pb-5">
           <h1 className="flex items-center gap-3 text-3xl font-semibold tracking-tight text-[#171717]">
@@ -105,8 +107,8 @@ export default function NuevaPropiedadPage() {
           <div className="divide-y divide-black/10">
           <section className={sectionClass} aria-labelledby="main-information-heading">
             <h2 id="main-information-heading" className={headingClass}>Información principal</h2>
-            <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
-              <label className={`${labelClass} col-span-2`}>
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <label className={`${labelClass} sm:col-span-2`}>
                 Título <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
                 <input
                   required
@@ -116,14 +118,14 @@ export default function NuevaPropiedadPage() {
                 />
                 {fieldError("title")}
               </label>
-              <label className={`${labelClass} col-span-2 sm:col-span-1`}>
+              <label className={labelClass}>
                 Operación <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
                 <select required name="operation" className={inputClass}>
                   <option>Venta</option>
                   <option>Alquiler</option>
                 </select>
               </label>
-              <label className={`${labelClass} col-span-2 sm:col-span-1`}>
+              <label className={labelClass}>
                 Tipo de propiedad <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
                 <select required name="propertyType" value={propertyType} onChange={(event) => setPropertyType(event.target.value)} className={inputClass}>
                   {propertyTypeOptions.map(({ value, label }) => (
@@ -131,7 +133,6 @@ export default function NuevaPropiedadPage() {
                   ))}
                 </select>
               </label>
-              <div className="col-span-2 grid min-w-0 grid-cols-[minmax(0,2fr)_minmax(5.5rem,1fr)] items-start gap-3 sm:gap-4">
               <label className={labelClass}>
                 Precio <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
                 <span className="relative block">
@@ -147,12 +148,6 @@ export default function NuevaPropiedadPage() {
                   <option>ARS</option>
                 </select>
               </label>
-              </div>
-            </div>
-          </section>
-          <section className={sectionClass} aria-labelledby="location-heading">
-            <h2 id="location-heading" className={headingClass}>Ubicación</h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <label className={labelClass}>
                 Dirección <span className="font-normal text-black/45">(opcional)</span>
                 <input placeholder="Ej. Rivadavia 200" name="street" className={inputClass} />
@@ -164,12 +159,56 @@ export default function NuevaPropiedadPage() {
                 {fieldError("city")}
               </label>
             </div>
+            <div className="mt-4 grid grid-cols-1 items-start gap-4 lg:grid-cols-2 lg:grid-rows-[auto_minmax(9rem,auto)_auto] lg:items-stretch lg:gap-y-0">
+              <div className="min-w-0 lg:row-span-3 lg:grid lg:grid-rows-subgrid">
+                <label className={`${labelClass} lg:row-span-3 lg:grid lg:grid-rows-subgrid`}>
+                  <span>Descripción <span className="text-[#B71C1C]" aria-label="obligatorio">*</span></span>
+                  <textarea
+                    required
+                    name="description"
+                    placeholder="Describí los ambientes, el estado y los principales atractivos."
+                    rows={4}
+                    className="mt-1.5 block h-36 min-h-36 w-full resize-y lg:h-auto rounded-lg aria-[invalid=true]:border-red-600 border border-black/15 bg-white px-3 py-3 text-base font-normal outline-none sm:text-sm focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
+                  />
+                  {fieldError("description")}
+                </label>
+              </div>
+              <section className="min-w-0 lg:row-span-3 lg:grid lg:grid-rows-subgrid" aria-label="Fotografías">
+                <h3 className={labelClass}>Fotografías</h3>
+                <label className={`mt-1.5 flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed px-4 py-3 text-center text-sm transition focus-within:ring-2 focus-within:ring-[#B71C1C]/30 ${errors.images ? "border-red-600 bg-red-50" : "border-black/30 bg-[#f7f7f7] hover:border-black/45 hover:bg-black/5"}`}>
+                  <span className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white text-black/55 shadow-sm">
+                    <ImagePlus aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} />
+                  </span>
+                  <span className="font-semibold text-[#171717]">Seleccionar fotos</span><span className="mt-1 text-xs text-black/55">Opcional · Hasta 12 imágenes de 8 MB</span>
+                  <input
+                    name="images"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="sr-only"
+                    onChange={(event) => {
+                      const selected = Array.from(event.target.files ?? []);
+                      const message = selected.length > 12 ? "Podés cargar hasta 12 imágenes." : selected.some((file) => file.size > 8 * 1024 * 1024) ? "Cada imagen debe pesar hasta 8 MB." : selected.some((file) => !file.type.startsWith("image/")) ? "Seleccioná únicamente imágenes." : "";
+                      event.currentTarget.setCustomValidity(message);
+                      updateFieldError(event.currentTarget, message);
+                      if (message) return;
+                      setFiles(selected);
+                      setImageOrder(selected.map((_, index) => `new:${index}`));
+                    }}
+                  />
+                </label>
+                <div className="min-w-0">
+                {fieldError("images")}
+                {files.length > 0 && <p className="mt-3 text-sm text-black/65">Arrastrá las fotos para ordenarlas. La primera será la portada.</p>}
+                <ImageOrderList compact items={imageOrder.map((key) => { const file = files[Number(key.split(":")[1])]; return { key, label: file?.name ?? "", file }; })} onReorder={reorderImages} />
+                </div>
+              </section>
+            </div>
           </section>
-          <section className={sectionClass} aria-labelledby="features-heading">
-            <h2 id="features-heading" className={headingClass}>Características</h2>
-            <div className={`mt-4 grid grid-cols-2 items-end gap-4 ${hasBuilding ? (hasBedrooms ? "xl:grid-cols-[1.25fr_1.25fr_1fr_1fr_1fr]" : "lg:grid-cols-4") : "lg:max-w-xl"}`}>
-              <label className={`${labelClass} col-span-2 sm:col-span-1`}>
-                Sup. total (m²) <span className="font-normal text-black/45">(opcional)</span>
+          <section className={sectionClass} aria-label="Detalles opcionales">
+            <PropertyFeaturesFields propertyType={propertyType}>
+              <label className={labelClass}>
+                Sup. total (m²) <span className="sr-only">(opcional)</span>
                 <input
                   name="totalArea"
                   aria-label="Superficie total en metros cuadrados"
@@ -179,8 +218,8 @@ export default function NuevaPropiedadPage() {
                 />
                 {fieldError("totalArea")}
               </label>
-              <label className={`${labelClass} col-span-2 sm:col-span-1`}>
-                Sup. cubierta (m²) <span className="font-normal text-black/45">(opcional)</span>
+              <label className={labelClass}>
+                Sup. cubierta (m²) <span className="sr-only">(opcional)</span>
                 <input
                   name="coveredArea"
                   aria-label="Superficie cubierta en metros cuadrados"
@@ -199,57 +238,8 @@ export default function NuevaPropiedadPage() {
               <div className="min-w-0"><PropertyQuantityField name="parkingSpaces" label="Cocheras" value={quantities.parkingSpaces} invalid={Boolean(errors.parkingSpaces)} onChange={(value) => updateQuantity("parkingSpaces", value)} />{fieldError("parkingSpaces")}</div>
             </>
             )}
-            </div>
+            </PropertyFeaturesFields>
 
-          </section>
-          <section className={sectionClass} aria-labelledby="media-heading">
-            <h2 id="media-heading" className={headingClass}>Descripción y fotografías</h2>
-          <div className="mt-4 grid items-start gap-5 lg:grid-cols-2">
-            <section className="min-w-0">
-            <label className={labelClass}>
-              Descripción <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
-              <textarea
-                required
-                name="description"
-                placeholder="Describí los ambientes, el estado y los principales atractivos."
-                rows={7}
-                className="mt-1.5 block h-44 w-full rounded-lg aria-[invalid=true]:border-red-600 border border-black/15 bg-white px-3 py-3 text-base font-normal outline-none sm:text-sm focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15"
-              />
-              {fieldError("description")}
-            </label>
-            </section>
-          <section className="min-w-0">
-            <h3 className={labelClass}>Fotos</h3>
-
-            <label className={`mt-1.5 flex h-44 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed px-4 py-5 text-center text-sm transition focus-within:ring-2 focus-within:ring-[#B71C1C]/30 ${errors.images ? "border-red-600 bg-red-50" : "border-black/30 bg-[#f7f7f7] hover:border-black/45 hover:bg-black/5"}`}>
-              <span className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white text-black/55 shadow-sm">
-                <ImagePlus aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} />
-              </span>
-              <span className="font-semibold text-[#171717]">Seleccionar fotos</span><span className="mt-1 text-xs text-black/55">Opcional · Hasta 12 imágenes de 8 MB</span>
-              <span className="mt-1 text-black/55">Podés seleccionar varias imágenes.</span>
-              <input
-                name="images"
-                type="file"
-                accept="image/*"
-                multiple
-                className="sr-only"
-                onChange={(event) => {
-                  const selected = Array.from(event.target.files ?? []);
-                  const message = selected.length > 12 ? "Podés cargar hasta 12 imágenes." : selected.some((file) => file.size > 8 * 1024 * 1024) ? "Cada imagen debe pesar hasta 8 MB." : selected.some((file) => !file.type.startsWith("image/")) ? "Seleccioná únicamente imágenes." : "";
-                  event.currentTarget.setCustomValidity(message);
-                  updateFieldError(event.currentTarget, message);
-                  if (message) return;
-                  setFiles(selected);
-                  setImageOrder(selected.map((_, index) => `new:${index}`));
-                }}
-              />
-            </label>
-            {fieldError("images")}
-            {files.length > 0 && <p className="mt-3 text-sm text-black/65">Arrastrá las fotos para ordenarlas. La primera será la portada.</p>}
-            <ImageOrderList compact items={imageOrder.map((key) => { const file = files[Number(key.split(":")[1])]; return { key, label: file?.name ?? "", file }; })} onReorder={reorderImages} />
-
-          </section>
-          </div>
           </section>
           <section className={sectionClass}>
             <PropertyPublicationFields embedded compact title="Estado de publicación" published={published} onPublishedChange={setPublished} />

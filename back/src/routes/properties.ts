@@ -5,6 +5,7 @@ import { requireAdmin } from "../middleware/auth";
 import { Property } from "../models/Property";
 import { deletePropertyImage, uploadPropertyImage } from "../services/cloudinary";
 import { createSlug, optionalNumber } from "../utils/property";
+import { parsePropertyAdditionalData } from "../utils/propertyAdditionalData";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -67,15 +68,34 @@ function bodyToProperty(body: Record<string, unknown>) {
   if (!validPropertyTypes.includes(propertyType)) throw new Error("Tipo de propiedad no válido.");
   const price = optionalNumber(body.price);
   if (price === undefined) throw new Error("El precio debe ser válido.");
-  return {
+  const data: Record<string, unknown> = {
     title: String(body.title), operation: String(body.operation), propertyType, price,
     currency: String(body.currency), status: body.status === "published" ? "published" : "draft",
     street: String(body.street ?? ""), city: String(body.city), description: String(body.description),
     totalArea: optionalNumber(body.totalArea), coveredArea: optionalNumber(body.coveredArea),
     bedrooms: optionalNumber(body.bedrooms), bathrooms: optionalNumber(body.bathrooms), parkingSpaces: optionalNumber(body.parkingSpaces),
-    amenities: body.amenities ? String(body.amenities) : undefined,
     featured: body.featured === true || body.featured === "true",
   };
+  const optionalFields = ["floors"] as const;
+  for (const field of optionalFields) {
+    if (!(field in body)) continue;
+    const raw = body[field];
+    if (raw === "" || raw === null || raw === undefined) { data[field] = undefined; continue; }
+    const value = Number(raw);
+    if (!Number.isFinite(value) || value < 0 || (field === "floors" && (!Number.isInteger(value) || value < 1))) {
+      throw new Error(field === "floors" ? "La cantidad de plantas debe ser un entero positivo." : "Las expensas deben ser un número igual o mayor a 0.");
+    }
+    data[field] = value;
+  }
+  const booleanFields = ["balcony", "serviceRoom", "backyard", "patio", "laundryRoom", "grill", "quincho", "pool", "kitchen", "livingRoom", "diningRoom", "toilette", "furnished"] as const;
+  for (const field of booleanFields) {
+    if (!(field in body)) continue;
+    if (body[field] === "true" || body[field] === true) data[field] = true;
+    else if (body[field] === "false" || body[field] === false) data[field] = false;
+    else throw new Error(`El valor de ${field} no es válido.`);
+  }
+  Object.assign(data, parsePropertyAdditionalData(body));
+  return data;
 }
 
 function applyImageOrder(existing: StoredImage[], added: StoredImage[], rawOrder: unknown): StoredImage[] {
@@ -153,9 +173,9 @@ adminPropertiesRouter.post("/", upload.array("images", 12), async (request, resp
   let images: StoredImage[] = [];
   try {
     const data = bodyToProperty(request.body);
-    data.featured = await validateFeatured(data.featured, data.status);
+    data.featured = await validateFeatured(data.featured === true, String(data.status ?? "draft"));
     images = await uploadImages((request.files as Express.Multer.File[]) ?? []);
-    const slug = `${createSlug(data.title) || "propiedad"}-${randomUUID().slice(0, 8)}`;
+    const slug = `${createSlug(String(data.title)) || "propiedad"}-${randomUUID().slice(0, 8)}`;
     const orderedImages = applyImageOrder([], images, request.body.imageOrder);
     response.status(201).json(serializeProperty(await Property.create({ ...data, slug, images: orderedImages })));
   } catch (error) { await deleteUploadedImages(images); response.status(400).json({ message: error instanceof Error ? error.message : "Datos inválidos." }); }
@@ -165,12 +185,23 @@ adminPropertiesRouter.patch("/:id", upload.array("images", 12), async (request, 
   try {
     const data = bodyToProperty(request.body);
     const id = String(request.params.id);
-    data.featured = await validateFeatured(data.featured, data.status, id);
+    data.featured = await validateFeatured(data.featured === true, String(data.status ?? "draft"), id);
     images = await uploadImages((request.files as Express.Multer.File[]) ?? []);
-    const update: Record<string, unknown> = { ...data };
+    let update: Record<string, unknown> = { ...data };
+    const optionalFields = ["floors", "hasExpenses", "expenses", "balcony", "serviceRoom", "backyard", "patio", "laundryRoom", "grill", "quincho", "pool", "kitchen", "livingRoom", "diningRoom", "toilette", "furnished", "hasAmenities", "amenities"];
+    const unset: Record<string, ""> = {};
+    for (const field of optionalFields) {
+      if ((field in request.body || field in data) && update[field] === undefined) { delete update[field]; unset[field] = ""; }
+      else if (!(field in request.body)) delete update[field];
+    }
+    if (Object.keys(unset).length) update.$unset = unset;
     const existingImages: StoredImage[] = (await Property.findById(id).select("images").lean())?.images ?? [];
     if (images.length || request.body.imageOrder !== undefined) {
       update.images = applyImageOrder(existingImages, images, request.body.imageOrder);
+    }
+    if (Object.keys(unset).length) {
+      const set = Object.fromEntries(Object.entries(update).filter(([key]) => !key.startsWith("$")));
+      update = { $set: set, $unset: unset };
     }
     const property = await Property.findByIdAndUpdate(id, update, { new: true, runValidators: true });
     if (!property) {

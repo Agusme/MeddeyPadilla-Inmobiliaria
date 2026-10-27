@@ -18,7 +18,7 @@ export default function PropertyGallery({ images, title }: { images: string[]; t
         <ImageWithSkeleton
           src={images[active]}
           alt={`${title} — foto ${active + 1}`}
-          priority
+          priority={active === 0}
           sizes="(min-width: 1024px) 58vw, 100vw"
           fit="contain"
         />
