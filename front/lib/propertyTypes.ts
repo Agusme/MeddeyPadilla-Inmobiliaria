@@ -20,3 +20,8 @@ export const propertyTypeGroupLabels = Object.fromEntries(
 export const propertyTypeOrder = propertyTypeOptions.map(({ value }) =>
   value.toLocaleLowerCase("es"),
 );
+
+export const propertyTypesWithResidentialFeatures = ["Propiedad", "Finca", "PH"] as const;
+export function hasResidentialFeatures(propertyType: string) {
+  return (propertyTypesWithResidentialFeatures as readonly string[]).includes(propertyType);
+}

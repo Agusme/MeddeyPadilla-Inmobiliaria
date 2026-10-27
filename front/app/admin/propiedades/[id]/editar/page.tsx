@@ -9,6 +9,8 @@ import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import PropertyQuantityField from "@/components/properties/PropertyQuantityField";
+import PropertyFeaturesFields from "@/components/properties/PropertyFeaturesFields";
+import { hasResidentialFeatures } from "@/lib/propertyTypes";
 import ImageOrderList from "@/components/properties/ImageOrderList";
 import PropertyPublicationFields from "@/components/properties/PropertyPublicationFields";
 import { propertyTypeOptions } from "@/lib/propertyTypes";
@@ -34,7 +36,7 @@ export default function EditarPropiedadPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [quantities, setQuantities] = useState({ bedrooms: "", bathrooms: "", parkingSpaces: "" });
   const [propertyType, setPropertyType] = useState("Propiedad");
-  const hasBedrooms = ["Propiedad", "Finca", "PH"].includes(propertyType);
+  const hasBedrooms = hasResidentialFeatures(propertyType);
   const hasBuilding = propertyType !== "Terreno";
 
   useEffect(() => {
@@ -224,6 +226,7 @@ export default function EditarPropiedadPage() {
             </>
             )}
             </div>
+            <PropertyFeaturesFields key={property.id} propertyType={propertyType} initial={property} />
 
           </section>
           <section className={sectionClass} aria-labelledby="media-heading">

@@ -45,8 +45,15 @@ export default function AdminPropertyDetailPage() {
     ["Superficie cubierta", property.coveredArea === "" ? "" : `${property.coveredArea} m²`],
     ["Superficie total", property.totalArea === "" ? "" : `${property.totalArea} m²`],
     ["Cochera", property.parkingSpaces],
+    ["Plantas", property.floors],
+    ["Expensas", property.expenses === "" ? "" : new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(Number(property.expenses))],
     ["Estado", property.status],
   ] as [string, string | number][]).filter(([, value]) => value !== "" && value !== undefined && value !== null);
+  const comforts = ([
+    ["Balcón", property.balcony], ["Dependencia de servicio", property.serviceRoom], ["Fondo", property.backyard], ["Patio", property.patio],
+    ["Lavadero", property.laundryRoom], ["Asador", property.grill], ["Quincho", property.quincho], ["Pileta", property.pool],
+    ["Cocina", property.kitchen], ["Living", property.livingRoom], ["Comedor", property.diningRoom], ["Toilette", property.toilette], ["Amoblado", property.furnished],
+  ] as [string, boolean | undefined][]).filter(([, value]) => value === true).map(([label]) => label);
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
@@ -127,6 +134,10 @@ export default function AdminPropertyDetailPage() {
               </div>
             ))}
           </dl>
+          {comforts.length > 0 && <div className="mt-7">
+            <h3 className="text-lg font-semibold">Ambientes y comodidades</h3>
+            <ul className="mt-4 grid grid-cols-2 gap-x-5 gap-y-3 text-sm text-black/70">{comforts.map((label) => <li key={label}>✓ {label}</li>)}</ul>
+          </div>}
         </div>
       </section>
     </main>

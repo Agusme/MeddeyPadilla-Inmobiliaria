@@ -11,7 +11,7 @@ export type PublicProperty = Pick<
 };
 
 export type PublicPropertyDetail = PublicProperty &
-  Pick<Property, "images" | "description" | "features" | "address">;
+  Pick<Property, "images" | "description" | "features" | "address"> & { comforts: string[]; amenities?: string };
 
 function formatPrice(property: ApiProperty) {
   return formatPropertyPrice(property.price, property.currency);
@@ -26,6 +26,15 @@ function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
   if (property.coveredArea !== undefined) features.push({ label: "Superficie cubierta", value: `${property.coveredArea} m²` });
   if (property.totalArea !== undefined) features.push({ label: "Superficie total", value: `${property.totalArea} m²` });
   if (property.parkingSpaces !== undefined) features.push({ label: "Cochera", value: property.parkingSpaces });
+  if (property.floors !== undefined) features.push({ label: "Plantas", value: property.floors });
+  if (property.expenses !== undefined) features.push({ label: "Expensas", value: new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(property.expenses) });
+
+  const comfortLabels: [keyof ApiProperty, string][] = [
+    ["balcony", "Balcón"], ["serviceRoom", "Dependencia de servicio"], ["furnished", "Amoblado"],
+    ["kitchen", "Cocina"], ["livingRoom", "Living"], ["diningRoom", "Comedor"], ["toilette", "Toilette"],
+    ["laundryRoom", "Lavadero"], ["backyard", "Fondo"], ["patio", "Patio"], ["grill", "Asador"], ["quincho", "Quincho"], ["pool", "Pileta"],
+  ];
+  const comforts = comfortLabels.filter(([field]) => property[field] === true).map(([, label]) => label);
 
   const details = [
     property.bedrooms !== undefined ? `${property.bedrooms} ${property.bedrooms === 1 ? "dormitorio" : "dormitorios"}` : undefined,
@@ -45,6 +54,8 @@ function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
     description: property.description,
     address: location || "Sin ubicación",
     features,
+    comforts,
+    amenities: property.amenities?.trim() || undefined,
     details,
   };
 }
