@@ -1,7 +1,14 @@
 import SectionHeading from "@/components/ui/SectionHeading";
 import GoogleMap from "@/components/contact/GoogleMap";
 import ContactForm from "@/components/contact/ContactForm";
-import { ArrowRight, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Check, MapPin, Phone } from "lucide-react";
+
+const administrationBenefits = [
+  "Administración de alquileres",
+  "Seguimiento de pagos",
+  "Coordinación de mantenimiento",
+  "Atención personalizada",
+];
 
 function FacebookIcon() {
   return (
@@ -30,15 +37,36 @@ function InstagramIcon() {
   );
 }
 
-export default function ContactoPage() {
+export default async function ContactoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const isAdministration = (await searchParams).servicio === "administracion";
+  const initialMessage = isAdministration
+    ? "Hola, quisiera recibir información sobre el servicio de administración de propiedades."
+    : "";
+
   return (
     <div className="overflow-hidden bg-white">
       <section className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
         <header className="mb-8">
           <SectionHeading
-            title="Estamos para acompañarte"
-            description="Contanos qué necesitás y te ayudamos a dar el próximo paso con la atención personalizada que buscás."
+            title={isAdministration ? "Tu propiedad, en buenas manos" : "Estamos para acompañarte"}
+            description={isAdministration
+              ? "Nos encargamos de la gestión de tu inmueble para que disfrutes de tu inversión con tranquilidad."
+              : "Contanos qué necesitás y te ayudamos a dar el próximo paso con la atención personalizada que buscás."}
           />
+          {isAdministration && (
+            <ul className="mt-5 grid max-w-3xl grid-cols-1 gap-x-8 gap-y-3 text-sm text-black/65 sm:grid-cols-2">
+              {administrationBenefits.map((benefit) => (
+                <li key={benefit} className="flex items-start gap-2">
+                  <Check aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#B71C1C]" strokeWidth={1.8} />
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </header>
 
         <div className="grid overflow-hidden border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] sm:rounded-2xl lg:grid-cols-[0.95fr_1.05fr]">
@@ -146,7 +174,7 @@ export default function ContactoPage() {
             <p className="mt-3 leading-7 text-black/60">
               Completá el formulario y nos comunicaremos con vos a la brevedad.
             </p>
-            <ContactForm />
+            <ContactForm key={isAdministration ? "administracion" : "general"} initialMessage={initialMessage} />
           </section>
         </div>
       </section>

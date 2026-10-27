@@ -1,6 +1,7 @@
 import type { Property } from "@/components/properties/propertyData";
 import { getPublicProperties, getPublicProperty, publicImageUrl, type ApiProperty, type PublicPropertyFilters } from "@/lib/api";
 import { formatPropertyPrice } from "@/lib/formatPrice";
+import { formatExpenses, formatAmenities } from "@/lib/propertyAdditionalData";
 
 export type PublicProperty = Pick<
   Property,
@@ -27,7 +28,8 @@ function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
   if (property.totalArea !== undefined) features.push({ label: "Superficie total", value: `${property.totalArea} m²` });
   if (property.parkingSpaces !== undefined) features.push({ label: "Cochera", value: property.parkingSpaces });
   if (property.floors !== undefined) features.push({ label: "Plantas", value: property.floors });
-  if (property.expenses !== undefined) features.push({ label: "Expensas", value: new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(property.expenses) });
+  const expenses = formatExpenses(property);
+  if (expenses !== undefined) features.push({ label: "Expensas", value: expenses });
 
   const comfortLabels: [keyof ApiProperty, string][] = [
     ["balcony", "Balcón"], ["serviceRoom", "Dependencia de servicio"], ["furnished", "Amoblado"],
@@ -55,7 +57,7 @@ function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
     address: location || "Sin ubicación",
     features,
     comforts,
-    amenities: property.amenities?.trim() || undefined,
+    amenities: formatAmenities(property),
     details,
   };
 }

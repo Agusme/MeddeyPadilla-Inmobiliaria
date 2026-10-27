@@ -5,6 +5,7 @@ import { requireAdmin } from "../middleware/auth";
 import { Property } from "../models/Property";
 import { deletePropertyImage, uploadPropertyImage } from "../services/cloudinary";
 import { createSlug, optionalNumber } from "../utils/property";
+import { parsePropertyAdditionalData } from "../utils/propertyAdditionalData";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -75,7 +76,7 @@ function bodyToProperty(body: Record<string, unknown>) {
     bedrooms: optionalNumber(body.bedrooms), bathrooms: optionalNumber(body.bathrooms), parkingSpaces: optionalNumber(body.parkingSpaces),
     featured: body.featured === true || body.featured === "true",
   };
-  const optionalFields = ["floors", "expenses"] as const;
+  const optionalFields = ["floors"] as const;
   for (const field of optionalFields) {
     if (!(field in body)) continue;
     const raw = body[field];
@@ -93,7 +94,7 @@ function bodyToProperty(body: Record<string, unknown>) {
     else if (body[field] === "false" || body[field] === false) data[field] = false;
     else throw new Error(`El valor de ${field} no es válido.`);
   }
-  if ("amenities" in body) data.amenities = String(body.amenities ?? "").trim() || undefined;
+  Object.assign(data, parsePropertyAdditionalData(body));
   return data;
 }
 
@@ -187,10 +188,10 @@ adminPropertiesRouter.patch("/:id", upload.array("images", 12), async (request, 
     data.featured = await validateFeatured(data.featured === true, String(data.status ?? "draft"), id);
     images = await uploadImages((request.files as Express.Multer.File[]) ?? []);
     let update: Record<string, unknown> = { ...data };
-    const optionalFields = ["floors", "expenses", "balcony", "serviceRoom", "backyard", "patio", "laundryRoom", "grill", "quincho", "pool", "kitchen", "livingRoom", "diningRoom", "toilette", "furnished", "amenities"];
+    const optionalFields = ["floors", "hasExpenses", "expenses", "balcony", "serviceRoom", "backyard", "patio", "laundryRoom", "grill", "quincho", "pool", "kitchen", "livingRoom", "diningRoom", "toilette", "furnished", "hasAmenities", "amenities"];
     const unset: Record<string, ""> = {};
     for (const field of optionalFields) {
-      if (field in request.body && update[field] === undefined) { delete update[field]; unset[field] = ""; }
+      if ((field in request.body || field in data) && update[field] === undefined) { delete update[field]; unset[field] = ""; }
       else if (!(field in request.body)) delete update[field];
     }
     if (Object.keys(unset).length) update.$unset = unset;

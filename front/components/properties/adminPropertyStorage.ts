@@ -16,6 +16,7 @@ export type AdminProperty = {
   bathrooms: string | number;
   parkingSpaces: string | number;
   floors?: string | number;
+  hasExpenses?: boolean;
   expenses?: string | number;
   balcony?: boolean;
   serviceRoom?: boolean;
@@ -31,6 +32,7 @@ export type AdminProperty = {
   toilette?: boolean;
   furnished?: boolean;
   description: string;
+  hasAmenities?: boolean;
   amenities?: string;
   imageCount: number;
   images: ApiProperty["images"];
@@ -55,6 +57,8 @@ export function toAdminProperty(property: ApiProperty): AdminProperty {
     bathrooms: property.bathrooms === undefined ? "" : String(property.bathrooms),
     parkingSpaces: property.parkingSpaces === undefined ? "" : String(property.parkingSpaces),
     floors: property.floors === undefined ? "" : String(property.floors),
+    hasExpenses: property.hasExpenses,
+    hasAmenities: property.hasAmenities,
     expenses: property.expenses === undefined ? "" : String(property.expenses),
     balcony: property.balcony,
     serviceRoom: property.serviceRoom,

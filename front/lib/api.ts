@@ -23,6 +23,7 @@ export type ApiProperty = {
   bathrooms?: number;
   parkingSpaces?: number;
   floors?: number;
+  hasExpenses?: boolean;
   expenses?: number;
   balcony?: boolean;
   serviceRoom?: boolean;
@@ -38,6 +39,7 @@ export type ApiProperty = {
   toilette?: boolean;
   furnished?: boolean;
   description: string;
+  hasAmenities?: boolean;
   amenities?: string;
   images: { url: string; position: number }[];
   featured: boolean;

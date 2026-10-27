@@ -7,6 +7,7 @@ import {
 import { getAdminProperty, publicImageUrl } from "@/lib/api";
 import PropertyGallery from "@/components/properties/PropertyGallery";
 import { formatPropertyPrice } from "@/lib/formatPrice";
+import { formatExpenses, formatAmenities } from "@/lib/propertyAdditionalData";
 import ButtonLink from "@/components/ui/ButtonLink";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -39,6 +40,7 @@ export default function AdminPropertyDetailPage() {
 
   const location = [property.street, property.city].filter(Boolean).join(", ");
   const price = formatPropertyPrice(property.price, property.currency);
+  const amenities = formatAmenities(property);
   const features = ([
     ["Dormitorios", property.bedrooms],
     ["Baños", property.bathrooms],
@@ -46,7 +48,7 @@ export default function AdminPropertyDetailPage() {
     ["Superficie total", property.totalArea === "" ? "" : `${property.totalArea} m²`],
     ["Cochera", property.parkingSpaces],
     ["Plantas", property.floors],
-    ["Expensas", property.expenses === "" ? "" : new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(Number(property.expenses))],
+    ["Expensas", formatExpenses(property) ?? ""],
     ["Estado", property.status],
   ] as [string, string | number][]).filter(([, value]) => value !== "" && value !== undefined && value !== null);
   const comforts = ([
@@ -106,12 +108,12 @@ export default function AdminPropertyDetailPage() {
             <span className="text-[#B71C1C]">●</span>
             {location}
           </p>
-          {property.amenities && (
+          {amenities && (
             <>
               <h2 className="mt-10 text-2xl font-semibold tracking-tight">
-                Comodidades
+                Amenities
               </h2>
-              <p className="mt-4 text-black/65">{property.amenities}</p>
+              <p className="mt-4 whitespace-pre-line text-black/65">{amenities}</p>
             </>
           )}
         </div>
