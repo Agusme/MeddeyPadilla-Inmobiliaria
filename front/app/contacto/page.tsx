@@ -1,7 +1,8 @@
 import SectionHeading from "@/components/ui/SectionHeading";
 import GoogleMap from "@/components/contact/GoogleMap";
 import ContactForm from "@/components/contact/ContactForm";
-import { ArrowRight, Check, MapPin, Phone } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Building2, Check, House, MapPin, Phone, Store, Warehouse } from "lucide-react";
 
 const administrationBenefits = [
   "Administración de alquileres",
@@ -9,6 +10,62 @@ const administrationBenefits = [
   "Coordinación de mantenimiento",
   "Atención personalizada",
 ];
+
+const administrationPropertyTypes = [
+  { label: "Departamentos", icon: Building2 },
+  { label: "Casas", icon: House },
+  { label: "Locales comerciales", icon: Store },
+  { label: "Otros inmuebles", icon: Warehouse },
+];
+
+function AdministrationPresentation() {
+  return (
+    <div className="grid items-start gap-5 lg:grid-cols-2 lg:gap-8">
+      <div className="flex min-w-0 flex-col gap-4">
+        <SectionHeading
+          titleAs="h1"
+          title="Administramos tus propiedades"
+          titleClassName="sm:text-[2rem]"
+          className="[&>p]:mt-3"
+          description="Nos ocupamos de la administración de tus inmuebles, ofreciendo una gestión clara, organizada y personalizada para que disfrutes de tu inversión con tranquilidad."
+        />
+        <ul aria-label="Tipos de propiedades que administramos" className="grid grid-cols-2 gap-y-3 px-2 py-2 sm:grid-cols-4 sm:gap-y-0">
+          {administrationPropertyTypes.map(({ label, icon: Icon }, index) => (
+            <li key={label} className={`flex min-w-0 flex-col items-center gap-1.5 px-2 text-center text-xs leading-4 text-black/70 ${index % 2 === 1 ? "border-l border-black/10" : ""} ${index === 2 ? "sm:border-l sm:border-black/10" : ""}`}>
+              <Icon aria-hidden="true" className="h-5 w-5 shrink-0 text-[#B71C1C]" strokeWidth={1.5} />
+              <span>{label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="relative isolate grid min-w-0 overflow-hidden">
+        <Image
+          src="/servicios/compra.webp"
+          alt="Conjunto de viviendas modernas con balcones y jardines, iluminadas por luz natural"
+          width={1284}
+          height={816}
+          sizes="(min-width: 1280px) 576px, (min-width: 1024px) calc((100vw - 128px) / 2), (min-width: 640px) calc(100vw - 64px), calc(100vw - 48px)"
+          className="relative -z-20 aspect-[2/1] h-auto w-full object-cover object-[right_bottom] [grid-area:1/1] sm:aspect-[23/10]"
+          style={{
+            maskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 12%, #000 55%), linear-gradient(to bottom, #000 80%, rgba(0,0,0,0.45) 100%)",
+            maskComposite: "intersect",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 12%, #000 55%), linear-gradient(to bottom, #000 80%, rgba(0,0,0,0.45) 100%)",
+            WebkitMaskComposite: "source-in",
+          }}
+        />
+        <ul aria-label="Beneficios del servicio de administración" className="relative mt-3 grid grid-cols-2 gap-x-4 gap-y-2 bg-white/90 px-3 py-3 text-xs leading-4 text-black/85 sm:mt-0 sm:self-end sm:[grid-area:1/1]">
+          {administrationBenefits.map((benefit) => (
+            <li key={benefit} className="flex min-w-0 items-start gap-2">
+              <Check aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#B71C1C]" strokeWidth={1.8} />
+              <span>{benefit}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
 
 function FacebookIcon() {
   return (
@@ -49,38 +106,24 @@ export default async function ContactoPage({
 
   return (
     <div className="overflow-hidden bg-white">
-      <section className="mx-auto max-w-7xl px-6 py-12 sm:px-8 sm:py-16 lg:px-12">
+      <section className={`mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 ${isAdministration ? "pb-12 pt-8 sm:pb-16 sm:pt-10" : "py-12 sm:py-16"}`}>
         <header className="mb-8">
-          <SectionHeading
-            title={isAdministration ? "Tu propiedad, en buenas manos" : "Estamos para acompañarte"}
-            description={isAdministration
-              ? "Nos encargamos de la gestión de tu inmueble para que disfrutes de tu inversión con tranquilidad."
-              : "Contanos qué necesitás y te ayudamos a dar el próximo paso con la atención personalizada que buscás."}
-          />
-          {isAdministration && (
-            <ul className="mt-5 grid max-w-3xl grid-cols-1 gap-x-8 gap-y-3 text-sm text-black/65 sm:grid-cols-2">
-              {administrationBenefits.map((benefit) => (
-                <li key={benefit} className="flex items-start gap-2">
-                  <Check aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#B71C1C]" strokeWidth={1.8} />
-                  <span>{benefit}</span>
-                </li>
-              ))}
-            </ul>
+          {isAdministration ? (
+            <AdministrationPresentation />
+          ) : (
+            <SectionHeading
+              title="Estamos para acompañarte"
+              description="Contanos qué necesitás y te ayudamos a dar el próximo paso con la atención personalizada que buscás."
+            />
           )}
         </header>
 
         <div className="grid overflow-hidden border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] sm:rounded-2xl lg:grid-cols-[0.95fr_1.05fr]">
           <section
             className="overflow-hidden bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] p-6 text-white sm:p-8"
-            aria-labelledby="contact-details-title"
+            aria-label="Datos de contacto"
           >
-            <h2
-              id="contact-details-title"
-              className="text-3xl font-semibold tracking-tight"
-            >
-              Dónde encontrarnos
-            </h2>
-            <p className="mt-3 max-w-md leading-7 text-white/70">
+            <p className="max-w-md leading-7 text-white/70">
               Acercate a nuestra oficina en el centro de San Miguel de Tucumán o
               contactanos por teléfono y WhatsApp.
             </p>
@@ -162,16 +205,10 @@ export default async function ContactoPage({
           </section>
 
           <section
-            className="p-6 sm:p-8 lg:p-10"
-            aria-labelledby="contact-form-title"
+            className="p-6 sm:p-8 lg:px-10 lg:pb-10"
+            aria-label="Formulario de contacto"
           >
-            <h2
-              id="contact-form-title"
-              className="text-3xl font-semibold tracking-tight text-[#171717]"
-            >
-              Dejanos tu mensaje
-            </h2>
-            <p className="mt-3 leading-7 text-black/60">
+            <p className="leading-7">
               Completá el formulario y nos comunicaremos con vos a la brevedad.
             </p>
             <ContactForm key={isAdministration ? "administracion" : "general"} initialMessage={initialMessage} />
