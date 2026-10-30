@@ -1,3 +1,4 @@
+import { applyImageOrder } from "../utils/propertyImageOrder";
 import { randomUUID } from "node:crypto";
 import { Router } from "express";
 import multer from "multer";
@@ -96,26 +97,6 @@ function bodyToProperty(body: Record<string, unknown>) {
   }
   Object.assign(data, parsePropertyAdditionalData(body));
   return data;
-}
-
-function applyImageOrder(existing: StoredImage[], added: StoredImage[], rawOrder: unknown): StoredImage[] {
-  const keyed = new Map<string, StoredImage>();
-  existing.forEach((image, index) => keyed.set(`existing:${index}`, image));
-  added.forEach((image, index) => keyed.set(`new:${index}`, image));
-  if (rawOrder === undefined) return [...existing, ...added].map((image, position) => ({ ...image, position }));
-  let order: unknown;
-  try { order = JSON.parse(String(rawOrder)); } catch { throw new Error("El orden de las imágenes no es válido."); }
-  if (!Array.isArray(order) || order.length !== keyed.size || order.some((key) => typeof key !== "string")) {
-    throw new Error("El orden de las imágenes no es válido.");
-  }
-  const reordered = (order as string[]).map((key) => {
-    const image = keyed.get(key);
-    if (!image) throw new Error("El orden de las imágenes no es válido.");
-    keyed.delete(key);
-    return { ...image, position: 0 };
-  });
-  if (keyed.size) throw new Error("El orden de las imágenes no es válido.");
-  return reordered.map((image, position) => ({ ...image, position }));
 }
 
 async function validateFeatured(featured: boolean, status: string, exceptId?: string) {
