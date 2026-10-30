@@ -7,12 +7,12 @@ import Swal from "sweetalert2";
 import PropertyQuantityField from "@/components/properties/PropertyQuantityField";
 import PropertyFeaturesFields from "@/components/properties/PropertyFeaturesFields";
 import { hasResidentialFeatures } from "@/lib/propertyTypes";
-import ImageOrderList from "@/components/properties/ImageOrderList";
+import PropertyPhotosField from "@/components/properties/PropertyPhotosField";
 import PropertyPublicationFields from "@/components/properties/PropertyPublicationFields";
 import { propertyTypeOptions } from "@/lib/propertyTypes";
 import Button from "@/components/ui/Button";
 import ButtonLink from "@/components/ui/ButtonLink";
-import { House, ImagePlus } from "lucide-react";
+import { House } from "lucide-react";
 
 const inputClass =
   "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none mt-1.5 h-11 min-w-0 w-full rounded-lg aria-[invalid=true]:border-red-600 aria-[invalid=true]:ring-1 aria-[invalid=true]:ring-red-600 border border-black/15 bg-white px-3 text-base font-normal outline-none transition sm:text-sm focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15";
@@ -53,15 +53,6 @@ export default function NuevaPropiedadPage() {
     } finally {
       setSaving(false);
     }
-  }
-
-  function reorderImages(from: number, to: number) {
-    setImageOrder((current) => {
-      const next = [...current];
-      const [moved] = next.splice(from, 1);
-      next.splice(to, 0, moved);
-      return next;
-    });
   }
 
   function updateQuantity(name: keyof typeof quantities, value: string) {
@@ -173,36 +164,14 @@ export default function NuevaPropiedadPage() {
                   {fieldError("description")}
                 </label>
               </div>
-              <section className="min-w-0 lg:row-span-3 lg:grid lg:grid-rows-subgrid" aria-label="Fotografías">
-                <h3 className={labelClass}>Fotografías</h3>
-                <label className={`mt-1.5 flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed px-4 py-3 text-center text-sm transition focus-within:ring-2 focus-within:ring-[#B71C1C]/30 ${errors.images ? "border-red-600 bg-red-50" : "border-black/30 bg-[#f7f7f7] hover:border-black/45 hover:bg-black/5"}`}>
-                  <span className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white text-black/55 shadow-sm">
-                    <ImagePlus aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} />
-                  </span>
-                  <span className="font-semibold text-[#171717]">Seleccionar fotos</span><span className="mt-1 text-xs text-black/55">Opcional · Hasta 12 imágenes de 8 MB</span>
-                  <input
-                    name="images"
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    className="sr-only"
-                    onChange={(event) => {
-                      const selected = Array.from(event.target.files ?? []);
-                      const message = selected.length > 12 ? "Podés cargar hasta 12 imágenes." : selected.some((file) => file.size > 8 * 1024 * 1024) ? "Cada imagen debe pesar hasta 8 MB." : selected.some((file) => !file.type.startsWith("image/")) ? "Seleccioná únicamente imágenes." : "";
-                      event.currentTarget.setCustomValidity(message);
-                      updateFieldError(event.currentTarget, message);
-                      if (message) return;
-                      setFiles(selected);
-                      setImageOrder(selected.map((_, index) => `new:${index}`));
-                    }}
-                  />
-                </label>
-                <div className="min-w-0">
-                {fieldError("images")}
-                {files.length > 0 && <p className="mt-3 text-sm text-black/65">Arrastrá las fotos para ordenarlas. La primera será la portada.</p>}
-                <ImageOrderList compact items={imageOrder.map((key) => { const file = files[Number(key.split(":")[1])]; return { key, label: file?.name ?? "", file }; })} onReorder={reorderImages} />
-                </div>
-              </section>
+              <PropertyPhotosField
+                files={files}
+                imageOrder={imageOrder}
+                onChange={(nextFiles, nextOrder) => {
+                  setFiles(nextFiles);
+                  setImageOrder(nextOrder);
+                }}
+              />
             </div>
           </section>
           <section className={sectionClass} aria-label="Detalles opcionales">
