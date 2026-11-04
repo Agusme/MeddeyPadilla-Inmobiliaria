@@ -5,6 +5,7 @@ import PropertyCard, {
 } from "@/components/properties/PropertyCard";
 import { adminPropertyStorageChangeEvent } from "@/components/properties/adminPropertyStorage";
 import { getPublicProperties, publicImageUrl, type ApiProperty } from "@/lib/api";
+import { hasPositiveValue } from "@/lib/propertyVisibility";
 import { formatPropertyPrice } from "@/lib/formatPrice";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,9 +20,9 @@ function toFeaturedCard(property: ApiProperty): PropertyCardData {
     image: publicImageUrl(property.images[0]?.url),
     slug: property.slug,
     details: [
-      property.bedrooms !== undefined ? `${property.bedrooms} ${property.bedrooms === 1 ? "dormitorio" : "dormitorios"}` : undefined,
-      property.bathrooms !== undefined ? `${property.bathrooms} ${property.bathrooms === 1 ? "baño" : "baños"}` : undefined,
-      property.coveredArea !== undefined ? `${property.coveredArea} m²` : undefined,
+      hasPositiveValue(property.bedrooms) ? `${property.bedrooms} ${property.bedrooms === 1 ? "dormitorio" : "dormitorios"}` : undefined,
+      hasPositiveValue(property.bathrooms) ? `${property.bathrooms} ${property.bathrooms === 1 ? "baño" : "baños"}` : undefined,
+      hasPositiveValue(property.coveredArea) ? `${property.coveredArea} m²` : undefined,
     ].filter((detail): detail is string => Boolean(detail)),
   };
 }

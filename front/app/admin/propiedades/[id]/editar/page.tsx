@@ -13,7 +13,8 @@ import PropertyFeaturesFields from "@/components/properties/PropertyFeaturesFiel
 import { hasResidentialFeatures } from "@/lib/propertyTypes";
 import PropertyPhotosField from "@/components/properties/PropertyPhotosField";
 import PropertyPublicationFields from "@/components/properties/PropertyPublicationFields";
-import { propertyTypeOptions } from "@/lib/propertyTypes";
+import PropertyTypeSelect from "@/components/properties/PropertyTypeSelect";
+import Select from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 import ButtonLink from "@/components/ui/ButtonLink";
 import { House } from "lucide-react";
@@ -35,7 +36,7 @@ export default function EditarPropiedadPage() {
   const [currency, setCurrency] = useState("USD");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [quantities, setQuantities] = useState({ bedrooms: "", bathrooms: "", parkingSpaces: "" });
-  const [propertyType, setPropertyType] = useState("Propiedad");
+  const [propertyType, setPropertyType] = useState("Casa");
   const hasBedrooms = hasResidentialFeatures(propertyType);
   const hasBuilding = propertyType !== "Terreno";
 
@@ -133,21 +134,11 @@ export default function EditarPropiedadPage() {
                 />
                 {fieldError("title")}
               </label>
-              <label className={labelClass}>
+              <div className={labelClass}>
                 Operación <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
-                <select required defaultValue={property.operation} name="operation" className={inputClass}>
-                  <option>Venta</option>
-                  <option>Alquiler</option>
-                </select>
-              </label>
-              <label className={labelClass}>
-                Tipo de propiedad <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
-                <select required name="propertyType" value={propertyType} onChange={(event) => setPropertyType(event.target.value)} className={inputClass}>
-                  {propertyTypeOptions.map(({ value, label }) => (
-                    <option key={value} value={value}>{label}</option>
-                  ))}
-                </select>
-              </label>
+                <Select required name="operation" label="Operación" defaultValue={property.operation} options={[{ value: "Venta", label: "Venta" }, { value: "Alquiler", label: "Alquiler" }]} />
+              </div>
+              <PropertyTypeSelect value={propertyType} onChange={setPropertyType} allowLegacy={property.propertyType === "Propiedad"} />
               <label className={labelClass}>
                 Precio <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
                 <span className="relative block">
@@ -156,13 +147,10 @@ export default function EditarPropiedadPage() {
                 </span>
                 {fieldError("price")}
               </label>
-              <label className={labelClass}>
+              <div className={labelClass}>
                 Moneda <span className="text-[#B71C1C]" aria-label="obligatorio">*</span>
-                <select required name="currency" value={currency} onChange={(event) => setCurrency(event.target.value)} className={inputClass}>
-                  <option>USD</option>
-                  <option>ARS</option>
-                </select>
-              </label>
+                <Select required name="currency" label="Moneda" value={currency} onChange={setCurrency} options={[{ value: "USD", label: "USD" }, { value: "ARS", label: "ARS" }]} />
+              </div>
               <label className={labelClass}>
                 Dirección <span className="font-normal text-black/45">(opcional)</span>
                 <input placeholder="Ej. Rivadavia 200" name="street" defaultValue={property.street} className={inputClass} />

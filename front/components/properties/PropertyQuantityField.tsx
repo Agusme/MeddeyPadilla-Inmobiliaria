@@ -1,6 +1,7 @@
 "use client";
 
 import { useId } from "react";
+import Select from "@/components/ui/Select";
 
 type Props = { name: string; label: string; value: string; onChange: (value: string) => void; invalid?: boolean; min?: number };
 
@@ -14,14 +15,12 @@ export default function PropertyQuantityField({ name, label, value, onChange, in
       <label htmlFor={id} className="block text-sm font-medium leading-5 text-[#171717]">
         {label} <span className="sr-only">(opcional)</span>
       </label>
-      <select id={id} name={name} value={value}
-        aria-invalid={invalid} aria-describedby={invalid ? `error-${name}` : undefined}
-        onChange={(event) => onChange(event.target.value)}
-        className={`mt-1.5 h-11 min-w-0 w-full rounded-lg border bg-white px-3 text-base outline-none transition sm:text-sm focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15 ${invalid ? "border-red-600" : "border-black/15"}`}>
-        <option value="">{"\u2014"}</option>
-        {quantityOptions.map((option) => <option key={option} value={option} disabled={Number(option) < min}>{option}</option>)}
-        {hasExtraValue && <option value={value}>{value}</option>}
-      </select>
+      <Select id={id} name={name} label={label} value={value} onChange={onChange} placeholder="Elegir" clearable
+        invalid={invalid} describedBy={invalid ? `error-${name}` : undefined}
+        options={[
+          ...quantityOptions.map(option => ({ value: option, label: option, disabled: Number(option) < min })),
+          ...(hasExtraValue ? [{ value, label: value }] : []),
+        ]} />
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { Property } from "../models/Property";
 import { deletePropertyImage, uploadPropertyImage } from "../services/cloudinary";
 import { createSlug, optionalNumber } from "../utils/property";
 import { parsePropertyAdditionalData } from "../utils/propertyAdditionalData";
+import { validPropertyTypes, legacyPropertyTypeAliases } from "../utils/propertyTypes";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -15,17 +16,6 @@ const upload = multer({
 });
 
 type StoredImage = { url: string; publicId?: string | null; position: number };
-
-const validPropertyTypes = [
-  "Propiedad", "Depósito", "Galpón", "Fondo de comercio", "Cochera", "Finca",
-  "Terreno", "Local comercial", "PH",
-];
-const legacyPropertyTypeAliases: Record<string, string> = {
-  Casa: "Propiedad",
-  Departamento: "Propiedad",
-  Local: "Local comercial",
-  Oficina: "Local comercial",
-};
 
 function serializeProperty(property: unknown) {
   const document = property as { toObject?: () => Record<string, unknown> } & Record<string, unknown>;
@@ -83,8 +73,8 @@ function bodyToProperty(body: Record<string, unknown>) {
     const raw = body[field];
     if (raw === "" || raw === null || raw === undefined) { data[field] = undefined; continue; }
     const value = Number(raw);
-    if (!Number.isFinite(value) || value < 0 || (field === "floors" && (!Number.isInteger(value) || value < 1))) {
-      throw new Error(field === "floors" ? "La cantidad de plantas debe ser un entero positivo." : "Las expensas deben ser un número igual o mayor a 0.");
+    if (!Number.isFinite(value) || value < 0 || (field === "floors" && (!Number.isInteger(value)))) {
+      throw new Error(field === "floors" ? "La cantidad de plantas debe ser un entero igual o mayor a 0." : "Las expensas deben ser un número igual o mayor a 0.");
     }
     data[field] = value;
   }
@@ -123,11 +113,7 @@ propertiesRouter.get("/", async (request, response) => {
 
   if (operation) filter.operation = operation;
   if (type) {
-    const legacyTypes = type === "Propiedad"
-      ? ["Casa", "Departamento"]
-      : type === "Local comercial"
-        ? ["Local", "Oficina"]
-        : [];
+    const legacyTypes = type === "Local comercial" ? ["Local"] : [];
     filter.propertyType = { $in: [type, ...legacyTypes] };
   }
   const properties = await Property.find(filter).sort({ featured: -1, createdAt: -1 });
@@ -169,9 +155,10 @@ adminPropertiesRouter.patch("/:id", upload.array("images", 12), async (request, 
     data.featured = await validateFeatured(data.featured === true, String(data.status ?? "draft"), id);
     images = await uploadImages((request.files as Express.Multer.File[]) ?? []);
     let update: Record<string, unknown> = { ...data };
-    const optionalFields = ["floors", "hasExpenses", "expenses", "balcony", "serviceRoom", "backyard", "patio", "laundryRoom", "grill", "quincho", "pool", "kitchen", "livingRoom", "diningRoom", "toilette", "furnished", "hasAmenities", "amenities"];
+    const optionalFields = ["bedrooms", "bathrooms", "parkingSpaces", "floors", "hasExpenses", "expenses", "balcony", "serviceRoom", "backyard", "patio", "laundryRoom", "grill", "quincho", "pool", "kitchen", "livingRoom", "diningRoom", "toilette", "furnished", "hasAmenities", "amenities"];
     const unset: Record<string, ""> = {};
     for (const field of optionalFields) {
+      if (["bedrooms", "bathrooms", "parkingSpaces"].includes(field) && !(field in request.body)) { delete update[field]; continue; }
       if ((field in request.body || field in data) && update[field] === undefined) { delete update[field]; unset[field] = ""; }
       else if (!(field in request.body)) delete update[field];
     }

@@ -40,6 +40,8 @@ export default function PropertyDetailPage() {
     );
   }
 
+  const hasCharacteristics = property.features.length > 0 || property.comforts.length > 0 || Boolean(property.amenities);
+
   return (
     <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
 
@@ -72,7 +74,7 @@ export default function PropertyDetailPage() {
           </div>
         </aside>
       </div>
-      <section className="mt-12 grid gap-10 border-t border-black/10 pt-10 lg:grid-cols-[1fr_0.9fr]">
+      <section className={`mt-12 grid gap-10 border-t border-black/10 pt-10 ${hasCharacteristics ? "lg:grid-cols-[1fr_0.9fr]" : ""}`}>
         <div>
           <h2 className="text-2xl font-semibold tracking-tight">Descripción</h2>
           <p className="mt-4 max-w-2xl leading-7 text-black/65">
@@ -86,7 +88,7 @@ export default function PropertyDetailPage() {
             {property.address}
           </p>
         </div>
-        {(property.features.length > 0 || property.comforts.length > 0 || property.amenities) && <div>
+        {hasCharacteristics && <div>
           <h2 className="text-2xl font-semibold tracking-tight">
             Características
           </h2>
@@ -94,7 +96,7 @@ export default function PropertyDetailPage() {
             {property.features.map((feature) => (
               <div
                 key={feature.label}
-                className="border-b border-r border-black/10 p-4"
+                className="border-b border-r border-black/10 p-4 last:odd:col-span-2"
               >
                 <dt className="text-xs uppercase tracking-wide text-black/50">
                   {feature.label}

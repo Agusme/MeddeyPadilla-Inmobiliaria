@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import PropertyFormAccordion from "@/components/properties/PropertyFormAccordion";
 import { hasResidentialFeatures } from "@/lib/propertyTypes";
 import { resolveHasExpenses, resolveHasAmenities } from "@/lib/propertyAdditionalData";
+import Select from "@/components/ui/Select";
 import PropertyQuantityField from "@/components/properties/PropertyQuantityField";
 
 export type NewPropertyFeatures = {
@@ -63,7 +64,7 @@ export default function PropertyFeaturesFields({ propertyType, initial, children
       <div className="grid grid-cols-2 items-end gap-x-4 gap-y-3 sm:grid-cols-3 xl:grid-cols-6">
         {children}
         <div className={residential ? "min-w-0" : "hidden"}>
-          <PropertyQuantityField name="floors" label="Plantas" value={floors} onChange={setFloors} min={1} />
+          <PropertyQuantityField name="floors" label="Plantas" value={floors} onChange={setFloors} min={0} />
         </div>
       </div>
     </PropertyFormAccordion>
@@ -83,10 +84,7 @@ export default function PropertyFeaturesFields({ propertyType, initial, children
           <legend className="text-sm font-medium text-[#171717]">Expensas</legend>
           <div className="flex flex-wrap items-start gap-x-2">
             <div className="w-30 shrink-0">
-            <select aria-label="Expensas" name="hasExpenses" value={String(hasExpenses)} onChange={(event) => setHasExpenses(event.target.value === "true")} className={inputClass}>
-              <option value="true">Sí</option>
-              <option value="false">No</option>
-            </select>
+            <Select label="Expensas" name="hasExpenses" value={String(hasExpenses)} onChange={value => setHasExpenses(value === "true")} options={[{ value: "true", label: "Sí" }, { value: "false", label: "No" }]} />
             </div>
           {hasExpenses === true ? (
             <div className="w-40 max-w-full">
@@ -99,10 +97,7 @@ export default function PropertyFeaturesFields({ propertyType, initial, children
           <legend className="text-sm font-medium text-[#171717]">Amenities</legend>
           <div className="flex flex-wrap items-start gap-x-2">
             <div className="w-30 shrink-0">
-            <select aria-label="Amenities" name="hasAmenities" value={String(hasAmenities)} onChange={(event) => setHasAmenities(event.target.value === "true")} className={inputClass}>
-              <option value="true">Sí</option>
-              <option value="false">No</option>
-            </select>
+            <Select label="Amenities" name="hasAmenities" value={String(hasAmenities)} onChange={value => setHasAmenities(value === "true")} options={[{ value: "true", label: "Sí" }, { value: "false", label: "No" }]} />
             </div>
           {hasAmenities === true ? (
             <div className="w-64 max-w-full">
