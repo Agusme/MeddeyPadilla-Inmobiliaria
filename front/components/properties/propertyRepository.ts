@@ -1,5 +1,6 @@
 import type { Property } from "@/components/properties/propertyData";
 import { getPublicProperties, getPublicProperty, publicImageUrl, type ApiProperty, type PublicPropertyFilters } from "@/lib/api";
+import { hasPositiveValue } from "@/lib/propertyVisibility";
 import { formatPropertyPrice } from "@/lib/formatPrice";
 import { formatExpenses, formatAmenities } from "@/lib/propertyAdditionalData";
 
@@ -22,12 +23,12 @@ function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
   const location = [property.street, property.city].filter(Boolean).join(", ");
   const features: PublicPropertyDetail["features"] = [];
 
-  if (property.bedrooms !== undefined) features.push({ label: "Dormitorios", value: property.bedrooms });
-  if (property.bathrooms !== undefined) features.push({ label: "Baños", value: property.bathrooms });
-  if (property.coveredArea !== undefined) features.push({ label: "Superficie cubierta", value: `${property.coveredArea} m²` });
-  if (property.totalArea !== undefined) features.push({ label: "Superficie total", value: `${property.totalArea} m²` });
-  if (property.parkingSpaces !== undefined) features.push({ label: "Cochera", value: property.parkingSpaces });
-  if (property.floors !== undefined) features.push({ label: "Plantas", value: property.floors });
+  if (hasPositiveValue(property.bedrooms)) features.push({ label: "Dormitorios", value: property.bedrooms });
+  if (hasPositiveValue(property.bathrooms)) features.push({ label: "Baños", value: property.bathrooms });
+  if (hasPositiveValue(property.coveredArea)) features.push({ label: "Superficie cubierta", value: `${property.coveredArea} m²` });
+  if (hasPositiveValue(property.totalArea)) features.push({ label: "Superficie total", value: `${property.totalArea} m²` });
+  if (hasPositiveValue(property.parkingSpaces)) features.push({ label: "Cochera", value: property.parkingSpaces });
+  if (hasPositiveValue(property.floors)) features.push({ label: "Plantas", value: property.floors });
   const expenses = formatExpenses(property);
   if (expenses !== undefined) features.push({ label: "Expensas", value: expenses });
 
@@ -39,9 +40,9 @@ function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
   const comforts = comfortLabels.filter(([field]) => property[field] === true).map(([, label]) => label);
 
   const details = [
-    property.bedrooms !== undefined ? `${property.bedrooms} ${property.bedrooms === 1 ? "dormitorio" : "dormitorios"}` : undefined,
-    property.bathrooms !== undefined ? `${property.bathrooms} ${property.bathrooms === 1 ? "baño" : "baños"}` : undefined,
-    property.coveredArea !== undefined ? `${property.coveredArea} m²` : undefined,
+    hasPositiveValue(property.bedrooms) ? `${property.bedrooms} ${property.bedrooms === 1 ? "dormitorio" : "dormitorios"}` : undefined,
+    hasPositiveValue(property.bathrooms) ? `${property.bathrooms} ${property.bathrooms === 1 ? "baño" : "baños"}` : undefined,
+    hasPositiveValue(property.coveredArea) ? `${property.coveredArea} m²` : undefined,
   ].filter((detail): detail is string => Boolean(detail));
 
   return {

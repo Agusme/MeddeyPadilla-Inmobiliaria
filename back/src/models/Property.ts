@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { validPropertyTypes } from "../utils/propertyTypes";
 
 const imageSchema = new Schema(
   { url: { type: String, required: true }, publicId: { type: String }, position: { type: Number, required: true } },
@@ -10,7 +11,7 @@ const propertySchema = new Schema(
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
     title: { type: String, required: true, trim: true },
     operation: { type: String, required: true, enum: ["Venta", "Alquiler"] },
-    propertyType: { type: String, required: true, trim: true },
+    propertyType: { type: String, required: true, trim: true, enum: validPropertyTypes },
     price: { type: Number, required: true, min: 0 },
     currency: { type: String, required: true, enum: ["USD", "ARS"] },
     status: { type: String, required: true, enum: ["draft", "published"], default: "draft" },
@@ -21,7 +22,7 @@ const propertySchema = new Schema(
     bedrooms: { type: Number, min: 0 },
     bathrooms: { type: Number, min: 0 },
     parkingSpaces: { type: Number, min: 0 },
-    floors: { type: Number, min: 1, validate: { validator: Number.isInteger, message: "La cantidad de plantas debe ser un número entero positivo." } },
+    floors: { type: Number, min: 0, validate: { validator: Number.isInteger, message: "La cantidad de plantas debe ser un número entero igual o mayor a 0." } },
     hasExpenses: { type: Boolean },
     expenses: { type: Number, min: 0 },
     balcony: { type: Boolean },

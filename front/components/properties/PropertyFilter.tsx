@@ -1,9 +1,17 @@
 "use client";
 
-import { FormEvent, useEffect, useRef } from "react";
-import { propertyTypeOptions } from "@/lib/propertyTypes";
+import { FormEvent, useState, useSyncExternalStore } from "react";
+import PropertyTypeSelect from "@/components/properties/PropertyTypeSelect";
+import Select from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 import { Search } from "lucide-react";
+
+const subscribeToUrl = (callback: () => void) => {
+  window.addEventListener("popstate", callback);
+  return () => window.removeEventListener("popstate", callback);
+};
+const operationFromUrl = () => new URLSearchParams(window.location.search).get("operation") ?? "";
+const typeFromUrl = () => new URLSearchParams(window.location.search).get("type") ?? "";
 
 type PropertyFilterProps = {
   overlay?: boolean;
@@ -14,17 +22,13 @@ export default function PropertyFilter({
   overlay = false,
   onSearch,
 }: PropertyFilterProps) {
-  const typeSelect = useRef<HTMLSelectElement>(null);
-  const operationSelect = useRef<HTMLSelectElement>(null);
+  const urlType = useSyncExternalStore(subscribeToUrl, typeFromUrl, () => "");
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const propertyType = selectedType ?? urlType;
+  const urlOperation = useSyncExternalStore(subscribeToUrl, operationFromUrl, () => "");
+  const [selectedOperation, setSelectedOperation] = useState<string | null>(null);
   const searchIcon = <Search aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />;
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (typeSelect.current) typeSelect.current.value = params.get("type") ?? "";
-    if (operationSelect.current) {
-      operationSelect.current.value = params.get("operation") ?? "";
-    }
-  }, []);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     if (!onSearch) return;
@@ -55,45 +59,13 @@ export default function PropertyFilter({
             : "grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-center lg:gap-1"
         }
       >
-        <label
-          className={
-            overlay
-              ? "flex h-12 w-full flex-col justify-center rounded-[11px] border border-black/10 bg-white px-4 text-sm font-normal text-black shadow-sm transition-colors focus-within:ring-2 focus-within:ring-[#B71C1C]/50"
-              : "flex h-11 w-full items-center rounded-lg px-3 text-sm font-normal text-[#171717] transition-colors focus-within:bg-black/[0.02] focus-within:ring-2 focus-within:ring-inset focus-within:ring-[#B71C1C]/35 sm:px-4 lg:rounded-none lg:border-r lg:border-black/10"
-          }
-        >
-          <span className="sr-only">Tipo de propiedad</span>
-          <select
-            ref={typeSelect}
-            name="type"
-            defaultValue=""
-            className="w-full cursor-pointer bg-transparent text-sm text-black outline-none"
-          >
-            <option value="" disabled>Tipo de propiedad</option>
-            {propertyTypeOptions.map(({ value, label }) => (
-              <option key={value} value={value}>{label}</option>
-            ))}
-          </select>
-        </label>
-        <label
-          className={
-            overlay
-              ? "flex h-12 w-full flex-col justify-center rounded-[11px] border border-black/10 bg-white px-4 text-sm font-normal text-black shadow-sm transition-colors focus-within:ring-2 focus-within:ring-[#B71C1C]/50"
-              : "flex h-11 w-full items-center rounded-lg px-3 text-sm font-normal text-[#171717] transition-colors focus-within:bg-black/[0.02] focus-within:ring-2 focus-within:ring-inset focus-within:ring-[#B71C1C]/35 sm:px-4 lg:rounded-none"
-          }
-        >
-          <span className="sr-only">Tipo de operación</span>
-          <select
-            ref={operationSelect}
-            name="operation"
-            defaultValue=""
-            className="w-full cursor-pointer bg-transparent text-sm text-black outline-none"
-          >
-            <option value="" disabled>Tipo de operación</option>
-            <option value="Venta">Venta</option>
-            <option value="Alquiler">Alquiler</option>
-          </select>
-        </label>
+        <PropertyTypeSelect
+          name="type" value={propertyType} onChange={setSelectedType}
+          variant={overlay ? "hero" : "public"}
+        />
+        <Select name="operation" label="Tipo de operación" placeholder="Tipo de operación"
+          variant={overlay ? "hero" : "public"} value={selectedOperation ?? urlOperation} onChange={setSelectedOperation}
+          options={[{ value: "Venta", label: "Venta" }, { value: "Alquiler", label: "Alquiler" }]} />
         {overlay ? (
           <Button
             type="submit"
