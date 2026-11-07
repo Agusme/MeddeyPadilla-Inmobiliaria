@@ -15,6 +15,8 @@ type ImageWithSkeletonProps = {
   imageClassName?: string;
   skeletonClassName?: string;
   propertyImageUse?: PropertyImageUse;
+  revealImmediately?: boolean;
+  eager?: boolean;
 };
 
 export default function ImageWithSkeleton({
@@ -27,6 +29,8 @@ export default function ImageWithSkeleton({
   imageClassName = "",
   skeletonClassName = "",
   propertyImageUse,
+  revealImmediately = false,
+  eager = false,
 }: ImageWithSkeletonProps) {
   const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
   const [errorSrc, setErrorSrc] = useState<string | null>(null);
@@ -47,12 +51,16 @@ export default function ImageWithSkeleton({
       fill
       unoptimized={variants ? true : undefined}
       priority={variants ? false : priority}
-      loading={variants && priority ? "eager" : undefined}
+      loading={eager || (variants && priority) ? "eager" : undefined}
       fetchPriority={variants && priority ? "high" : undefined}
       sizes={sizes}
       onLoad={() => setLoadedSrc(src)}
+      ref={revealImmediately ? (element) => {
+        // Cached images can already be complete before their load handler attaches.
+        if (element?.complete && element.naturalWidth > 0) setLoadedSrc(src);
+      } : undefined}
       onError={() => setErrorSrc(src)}
-      className={`${fit === "contain" ? "object-contain" : "object-cover"} transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"} ${imageClassName}`}
+      className={`${fit === "contain" ? "object-contain" : "object-cover"} ${revealImmediately ? "" : `transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`} ${imageClassName}`}
     />
   );
 
@@ -61,7 +69,7 @@ export default function ImageWithSkeleton({
       className={`absolute inset-0 overflow-hidden ${containerClassName}`}
       aria-busy={hasSource && !isLoaded && !hasError}
     >
-      {!isLoaded && (
+      {!isLoaded && !(revealImmediately && (priority || fit === "contain")) && (
         <div
           aria-hidden="true"
           className={`absolute inset-0 ${hasError || !hasSource ? "" : "animate-pulse"} bg-linear-to-br from-black/10 via-black/5 to-black/10 ${skeletonClassName}`}

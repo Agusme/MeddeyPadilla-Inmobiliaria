@@ -4,6 +4,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { cloudinaryImageVariants } from "../lib/cloudinaryImages";
 import ImageWithSkeleton from "../components/ui/ImageWithSkeleton";
+import PropertyGallery from "../components/properties/PropertyGallery";
 
 const src = "https://res.cloudinary.com/example/image/upload/v123/properties/photo.jpg";
 
@@ -57,4 +58,41 @@ test("local images keep their existing Next.js path even when optimization is re
   }));
   assert.doesNotMatch(html, /<picture>|f_auto|res.cloudinary.com/);
   assert.match(html, /loading="lazy"/);
+});
+
+test("public cards are visible without a load event while their skeleton stays behind the image", () => {
+  const html = renderToStaticMarkup(createElement(ImageWithSkeleton, {
+    src, alt: "Tarjeta", sizes: "33vw", propertyImageUse: "card", revealImmediately: true,
+  }));
+  const img = html.match(/<img\b[^>]*>/)![0];
+  assert.doesNotMatch(img, /opacity-0|transition-opacity/);
+  assert.match(img, /loading="lazy"/);
+  assert.match(html, /animate-pulse/);
+});
+
+test("public gallery prioritizes only the initial photo and does not prefetch the whole gallery", () => {
+  const html = renderToStaticMarkup(createElement(PropertyGallery, {
+    images: [src, src.replace("photo.jpg", "other.jpg")], title: "Propiedad", optimizeImages: true,
+  }));
+  const images = html.match(/<img\b[^>]*>/g)!;
+  assert.equal(images.length, 3);
+  assert.match(images[0], /loading="eager"/);
+  assert.match(images[0], /fetchPriority="high"/);
+  assert.doesNotMatch(images[0], /opacity-0|transition-opacity/);
+  assert.match(images[1], /loading="lazy"/);
+  assert.match(images[2], /loading="lazy"/);
+  assert.equal((html.match(/rel="preload"/g) ?? []).length, 1);
+  const preloadTag = html.match(/<link[^>]*rel="preload"[^>]*>/)![0];
+  const source = html.match(/<source[^>]*>/)![0];
+  assert.equal(preloadTag.match(/imageSrcSet="([^"]+)"/)![1], source.match(/srcSet="([^"]+)"/)![1]);
+  assert.equal(preloadTag.match(/imageSizes="([^"]+)"/)![1], source.match(/sizes="([^"]+)"/)![1]);
+});
+
+test("admin gallery retains its existing loading presentation", () => {
+  const html = renderToStaticMarkup(createElement(PropertyGallery, {
+    images: ["/image1.webp"], title: "Administración",
+  }));
+  assert.match(html, /animate-pulse/);
+  assert.match(html, /opacity-0/);
+  assert.match(html, /transition-opacity duration-300/);
 });
