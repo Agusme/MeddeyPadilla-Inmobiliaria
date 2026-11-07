@@ -30,7 +30,7 @@ export default function AdminPage() {
   return (
     <div
       className="relative flex min-h-[calc(100dvh-11rem)] items-center justify-center overflow-hidden bg-[#171717] bg-cover bg-center bg-no-repeat px-5 py-12 sm:px-8"
-      style={{ backgroundImage: "url('/home/herohom.jpg')" }}
+      style={{ backgroundImage: "url('/home/herohom.webp')" }}
     >
       <div aria-hidden="true" className="absolute inset-0 bg-black/35" />
       <section

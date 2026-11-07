@@ -2,18 +2,20 @@
 import ContactCta from "@/components/ui/ContactCta";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import HomeFeaturedProperties from "@/components/properties/HomeFeaturedProperties";
-import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
     <>
       <section className="relative isolate min-h-[380px] overflow-hidden sm:min-h-[calc(100dvh-73px)] md:min-h-[min(54svh,500px)] xl:min-h-[calc(100dvh-73px)]">
-        <ImageWithSkeleton
-          src="/home/herohom.jpg"
+        <Image
+          src="/home/herohom.webp"
           alt="Casa con piscina y espacios exteriores"
+          fill
           priority
-          imageClassName="object-[42%_center] sm:scale-105 sm:object-center"
+          fetchPriority="high"
+          className="object-cover object-[42%_center] sm:scale-105 sm:object-center"
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/45 to-black/20 sm:bg-black/45" />
@@ -41,7 +43,7 @@ export default function Home() {
         </div>
       </section>
       <section
-        className="mx-auto max-w-7xl px-6 py-8 sm:px-8 sm:py-14 md:py-10 lg:px-12 lg:py-14"
+        className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-14 md:py-10 lg:py-14 xl:px-12"
         aria-labelledby="featured-properties-title"
       >
         <div className="mb-8 flex flex-col items-start gap-5 md:mb-6 lg:mb-8 lg:flex-row lg:items-end lg:justify-between">

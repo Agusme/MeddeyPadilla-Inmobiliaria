@@ -23,6 +23,7 @@ export default function ContactCta({
           <div className="relative min-h-64">
           <ImageWithSkeleton
             src="/cta.webp"
+            revealImmediately
             alt="Entrega de llaves de una propiedad"
             sizes="(max-width: 1024px) 100vw, 45vw"
           />
