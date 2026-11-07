@@ -32,14 +32,14 @@ export default function Home() {
           </div>
           <div className="mt-10 hidden w-full xl:block">
             <div className="w-full max-w-6xl">
-              <PropertyFilter overlay />
+              <PropertyFilter overlay autoSearch />
             </div>
           </div>
         </div>
       </section>
       <section className="bg-white px-5 pt-4 pb-1 sm:px-8 sm:pt-6 sm:pb-2 md:pt-4 md:pb-0 xl:hidden" aria-label="Buscar propiedades">
         <div className="mx-auto flex w-full max-w-7xl justify-center">
-          <PropertyFilter overlay />
+          <PropertyFilter overlay autoSearch />
         </div>
       </section>
       <section
