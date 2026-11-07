@@ -54,12 +54,12 @@ function WhatsappIcon() {
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] text-white">
-      <div className="mx-auto grid max-w-7xl justify-items-center gap-10 px-6 py-10 text-center sm:grid-cols-2 sm:justify-items-start sm:text-left lg:px-8 xl:grid-cols-3">
-        <div className="w-full">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-x-8 gap-y-5 px-5 py-6 text-center sm:text-left sm:grid-cols-2 sm:gap-y-6 sm:px-8 sm:py-8 md:grid-cols-[0.8fr_0.7fr_1.5fr] lg:grid-cols-[1fr_1fr_1.2fr] xl:px-12">
+        <div className="hidden w-full sm:block">
           <Link
             href="/"
             aria-label="Ir al inicio"
-            className="mx-auto mb-8 block w-fit"
+            className="mx-auto block w-fit sm:mx-0"
           >
             <Image
               src="/logo/logoFooter1.png"
@@ -72,10 +72,10 @@ export default function Footer() {
         </div>
 
         <div className="w-full">
-          <h2 className="mb-5 text-sm font-semibold uppercase tracking-widest text-white">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-white">
             Navegación
           </h2>
-          <ul className="space-y-3 text-sm text-white/75">
+          <ul className="space-y-2 text-sm text-white/75">
             {navigationLinks.map((link) => (
               <li key={link.href}>
                 <Link
@@ -89,8 +89,31 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div className="w-full">
-          <div className="mb-5 flex justify-center gap-3 sm:justify-start">
+        <div className="min-w-0 sm:col-span-2 md:col-span-1">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-widest text-white">
+            Contacto
+          </h2>
+          <address className="space-y-2 text-sm not-italic leading-6 text-white/75">
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Congreso%20603%2C%20piso%205%2C%20oficina%20C%2C%20San%20Miguel%20de%20Tucum%C3%A1n"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Ver ubicación en Google Maps"
+              className="flex items-start justify-center gap-2 transition hover:text-white sm:justify-start"
+            >
+              <MapPin aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" strokeWidth={1.8} />
+              <span>Congreso 603, piso 5, oficina C</span>
+            </a>
+            <a
+              href="mailto:meddepadillainmo@gmail.com"
+              aria-label="Enviar un correo a meddepadillainmo@gmail.com"
+              className="flex items-start justify-center gap-2 transition hover:text-white sm:justify-start"
+            >
+              <Mail aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />
+              <span className="min-w-0 break-words">meddepadillainmo@gmail.com</span>
+            </a>
+          </address>
+          <div className="mt-4 flex justify-center gap-3 sm:justify-start">
             <a
               aria-label="Facebook"
               href="https://www.facebook.com/profile.php?id=61587494125747&mibextid=wwXIfr&rdid=F78yUKJ9Y8y1A3Tt&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F18DGxUozJ6%2F%3Fmibextid%3DwwXIfr#"
@@ -119,32 +142,12 @@ export default function Footer() {
               <WhatsappIcon />
             </a>
           </div>
-          <address className="mx-auto mt-7 w-fit space-y-3 text-left text-sm not-italic leading-6 text-white/75 sm:mx-0">
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Congreso%20603%2C%20piso%205%2C%20oficina%20C%2C%20San%20Miguel%20de%20Tucum%C3%A1n"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Ver ubicación en Google Maps"
-              className="flex items-center gap-3 transition hover:text-white"
-            >
-              <MapPin aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />
-              <span>Congreso 603, piso 5, oficina C</span>
-            </a>
-            <a
-              href="mailto:meddepadillainmo@gmail.com"
-              aria-label="Enviar un correo a meddepadillainmo@gmail.com"
-              className="flex items-center gap-3 transition hover:text-white"
-            >
-              <Mail aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />
-              <span>meddepadillainmo@gmail.com</span>
-            </a>
-          </address>
         </div>
       </div>
-      <div className="border-t border-white/10 px-6 py-5 text-center text-xs text-white/60">
+      <div className="border-t border-white/10 px-5 pt-4 pb-24 text-center text-xs text-white/60 sm:px-8 sm:pb-4 xl:px-12">
         © {new Date().getFullYear()} Medde & Padilla. Todos los derechos
         reservados.
-        <p className="mt-2">
+        <p className="mt-1">
           Desarrollado por{" "}
           <a
             href="https://wa.me/543815633405"
