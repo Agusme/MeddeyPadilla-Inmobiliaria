@@ -36,6 +36,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       <div className="relative aspect-[3/2] bg-black/5">
         <ImageWithSkeleton
           src={property.image}
+          propertyImageUse="card"
           alt={property.title}
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           imageClassName="transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:transform-none"

@@ -4,7 +4,7 @@ import { useState } from "react";
 import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function PropertyGallery({ images, title }: { images: string[]; title: string }) {
+export default function PropertyGallery({ images, title, optimizeImages = false }: { images: string[]; title: string; optimizeImages?: boolean }) {
   const [active, setActive] = useState(0);
 
   if (!images.length) return null;
@@ -17,6 +17,7 @@ export default function PropertyGallery({ images, title }: { images: string[]; t
       <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-[#f4f4f4] sm:aspect-[16/10] lg:aspect-auto lg:h-[min(38vw,32rem)]">
         <ImageWithSkeleton
           src={images[active]}
+          propertyImageUse={optimizeImages ? "detail" : undefined}
           alt={`${title} — foto ${active + 1}`}
           priority={active === 0}
           sizes="(min-width: 1024px) 58vw, 100vw"
@@ -60,6 +61,7 @@ export default function PropertyGallery({ images, title }: { images: string[]; t
             >
               <ImageWithSkeleton
                 src={image}
+                propertyImageUse={optimizeImages ? "thumbnail" : undefined}
                 alt=""
                 sizes="112px"
               />
