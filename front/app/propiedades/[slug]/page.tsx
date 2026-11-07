@@ -46,7 +46,7 @@ export default function PropertyDetailPage() {
     <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
 
       <div className="mt-7 grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.55fr)]">
-        <PropertyGallery images={property.images} title={property.title} />
+        <PropertyGallery images={property.images} title={property.title} optimizeImages />
         <aside className="h-fit border border-black/10 bg-white p-6 shadow-sm sm:p-7">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#B71C1C]">
             {property.operation} · {property.type}
