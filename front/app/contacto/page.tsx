@@ -2,7 +2,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import GoogleMap from "@/components/contact/GoogleMap";
 import ContactForm from "@/components/contact/ContactForm";
 import Image from "next/image";
-import { ArrowRight, Building2, Check, House, MapPin, Phone, Store, Warehouse } from "lucide-react";
+import { Building2, Check, House, MapPin, Phone, Store, Warehouse } from "lucide-react";
 
 const administrationBenefits = [
   "Administración de alquileres",
@@ -106,81 +106,82 @@ export default async function ContactoPage({
 
   return (
     <div className="overflow-hidden bg-white">
-      <section className={`mx-auto max-w-7xl px-4 md:px-8 lg:px-12 ${isAdministration ? "pb-8 pt-6 sm:pb-16 sm:pt-10" : "py-8 sm:py-16"}`}>
-        <header className="mb-6 sm:mb-8">
-          {isAdministration ? (
+      <section className="mx-auto max-w-7xl px-4 pb-8 pt-6 md:px-8 md:py-12 lg:px-12">
+        {isAdministration && (
+          <header className="mb-6 hidden md:mb-8 md:block">
             <AdministrationPresentation />
-          ) : (
-            <SectionHeading
-              title="Estamos para acompañarte"
-              description="Contanos qué necesitás y te ayudamos a dar el próximo paso con la atención personalizada que buscás."
-            />
-          )}
-        </header>
+          </header>
+        )}
 
-        <div className="grid grid-cols-1 overflow-hidden border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] sm:rounded-2xl lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="grid grid-cols-1 gap-y-5 lg:grid-cols-[0.95fr_1.05fr] lg:grid-rows-[auto_1fr] lg:gap-y-0 lg:overflow-hidden lg:rounded-2xl lg:bg-gradient-to-br lg:from-[#C52A2A] lg:via-[#A91E1E] lg:to-[#791717] lg:shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)]">
+          <div className="hidden min-w-0 lg:col-start-1 lg:row-start-1 lg:block lg:px-8 lg:pt-8">
+            <h2 className="hidden text-2xl font-semibold tracking-tight text-white lg:block">
+              Contactanos directamente
+            </h2>
+            <p className="mt-2 hidden leading-7 text-white/70 lg:block">
+              Elegí cómo preferís comunicarte con nosotros
+            </p>
+          </div>
+
           <section
-            className="min-w-0 overflow-hidden bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] p-4 text-white sm:p-8"
+            className="min-w-0 rounded-2xl border border-black/10 bg-white p-4 shadow-sm md:p-6 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:rounded-none lg:border-0 lg:p-8 lg:shadow-none"
+            aria-labelledby="contact-form-title"
+          >
+            <h2 id="contact-form-title" className="text-2xl font-semibold tracking-tight text-[#171717]">
+              Envianos una consulta
+            </h2>
+            <p className="mt-2 leading-7">
+              Completá el formulario y nos comunicaremos con vos a la brevedad.
+            </p>
+            <ContactForm key={isAdministration ? "administracion" : "general"} initialMessage={initialMessage} />
+          </section>
+
+          <section
+            className="min-w-0 overflow-hidden rounded-2xl bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] p-4 text-white md:p-6 lg:col-start-1 lg:row-start-2 lg:rounded-none lg:bg-none lg:p-8 lg:pt-5"
             aria-label="Datos de contacto"
           >
-            <p className="max-w-md leading-7 text-white/70">
-              Acercate a nuestra oficina en el centro de San Miguel de Tucumán o
-              contactanos por teléfono y WhatsApp.
-            </p>
-            <address className="mt-5 space-y-3 text-sm not-italic text-white/85 sm:mt-7 sm:space-y-4">
+            <h2 className="mb-4 text-2xl font-semibold tracking-tight lg:hidden">Datos de contacto</h2>
+            <address className="flex flex-col gap-4 text-sm not-italic text-white/85">
               <a
                 href="https://www.google.com/maps/search/?api=1&query=Congreso%20603%2C%20piso%205%2C%20oficina%20C%2C%20San%20Miguel%20de%20Tucum%C3%A1n"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-start gap-3 transition hover:text-[#e16a62]"
+                className="order-2 flex items-start gap-3 transition hover:text-[#e16a62]"
               >
                 <MapPin aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />
                 <span>Congreso 603, piso 5</span>
               </a>
-              <div className="flex items-start gap-3">
+              <div className="order-1 flex items-start gap-3">
                 <Phone aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={1.8} />
 
-                <div className="flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:gap-3">
+                <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-2 text-sm lg:flex-nowrap">
                   <a
                     href="tel:+5493816806570"
-                    className="transition hover:text-[#e16a62]"
+                    className="whitespace-nowrap transition hover:text-[#e16a62]"
                   >
-                    +54 9 381 680-6570
+                    381 680-6570
                   </a>
-
-                  <span className="hidden text-white/50 sm:inline">|</span>
-
+                  <span aria-hidden="true" className="hidden text-white/40 lg:inline">|</span>
                   <a
                     href="tel:+5493814544929"
-                    className="transition hover:text-[#e16a62]"
+                    className="whitespace-nowrap transition hover:text-[#e16a62]"
                   >
-                    +54 9 381 454-4929
+                    381 454-4929
                   </a>
-
-                  <span className="hidden text-white/50 sm:inline">|</span>
-
+                  <span aria-hidden="true" className="hidden text-white/40 lg:inline">|</span>
                   <a
                     href="tel:+5493814410232"
-                    className="transition hover:text-[#e16a62]"
+                    className="whitespace-nowrap transition hover:text-[#e16a62]"
                   >
-                    +54 9 381 441-0232
+                    381 441-0232
                   </a>
                 </div>
               </div>
             </address>
-            <a
-              href="https://wa.me/5493816806570"
-              target="_blank"
-              rel="noreferrer"
-              className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#B71C1C] shadow-lg shadow-black/30 transition hover:bg-white/90 sm:mt-7 sm:w-fit"
-            >
-              Escribinos por WhatsApp{" "}
-              <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" strokeWidth={1.8} />
-            </a>
-            <div className="mt-5 w-full overflow-hidden rounded-xl border border-white/15 sm:mt-8">
+            <div className="mt-5 w-full overflow-hidden rounded-xl border border-white/15">
               <GoogleMap />
             </div>
-            <div className="mt-5 border-t border-white/15 pt-4 sm:mt-7 sm:pt-6">
+            <div className="mt-4 border-t border-white/15 pt-4">
               <div className="flex gap-3">
                 <a
                   aria-label="Facebook"
@@ -204,15 +205,6 @@ export default async function ContactoPage({
             </div>
           </section>
 
-          <section
-            className="min-w-0 p-4 sm:p-8 lg:px-10 lg:pb-10"
-            aria-label="Formulario de contacto"
-          >
-            <p className="leading-7">
-              Completá el formulario y nos comunicaremos con vos a la brevedad.
-            </p>
-            <ContactForm key={isAdministration ? "administracion" : "general"} initialMessage={initialMessage} />
-          </section>
         </div>
       </section>
     </div>
