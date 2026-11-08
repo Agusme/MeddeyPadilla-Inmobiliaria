@@ -1,9 +1,44 @@
 "use client";
 
 import { useAdminAuthenticated } from "@/components/auth/useAdminAuthenticated";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
+
+const mobileQuery = "(width < 768px)";
+const subscribeToMobile = (callback: () => void) => {
+  const media = window.matchMedia(mobileQuery);
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+};
+const isMobile = () => window.matchMedia(mobileQuery).matches;
+const serverIsMobile = () => false;
 
 export default function FloatingWhatsapp() {
   const authenticated = useAdminAuthenticated();
+  const pathname = usePathname();
+  const mobile = useSyncExternalStore(subscribeToMobile, isMobile, serverIsMobile);
+  const [searchStatus, setSearchStatus] = useState({ pathname: "", passed: false });
+  const waitingForSearch = pathname === "/" &&
+    (searchStatus.pathname !== pathname || !searchStatus.passed);
+  const hidden = mobile && waitingForSearch;
+
+  useEffect(() => {
+    if (pathname !== "/" || !mobile) return;
+    const search = document.getElementById("home-property-search");
+    if (!search) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setSearchStatus({
+        pathname,
+        passed: !entry.isIntersecting && entry.boundingClientRect.bottom <= 0,
+      });
+    }, { threshold: 0 });
+    observer.observe(search);
+    return () => {
+      observer.disconnect();
+      setSearchStatus({ pathname: "", passed: false });
+    };
+  }, [pathname, mobile]);
 
   return (
     <>
@@ -13,7 +48,10 @@ export default function FloatingWhatsapp() {
       target="_blank"
       rel="noreferrer"
       aria-label="Contactar por WhatsApp al +54 9 3816 80-6570"
-      className="fixed bottom-6 right-6 max-md:bottom-[max(12px,env(safe-area-inset-bottom))] max-md:right-3 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 transition hover:-translate-y-1 hover:bg-[#1ebe5d] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
+      aria-hidden={hidden || undefined}
+      inert={hidden}
+      tabIndex={hidden ? -1 : undefined}
+      className={`fixed bottom-6 right-6 max-md:bottom-[max(12px,env(safe-area-inset-bottom))] max-md:right-3 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 transition hover:-translate-y-1 hover:bg-[#1ebe5d] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 max-md:duration-200 motion-reduce:transition-none ${waitingForSearch ? "max-md:opacity-0 max-md:pointer-events-none" : ""}`}
     >
       <svg
         aria-hidden="true"
