@@ -106,8 +106,8 @@ export default async function ContactoPage({
 
   return (
     <div className="overflow-hidden bg-white">
-      <section className={`mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 ${isAdministration ? "pb-12 pt-8 sm:pb-16 sm:pt-10" : "py-12 sm:py-16"}`}>
-        <header className="mb-8">
+      <section className={`mx-auto max-w-7xl px-4 md:px-8 lg:px-12 ${isAdministration ? "pb-8 pt-6 sm:pb-16 sm:pt-10" : "py-8 sm:py-16"}`}>
+        <header className="mb-6 sm:mb-8">
           {isAdministration ? (
             <AdministrationPresentation />
           ) : (
@@ -118,16 +118,16 @@ export default async function ContactoPage({
           )}
         </header>
 
-        <div className="grid overflow-hidden border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] sm:rounded-2xl lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="grid grid-cols-1 overflow-hidden border border-black/10 bg-white shadow-[0_22px_50px_-25px_rgba(0,0,0,0.35)] sm:rounded-2xl lg:grid-cols-[0.95fr_1.05fr]">
           <section
-            className="overflow-hidden bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] p-6 text-white sm:p-8"
+            className="min-w-0 overflow-hidden bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] p-4 text-white sm:p-8"
             aria-label="Datos de contacto"
           >
             <p className="max-w-md leading-7 text-white/70">
               Acercate a nuestra oficina en el centro de San Miguel de Tucumán o
               contactanos por teléfono y WhatsApp.
             </p>
-            <address className="mt-7 space-y-4 text-sm not-italic text-white/85">
+            <address className="mt-5 space-y-3 text-sm not-italic text-white/85 sm:mt-7 sm:space-y-4">
               <a
                 href="https://www.google.com/maps/search/?api=1&query=Congreso%20603%2C%20piso%205%2C%20oficina%20C%2C%20San%20Miguel%20de%20Tucum%C3%A1n"
                 target="_blank"
@@ -172,15 +172,15 @@ export default async function ContactoPage({
               href="https://wa.me/5493816806570"
               target="_blank"
               rel="noreferrer"
-              className="mt-7 inline-flex w-full items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#B71C1C] shadow-lg shadow-black/30 transition  hover:bg-white/90 sm:w-fit"
+              className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#B71C1C] shadow-lg shadow-black/30 transition hover:bg-white/90 sm:mt-7 sm:w-fit"
             >
               Escribinos por WhatsApp{" "}
               <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" strokeWidth={1.8} />
             </a>
-            <div className="mt-8 overflow-hidden rounded-xl border border-white/15">
+            <div className="mt-5 w-full overflow-hidden rounded-xl border border-white/15 sm:mt-8">
               <GoogleMap />
             </div>
-            <div className="mt-7 border-t border-white/15 pt-6">
+            <div className="mt-5 border-t border-white/15 pt-4 sm:mt-7 sm:pt-6">
               <div className="flex gap-3">
                 <a
                   aria-label="Facebook"
@@ -205,7 +205,7 @@ export default async function ContactoPage({
           </section>
 
           <section
-            className="p-6 sm:p-8 lg:px-10 lg:pb-10"
+            className="min-w-0 p-4 sm:p-8 lg:px-10 lg:pb-10"
             aria-label="Formulario de contacto"
           >
             <p className="leading-7">

@@ -20,7 +20,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/45 to-black/20 sm:bg-black/45" />
 
-        <div className="relative mx-auto flex min-h-[380px] max-w-7xl flex-col justify-center px-5 pt-6 pb-10 sm:min-h-[calc(100dvh-73px)] sm:justify-start sm:px-8 sm:py-14 md:min-h-[min(54svh,500px)] md:justify-center md:py-8 xl:min-h-[calc(100dvh-73px)] xl:justify-start xl:px-12 xl:pt-32 xl:pb-0">
+        <div className="relative mx-auto flex min-h-[380px] max-w-7xl flex-col justify-center px-4 pt-6 pb-10 sm:min-h-[calc(100dvh-73px)] sm:justify-start md:px-8 sm:py-14 md:min-h-[min(54svh,500px)] md:justify-center md:py-8 xl:min-h-[calc(100dvh-73px)] xl:justify-start xl:px-12 xl:pt-32 xl:pb-0">
         <div className="max-w-2xl translate-y-3.5 text-white sm:translate-y-0 xl:max-w-4xl">
             <h1 className="max-w-[18rem] text-[32px] font-semibold leading-[1.18] sm:max-w-xl sm:text-5xl sm:leading-tight xl:text-6xl xl:leading-[1.1]">
               Hacemos simple encontrar tu hogar
@@ -37,13 +37,13 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="bg-white px-5 pt-4 pb-1 sm:px-8 sm:pt-6 sm:pb-2 md:pt-4 md:pb-0 xl:hidden" aria-label="Buscar propiedades">
+      <section className="bg-white px-4 pt-4 pb-1 md:px-8 sm:pt-6 sm:pb-2 md:pt-4 md:pb-0 xl:hidden" aria-label="Buscar propiedades">
         <div className="mx-auto flex w-full max-w-7xl justify-center">
           <PropertyFilter overlay autoSearch />
         </div>
       </section>
       <section
-        className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-14 md:py-10 lg:py-14 xl:px-12"
+        className="mx-auto max-w-7xl px-4 py-8 md:px-8 sm:py-14 md:py-10 lg:py-14 xl:px-12"
         aria-labelledby="featured-properties-title"
       >
         <div className="mb-8 flex flex-col items-start gap-5 md:mb-6 lg:mb-8 lg:flex-row lg:items-end lg:justify-between">

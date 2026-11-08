@@ -144,7 +144,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 px-5 pt-4 pb-24 text-center text-xs text-white/60 sm:px-8 sm:pb-4 xl:px-12">
+      <div className="border-t border-white/10 px-5 pt-4 pb-20 text-center text-xs text-white/60 sm:px-8 sm:pb-4 xl:px-12">
         © {new Date().getFullYear()} Medde & Padilla. Todos los derechos
         reservados.
         <p className="mt-1">

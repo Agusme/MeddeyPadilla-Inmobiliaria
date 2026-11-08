@@ -20,7 +20,7 @@ export default function PropertyDetailPage() {
 
   if (!loaded) {
     return (
-      <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
+      <main className="mx-auto max-w-7xl px-4 py-10 md:px-8 sm:py-12 lg:px-12">
         <p className="text-sm text-black/60">Cargando propiedad…</p>
       </main>
     );
@@ -28,7 +28,7 @@ export default function PropertyDetailPage() {
 
   if (!property) {
     return (
-      <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
+      <main className="mx-auto max-w-7xl px-4 py-10 md:px-8 sm:py-12 lg:px-12">
 
         <ButtonLink href="/propiedades">
           Ver todas las propiedades
@@ -43,7 +43,7 @@ export default function PropertyDetailPage() {
   const hasCharacteristics = property.features.length > 0 || property.comforts.length > 0 || Boolean(property.amenities);
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
+    <main className="mx-auto max-w-7xl px-4 py-10 md:px-8 sm:py-12 lg:px-12">
 
       <div className="mt-7 grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.55fr)]">
         <PropertyGallery images={property.images} title={property.title} optimizeImages />

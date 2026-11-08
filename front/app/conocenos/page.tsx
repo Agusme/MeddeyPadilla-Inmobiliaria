@@ -74,7 +74,7 @@ export default function NosotrosPage() {
   return (
     <div className="bg-white text-[#171717]">
      
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 pt-12 pb-14 sm:px-8 sm:pt-16 sm:pb-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-12 lg:pt-16 lg:pb-24">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 pt-12 pb-14 md:px-8 sm:pt-16 sm:pb-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-12 lg:pt-16 lg:pb-24">
           <div>
             <SectionHeading
               title="Confianza que une. Espacios que inspiran."
@@ -105,7 +105,7 @@ export default function NosotrosPage() {
         </div>
       
 
-      <section className="relative isolate mx-auto max-w-7xl rounded-2xl bg-[#B71C1C]/[0.04] px-6 pb-16 pt-8 sm:px-8 sm:pb-20 sm:pt-10 lg:px-12">
+      <section className="relative isolate mx-auto max-w-7xl rounded-2xl bg-[#B71C1C]/[0.04] px-4 pb-16 pt-8 md:px-8 sm:pb-20 sm:pt-10 lg:px-12">
         <SectionHeading
 title="¿Por qué elegirnos?"
           titleClassName="text-[#B71C1C]"
@@ -125,7 +125,7 @@ title="¿Por qué elegirnos?"
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pt-10 pb-6 sm:px-8 sm:pt-12 sm:pb-8 lg:px-12" aria-labelledby="about-services-title">
+      <section className="mx-auto max-w-7xl px-4 pt-10 pb-6 md:px-8 sm:pt-12 sm:pb-8 lg:px-12" aria-labelledby="about-services-title">
         <div className="mb-6 flex flex-col gap-3 sm:mb-7 sm:flex-row sm:items-center sm:justify-between">
           <SectionHeading
             title="Nuestros servicios"
@@ -152,7 +152,7 @@ title="¿Por qué elegirnos?"
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14 lg:px-12">
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-16 md:px-8 sm:py-20 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14 lg:px-12">
         <div>
           <SectionHeading
             title="Conocemos Tucumán y su gente."

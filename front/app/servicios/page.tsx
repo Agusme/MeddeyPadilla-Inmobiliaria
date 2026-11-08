@@ -34,7 +34,7 @@ function ServiceIcon({ type }: { type: Service["icon"] }) {
 export default function ServiciosPage() {
   return (
     <div className="overflow-hidden bg-white">
-      <section className="mx-auto mb-8 max-w-7xl px-6 pb-4 pt-12 sm:mb-10 sm:px-8 sm:pb-6 sm:pt-16 lg:px-12" aria-label="Introducción a los servicios">
+      <section className="mx-auto mb-8 max-w-7xl px-4 pb-4 pt-12 sm:mb-10 md:px-8 sm:pb-6 sm:pt-16 lg:px-12" aria-label="Introducción a los servicios">
         
         <header>
             <SectionHeading
@@ -45,7 +45,7 @@ export default function ServiciosPage() {
           </header>
       </section>
   
-      <section className="mx-auto max-w-7xl px-6 pb-12 sm:px-8 lg:px-12" aria-label="Listado de servicios">
+      <section className="mx-auto max-w-7xl px-4 pb-12 md:px-8 lg:px-12" aria-label="Listado de servicios">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
             <Link

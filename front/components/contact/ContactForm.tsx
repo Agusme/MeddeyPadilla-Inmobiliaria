@@ -59,7 +59,7 @@ export default function ContactForm({ initialMessage = "" }: { initialMessage?: 
   }
 
   return (
-    <form id="contact-form" onSubmit={handleSubmit} className="mt-8 space-y-5">
+    <form id="contact-form" onSubmit={handleSubmit} className="mt-6 space-y-5 sm:mt-8">
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="block text-sm font-semibold text-[#171717]">
           Nombre y apellido
