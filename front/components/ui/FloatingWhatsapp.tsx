@@ -13,7 +13,7 @@ export default function FloatingWhatsapp() {
       target="_blank"
       rel="noreferrer"
       aria-label="Contactar por WhatsApp al +54 9 3816 80-6570"
-      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 transition hover:-translate-y-1 hover:bg-[#1ebe5d] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
+      className="fixed bottom-6 right-6 max-md:bottom-[max(12px,env(safe-area-inset-bottom))] max-md:right-3 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 transition hover:-translate-y-1 hover:bg-[#1ebe5d] hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
     >
       <svg
         aria-hidden="true"
