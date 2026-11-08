@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ContactCta from "@/components/ui/ContactCta";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { ArrowRight } from "lucide-react";
 import { serviceIcons } from "@/components/services/serviceIcons";
 
 export const metadata: Metadata = {
@@ -28,41 +27,36 @@ const services: Service[] = [
 
 function ServiceIcon({ type }: { type: Service["icon"] }) {
   const Icon = serviceIcons[type];
-  return <Icon aria-hidden="true" className="h-9 w-9" strokeWidth={1.8} />;
+  return <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} />;
 }
 
 export default function ServiciosPage() {
   return (
     <div className="overflow-hidden bg-white">
-      <section className="mx-auto mb-8 max-w-7xl px-4 pb-4 pt-12 sm:mb-10 md:px-8 sm:pb-6 sm:pt-16 lg:px-12" aria-label="Introducción a los servicios">
+      <section className="mx-auto mb-6 max-w-7xl px-4 pt-12 md:px-8 sm:pt-16 lg:mb-8 lg:px-12" aria-label="Introducción a los servicios">
         
         <header>
             <SectionHeading
-              title="Soluciones pensadas para cada etapa."
-              description="Te acompañamos con asesoramiento profesional, transparencia y atención personalizada para que tomes decisiones con seguridad."
-           
+              title="Nuestros Servicios"
            />
           </header>
       </section>
   
       <section className="mx-auto max-w-7xl px-4 pb-12 md:px-8 lg:px-12" aria-label="Listado de servicios">
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3 md:gap-5 lg:auto-rows-fr lg:grid-cols-3">
           {services.map((service) => (
             <Link
               key={service.title}
               href={service.href}
               aria-label={`${service.title}: ${service.description}`}
-              className="group relative isolate flex min-h-64 flex-col overflow-hidden rounded-xl border border-white/15 bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] p-6 text-white shadow-[0_14px_34px_-20px_rgba(80,0,0,0.55)] transition-[border-color,box-shadow] duration-300 hover:border-white/30 hover:shadow-[0_20px_42px_-20px_rgba(80,0,0,0.5)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
+              className="group relative isolate grid grid-cols-1 cursor-pointer max-md:min-h-30 max-md:content-center overflow-hidden rounded-xl border border-white/15 bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] px-3 py-5 md:p-5 text-center text-white shadow-[0_14px_34px_-20px_rgba(80,0,0,0.55)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
             >
               <span aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_100%_0%,rgba(255,255,255,0.14),transparent_44%)]" />
-              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white">
+              <div className="relative z-10 flex h-11 w-11 justify-self-center items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white transition-transform duration-700 ease-out group-hover:scale-115 group-focus-visible:scale-115 motion-reduce:transition-none motion-reduce:transform-none">
                 <ServiceIcon type={service.icon} />
               </div>
-              <h2 className="relative z-10 mt-6 text-xl font-semibold leading-tight tracking-tight text-white">{service.title}</h2>
-              <p className="relative z-10 mt-3 text-sm leading-6 text-white/75">{service.description}</p>
-              <span className="relative z-10 mt-auto flex items-center justify-end pt-6 text-sm font-semibold text-white">
-                <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/35 transition-colors duration-300 group-hover:border-white group-hover:bg-white group-hover:text-[#8F1616]"><ArrowRight className="h-4 w-4" strokeWidth={1.8} /></span>
-              </span>
+              <h2 className="relative z-10 mt-3 min-w-0 break-words text-sm md:mt-2 md:text-xl font-semibold leading-tight tracking-tight text-white">{service.title}</h2>
+              <p className="relative z-10 mt-1 hidden text-sm leading-5 text-white/75 md:block">{service.description}</p>
             </Link>
           ))}
         </div>
