@@ -18,7 +18,7 @@ export default function ContactCta({
 }: ContactCtaProps) {
   return (
     <section className="bg-white py-12 sm:py-16 md:py-12 lg:py-16" aria-labelledby="contact-cta-title">
-      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-12">
         <div className="grid overflow-hidden rounded-xl border border-black/10 bg-white text-[#171717] shadow-xl shadow-black/10 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative min-h-64">
           <ImageWithSkeleton

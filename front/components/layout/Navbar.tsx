@@ -37,7 +37,7 @@ export default function Navbar({
   const authenticated = useAdminAuthenticated();
 
   return (
-    <header className="relative z-50 border-b border-black/10 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 border-b border-black/10 bg-white shadow-sm">
       <nav
         aria-label="Navegacion principal"
         className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"

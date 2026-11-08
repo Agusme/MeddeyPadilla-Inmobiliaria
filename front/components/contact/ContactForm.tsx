@@ -59,8 +59,8 @@ export default function ContactForm({ initialMessage = "" }: { initialMessage?: 
   }
 
   return (
-    <form id="contact-form" onSubmit={handleSubmit} className="mt-8 space-y-5">
-      <div className="grid gap-5 sm:grid-cols-2">
+    <form id="contact-form" onSubmit={handleSubmit} className="mt-5 scroll-mt-32 space-y-4">
+      <div className="grid gap-4 md:grid-cols-2">
         <label className="block text-sm font-semibold text-[#171717]">
           Nombre y apellido
           <input required name="name" type="text" autoComplete="name" className="mt-2 h-12 w-full rounded-md border border-black/15 bg-white px-4 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15" />
@@ -78,7 +78,7 @@ export default function ContactForm({ initialMessage = "" }: { initialMessage?: 
         Mensaje
         <textarea required name="message" defaultValue={initialMessage} rows={5} className="mt-2 w-full resize-y rounded-md border border-black/15 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#B71C1C] focus:ring-2 focus:ring-[#B71C1C]/15" />
       </label>
-      <Button type="submit" disabled={status === "sending"} className="w-full sm:w-fit">
+      <Button type="submit" disabled={status === "sending"} className="w-full md:w-fit">
         {status === "sending" ? "Enviando…" : "Enviar consulta"}{" "}
         {status === "sending" ? <LoaderCircle aria-hidden="true" className="ml-2 h-4 w-4 animate-spin" /> : <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" strokeWidth={1.8} />}
       </Button>

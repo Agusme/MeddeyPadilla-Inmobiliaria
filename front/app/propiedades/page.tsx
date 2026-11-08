@@ -163,7 +163,7 @@ export default function PropiedadesPage() {
   return (
     <div className="overflow-hidden bg-white">
       <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 pt-4 pb-5 sm:px-8 sm:pt-6 lg:px-12">
+        <div className="mx-auto max-w-7xl px-4 pt-4 pb-5 md:px-8 sm:pt-6 lg:px-12">
           <header className="mb-6">
             <SectionHeading
               titleSize="compact"
@@ -193,7 +193,7 @@ export default function PropiedadesPage() {
       </section>
 
       <section className="relative z-10 bg-white">
-        <div className="mx-auto max-w-7xl px-6 pt-5 pb-12 sm:px-8 sm:pt-5 lg:px-12">
+        <div className="mx-auto max-w-7xl px-4 pt-5 pb-12 md:px-8 sm:pt-5 lg:px-12">
           <section id="listado-propiedades" className="scroll-mt-24" aria-label="Listado de propiedades">
           <div className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">

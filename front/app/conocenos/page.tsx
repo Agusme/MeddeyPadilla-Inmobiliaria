@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   ArrowRight,
   Award,
@@ -36,11 +37,11 @@ const commitments = [
 ];
 
 const services = [
-  { title: "Compra", Icon: serviceIcons.purchase },
-  { title: "Venta", Icon: serviceIcons.sale },
-  { title: "Alquiler", Icon: serviceIcons.rental },
-  { title: "Asesoramiento", Icon: serviceIcons.advice },
-  { title: "Administración", Icon: serviceIcons.administration },
+  { title: "Compra", Icon: serviceIcons.purchase, href: "/propiedades#listado-propiedades" },
+  { title: "Venta", Icon: serviceIcons.sale, href: "/contacto#contact-form" },
+  { title: "Alquiler", Icon: serviceIcons.rental, href: "/contacto#contact-form" },
+  { title: "Asesoramiento", Icon: serviceIcons.advice, href: "/contacto#contact-form" },
+  { title: "Administración", Icon: serviceIcons.administration, href: "/contacto?servicio=administracion" },
 ];
 
 function FacebookIcon() {
@@ -74,7 +75,7 @@ export default function NosotrosPage() {
   return (
     <div className="bg-white text-[#171717]">
      
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 pt-12 pb-14 sm:px-8 sm:pt-16 sm:pb-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-12 lg:pt-16 lg:pb-24">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 pt-12 pb-14 md:px-8 sm:pt-16 sm:pb-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:px-12 lg:pt-16 lg:pb-24">
           <div>
             <SectionHeading
               title="Confianza que une. Espacios que inspiran."
@@ -105,7 +106,7 @@ export default function NosotrosPage() {
         </div>
       
 
-      <section className="relative isolate mx-auto max-w-7xl rounded-2xl bg-[#B71C1C]/[0.04] px-6 pb-16 pt-8 sm:px-8 sm:pb-20 sm:pt-10 lg:px-12">
+      <section className="relative isolate mx-auto max-w-7xl rounded-2xl bg-[#B71C1C]/[0.04] px-4 pb-16 pt-8 md:px-8 sm:pb-20 sm:pt-10 lg:px-12">
         <SectionHeading
 title="¿Por qué elegirnos?"
           titleClassName="text-[#B71C1C]"
@@ -125,7 +126,7 @@ title="¿Por qué elegirnos?"
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pt-10 pb-6 sm:px-8 sm:pt-12 sm:pb-8 lg:px-12" aria-labelledby="about-services-title">
+      <section className="mx-auto max-w-7xl px-4 pt-10 pb-6 md:px-8 sm:pt-12 sm:pb-8 lg:px-12" aria-labelledby="about-services-title">
         <div className="mb-6 flex flex-col gap-3 sm:mb-7 sm:flex-row sm:items-center sm:justify-between">
           <SectionHeading
             title="Nuestros servicios"
@@ -138,8 +139,10 @@ title="¿Por qué elegirnos?"
         </div>
         <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
           {services.map((service) => (
-            <div
+            <Link
               key={service.title}
+              href={service.href}
+              style={{ outlineOffset: "4px" }}
               className="group relative isolate flex h-28 w-full flex-col items-center justify-center gap-2.5 overflow-hidden rounded-xl border border-white/15 bg-gradient-to-br from-[#C52A2A] via-[#A91E1E] to-[#791717] px-3 py-4 text-center text-white shadow-[0_14px_34px_-20px_rgba(80,0,0,0.55)] transition-[border-color,box-shadow] duration-300 hover:border-white/30 hover:shadow-[0_18px_36px_-20px_rgba(80,0,0,0.5)] motion-reduce:transition-none"
             >
               <span aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_100%_0%,rgba(255,255,255,0.14),transparent_44%)]" />
@@ -147,12 +150,12 @@ title="¿Por qué elegirnos?"
                 <service.Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.8} />
               </span>
               <span className="relative z-10 text-sm font-semibold text-white">{service.title}</span>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14 lg:px-12">
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-16 md:px-8 sm:py-20 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14 lg:px-12">
         <div>
           <SectionHeading
             title="Conocemos Tucumán y su gente."
