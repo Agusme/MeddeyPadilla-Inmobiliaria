@@ -72,7 +72,20 @@ async function run(enabled) {
     assert(propertyHtml.includes('<title>Casa SEO | Medde &amp; Padilla</title>'));
     assert(propertyHtml.includes('RealEstateListing'));
     assert(propertyHtml.includes('Casa de prueba para SEO'));
-    assert.equal((await get('/propiedades/no-existe')).status, 404);
+    for (const missingPath of ['/pagina-inexistente', '/propiedades/no-existe']) {
+      const missing = await get(missingPath);
+      assert.equal(missing.status, 404);
+      const missingHtml = await missing.text();
+      assert(missingHtml.includes('No encontramos la página que buscás'));
+      assert(missingHtml.includes('Ver propiedades'));
+      assert(missingHtml.includes('Volver al inicio'));
+      // Next 16.3 currently recovers dynamic notFound() responses via hydration.
+      // Unmatched routes include the full layout directly in the HTML.
+      if (missingPath === '/pagina-inexistente') {
+        assert(missingHtml.includes('<nav'));
+        assert(missingHtml.includes('<footer'));
+      }
+    }
     assert.equal((await get('/admin', 'example.com')).headers.get('x-robots-tag'), 'noindex, nofollow');
     assert.equal((await get('/', 'temporal.vercel.app')).headers.get('x-robots-tag'), 'noindex, nofollow');
     console.log('PASS', enabled ? 'launch' : 'prelaunch', 'metadata, canonical, robots, sitemap, property, 404, admin, temporary host');
