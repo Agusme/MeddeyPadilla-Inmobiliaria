@@ -16,6 +16,7 @@ import { properties } from "@/components/properties/propertyData";
 import Link from "next/link";
 import ButtonLink from "@/components/ui/ButtonLink";
 import Button from "@/components/ui/Button";
+import HorizontalTableScroll from "@/components/ui/HorizontalTableScroll";
 import { buttonClassName } from "@/components/ui/buttonVariants";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -156,9 +157,9 @@ export default function AdminPropertiesPage() {
           </ButtonLink>
         </div>
 
-        <div className="mt-8 rounded-md border border-black/10 bg-white shadow-sm">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[1050px] text-left text-sm">
+        <div className="mt-8 min-w-0 max-w-full">
+          <HorizontalTableScroll>
+            <table className="w-full min-w-[1050px] text-left text-sm max-lg:[&_tr>:first-child]:w-[240px] max-lg:[&_tr>:first-child]:min-w-[240px] max-lg:[&_tr>:first-child]:max-w-[240px] max-lg:[&_tr>:first-child]:wrap-anywhere">
               <caption className="sr-only">
                 Listado de propiedades cargadas
               </caption>
@@ -275,7 +276,7 @@ export default function AdminPropertiesPage() {
                 ))}
               </tbody>
             </table>
-          </div>
+          </HorizontalTableScroll>
         </div>
       </div>
     </main>
