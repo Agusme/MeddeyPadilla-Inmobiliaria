@@ -1,3 +1,4 @@
+import { pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -13,10 +14,7 @@ import GoogleMap from "@/components/contact/GoogleMap";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ButtonLink from "@/components/ui/ButtonLink";
 
-export const metadata: Metadata = {
-  title: "Conocenos",
-  description: "Conocé a Medde & Padilla: transparencia, respaldo profesional y acompañamiento inmobiliario en Tucumán.",
-};
+export const metadata: Metadata = pageMetadata("Conocenos", "Conocé a Medde & Padilla: transparencia y acompañamiento inmobiliario en Tucumán.", "/conocenos");
 
 const commitments = [
   {

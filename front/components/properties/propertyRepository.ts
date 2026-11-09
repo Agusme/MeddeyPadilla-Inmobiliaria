@@ -19,7 +19,7 @@ function formatPrice(property: ApiProperty) {
   return formatPropertyPrice(property.price, property.currency);
 }
 
-function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
+export function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
   const location = [property.street, property.city].filter(Boolean).join(", ");
   const features: PublicPropertyDetail["features"] = [];
 

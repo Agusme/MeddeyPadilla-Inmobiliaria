@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+
+# Share the variable template without committing secrets.
+!.env.example
