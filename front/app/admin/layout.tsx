@@ -2,6 +2,7 @@ import AdminRouteGuard from "@/components/auth/AdminRouteGuard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: "Administración",
   description: "Acceso al panel de administración de propiedades.",
 };

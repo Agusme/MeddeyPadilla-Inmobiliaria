@@ -4,39 +4,14 @@ import Footer from "@/components/layout/Footer";
 import FloatingWhatsapp from "@/components/ui/FloatingWhatsapp";
 import type { Metadata } from "next";
 
+import { absoluteUrl, defaultDescription, pageMetadata, siteUrl } from "@/lib/seo";
+import JsonLd from "@/components/JsonLd";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
-  title: {
-    default: "Medde & Padilla | Inmobiliaria",
-    template: "%s | Medde & Padilla",
-  },
-  description:
-    "Medde & Padilla Inmobiliaria: encontrá propiedades y servicios inmobiliarios para comprar, vender o alquilar.",
-  authors: [{ name: "Agustina Mena" }],
-  creator: "Agustina Mena",
-  keywords: [
-    "inmobiliaria",
-    "propiedades",
-    "venta de propiedades",
-    "alquiler de propiedades",
-    "Medde & Padilla",
-  ],
-  icons: {
-    icon: "/logo/favicon.png",
-    shortcut: "/logo/favicon.png",
-    apple: "/logo/favicon.png",
-  },
-  openGraph: {
-    type: "website",
-    locale: "es_AR",
-    siteName: "Medde & Padilla Inmobiliaria",
-    title: "Medde & Padilla | Inmobiliaria",
-    description:
-      "Encontrá propiedades y servicios inmobiliarios para comprar, vender o alquilar.",
-    images: ["/logo/logoHorizontal.png"],
-  },
+  ...pageMetadata("Inmobiliaria en Tucumán", defaultDescription, "/"),
+  ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
+  title: { default: "Medde & Padilla | Inmobiliaria en Tucumán", template: "%s | Medde & Padilla" },
+  icons: { icon: "/logo/favicon.png", shortcut: "/logo/favicon.png", apple: "/logo/favicon.png" },
 };
 
 export default function RootLayout({
@@ -47,6 +22,13 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="flex min-h-screen flex-col">
+        <JsonLd data={{
+          "@context": "https://schema.org", "@type": "RealEstateAgent",
+          name: "Medde & Padilla", url: siteUrl, "@id": absoluteUrl("/#inmobiliaria"),
+          image: absoluteUrl("/logo/logoHorizontal.png"), telephone: "+5493816806570",
+          address: { "@type": "PostalAddress", streetAddress: "Congreso 603, piso 5, oficina C", addressLocality: "San Miguel de Tucumán", addressRegion: "Tucumán", addressCountry: "AR" },
+          areaServed: "Tucumán", sameAs: ["https://www.instagram.com/medde.padilla.inmob"],
+        }} />
         <Navbar />
         <main className="flex-1">
           {children}

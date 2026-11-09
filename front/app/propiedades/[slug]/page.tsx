@@ -1,49 +1,32 @@
-"use client";
-
 import PropertyGallery from "@/components/properties/PropertyGallery";
-import { getPublicPropertyBySlug } from "@/components/properties/propertyRepository";
 import ButtonLink from "@/components/ui/ButtonLink";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
+import { toPublicProperty } from "@/components/properties/propertyRepository";
+import { serverProperty } from "@/lib/serverProperties";
+import { absoluteUrl, pageMetadata } from "@/lib/seo";
+import JsonLd from "@/components/JsonLd";
 
-export default function PropertyDetailPage() {
-  const { slug } = useParams<{ slug: string }>();
-  const [property, setProperty] = useState<
-    Awaited<ReturnType<typeof getPublicPropertyBySlug>>
-  >();
-  const [loaded, setLoaded] = useState(false);
+type Props = { params: Promise<{ slug: string }> };
+export async function generateMetadata({ params }: Props) {
+  const raw = await serverProperty((await params).slug);
+  const property = toPublicProperty(raw);
+  return pageMetadata(property.title, [property.operation, property.type, property.location, property.description].join(". ").replace(/\s+/g, " ").slice(0, 160), "/propiedades/" + encodeURIComponent(raw.slug), property.images);
+}
 
-  useEffect(() => {
-    void getPublicPropertyBySlug(slug).then(setProperty).finally(() => setLoaded(true));
-  }, [slug]);
-
-  if (!loaded) {
-    return (
-      <main className="mx-auto max-w-7xl px-4 py-10 md:px-8 sm:py-12 lg:px-12">
-        <p className="text-sm text-black/60">Cargando propiedad…</p>
-      </main>
-    );
-  }
-
-  if (!property) {
-    return (
-      <main className="mx-auto max-w-7xl px-4 py-10 md:px-8 sm:py-12 lg:px-12">
-
-        <ButtonLink href="/propiedades">
-          Ver todas las propiedades
-        </ButtonLink>
-        <h1 className="mt-8 text-2xl font-semibold">
-          Propiedad no encontrada
-        </h1>
-      </main>
-    );
-  }
-
+export default async function PropertyDetailPage({ params }: Props) {
+  const raw = await serverProperty((await params).slug);
+  const property = toPublicProperty(raw);
   const hasCharacteristics = property.features.length > 0 || property.comforts.length > 0 || Boolean(property.amenities);
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 md:px-8 sm:py-12 lg:px-12">
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "RealEstateListing",
+        name: property.title, description: property.description,
+        url: absoluteUrl("/propiedades/" + encodeURIComponent(raw.slug)),
+        image: property.images.map(image => /^https?:\/\//.test(image) ? image : absoluteUrl(image)).filter(Boolean),
+        mainEntity: { "@type": "Place", name: property.title, address: { "@type": "PostalAddress", streetAddress: raw.street, addressLocality: raw.city, addressCountry: "AR" } },
+      }} />
 
       <div className="mt-7 grid gap-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.55fr)]">
         <PropertyGallery images={property.images} title={property.title} optimizeImages />

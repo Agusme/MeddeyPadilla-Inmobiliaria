@@ -1,13 +1,11 @@
+import { pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import ContactCta from "@/components/ui/ContactCta";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { serviceIcons } from "@/components/services/serviceIcons";
 
-export const metadata: Metadata = {
-  title: "Servicios",
-  description: "Venta, alquiler, tasaciones y administración de propiedades en Tucumán.",
-};
+export const metadata: Metadata = pageMetadata("Servicios", "Venta, alquiler, tasaciones y administración de propiedades en Tucumán.", "/servicios");
 
 type Service = {
   title: string;
