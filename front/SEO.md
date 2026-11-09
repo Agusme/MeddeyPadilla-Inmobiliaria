@@ -1,4 +1,4 @@
-﻿# SEO y publicación del dominio
+# SEO y publicación del dominio
 
 La configuración central está en `lib/seo.ts`. No se usa el host de la petición ni VERCEL_URL para generar canónicas. `NEXT_PUBLIC_SITE_URL` deja de utilizarse.
 
@@ -35,9 +35,11 @@ La web continúa alojada en Vercel; comprar el dominio en DonWeb no requiere tra
 
 Las fichas obtienen sus datos en el servidor para entregar contenido, metadatos y JSON-LD en el HTML. La galería y los controles conservan su implementación. El sitemap usa el mismo endpoint público, que devuelve solo propiedades publicadas. Un fallo de API produce un error de servidor; no se convierte en una propiedad inexistente ni en un sitemap vacío aparentemente válido. Solo una respuesta 404 o una propiedad no publicada produce notFound.
 
-`API_SERVER_URL` es opcional y debe contener el origen del backend accesible desde Next, sin `/api`. En desarrollo usa `http://localhost:4000`; en Vercel usa automáticamente `https://${VERCEL_URL}` y los rewrites existentes del proyecto. Esa URL se usa exclusivamente para consultas internas, nunca como canónica.
+En Vercel, `vercel.json` declara un binding del servicio `front` al servicio `back`. Vercel inyecta automáticamente `BACKEND_INTERNAL_URL` en tiempo de ejecución; **no crear esa variable manualmente en el dashboard**. Next usa esa conexión interna tanto para fichas como para el sitemap, sin depender del dominio público, VERCEL_URL ni Deployment Protection. El prefijo `/api` se conserva porque Express monta las rutas en `/api/properties`.
 
-Si Deployment Protection protege ese origen, configurar un origen de API accesible por el servidor en `API_SERVER_URL`; verificar una ficha y el sitemap después del despliegue. No incluir credenciales en SITE_URL ni utilizar SITE_URL como URL de API.
+`API_SERVER_URL` queda como alternativa para un backend independiente o pruebas locales de producción y debe contener su origen, sin `/api`. En desarrollo, si no se configura ninguna variable, usa `http://localhost:4000`. El binding tiene prioridad sobre API_SERVER_URL. Eliminar un valor manual de BACKEND_INTERNAL_URL si ya existiera para que Vercel pueda generar el correcto. No es necesario agregar variables de API en Vercel para esta arquitectura; sí volver a desplegar el proyecto completo con el nuevo vercel.json.
+
+Las URLs del backend se usan exclusivamente para consultas del servidor, nunca para canónicas. Los errores HTTP de API, fallos de conexión y respuestas HTML producen errores de servidor; solo una respuesta JSON 404 del endpoint de una propiedad o un estado no publicado invoca notFound().
 
 Los datos estructurados incluyen RealEstateAgent con datos publicados de la inmobiliaria y RealEstateListing para fichas. No se inventan valoraciones ni se promete un resultado enriquecido en Google.
 
