@@ -10,7 +10,15 @@
     },
     "front": {
       "root": "front",
-      "framework": "nextjs"
+      "framework": "nextjs",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "back",
+          "format": "url",
+          "env": "BACKEND_INTERNAL_URL"
+        }
+      ]
     }
   },
   "rewrites": [
