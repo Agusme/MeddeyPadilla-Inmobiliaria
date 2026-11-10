@@ -1,3 +1,5 @@
+import { preparePropertyImages } from "./preparePropertyImages";
+
 export const adminTokenStorageKey = "medde-padilla-admin-token";
 
 // In Vercel, browser requests use the shared public domain and are routed to
@@ -62,7 +64,12 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
       sessionStorage.removeItem(adminTokenStorageKey);
       window.dispatchEvent(new Event("admin-auth-change"));
     }
-    throw new ApiError(body?.message ?? "No se pudo completar la solicitud.", response.status);
+    const fallback = response.status === 413
+      ? "Las fotos superan el tamaño permitido por el servidor. Probá con menos fotos o imágenes más pequeñas."
+      : response.status === 504
+        ? "El servidor tardó demasiado en responder. Revisá si la propiedad se guardó antes de reintentar."
+        : `No se pudo completar la solicitud (HTTP ${response.status}).`;
+    throw new ApiError(body?.message ?? fallback, response.status);
   }
   return response.status === 204 ? undefined as T : response.json() as Promise<T>;
 }
@@ -91,5 +98,5 @@ export const getPublicProperty = (slug: string) => request<ApiProperty>(`/api/pr
 export const getAdminProperties = () => request<ApiProperty[]>("/api/admin/properties");
 export const getAdminProperty = (id: string) => request<ApiProperty>(`/api/admin/properties/${encodeURIComponent(id)}`);
 export const deleteAdminProperty = (id: string) => request<void>(`/api/admin/properties/${encodeURIComponent(id)}`, { method: "DELETE" });
-export const createAdminProperty = (data: FormData) => request<ApiProperty>("/api/admin/properties", { method: "POST", body: data });
-export const updateAdminProperty = (id: string, data: FormData) => request<ApiProperty>(`/api/admin/properties/${encodeURIComponent(id)}`, { method: "PATCH", body: data });
+export const createAdminProperty = async (data: FormData) => request<ApiProperty>("/api/admin/properties", { method: "POST", body: await preparePropertyImages(data) });
+export const updateAdminProperty = async (id: string, data: FormData) => request<ApiProperty>(`/api/admin/properties/${encodeURIComponent(id)}`, { method: "PATCH", body: await preparePropertyImages(data) });
