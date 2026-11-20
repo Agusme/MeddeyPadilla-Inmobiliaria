@@ -15,13 +15,13 @@ export default function Home() {
           fill
           priority
           fetchPriority="high"
-          className="object-cover object-[42%_center] sm:scale-105 sm:object-center max-md:scale-100! max-md:object-[60%_center]!"
+          className="object-cover object-[42%_center] brightness-120 sm:scale-105 sm:object-center max-md:scale-100! max-md:object-[60%_center]!"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/45 to-black/20 sm:bg-black/45 max-md:bg-transparent! max-md:bg-linear-to-t! max-md:from-black/65! max-md:via-black/15! max-md:via-30%! max-md:to-transparent! max-md:to-65%!" />
+        <div className="absolute inset-0 bg-linear-105 from-black/60 via-black/25 to-black/5 sm:bg-black/25 max-md:bg-transparent! max-md:bg-linear-350! max-md:from-black/45! max-md:via-black/5! max-md:via-30%! max-md:to-transparent! max-md:to-65%!" />
 
         <div className="relative mx-auto flex min-h-[380px] max-w-7xl flex-col justify-center px-4 pt-6 pb-10 sm:min-h-[calc(100dvh-73px)] sm:justify-start md:px-8 sm:py-14 md:min-h-[min(54svh,500px)] md:justify-center md:py-8 xl:min-h-[calc(100dvh-73px)] xl:justify-start lg:px-12 xl:pt-32 xl:pb-0 max-md:min-h-[360px]! max-md:justify-end! max-md:pt-10! max-md:pb-9!">
-        <div className="max-w-2xl translate-y-3.5 text-white sm:translate-y-0 xl:max-w-4xl max-md:translate-y-0!">
+        <div className="max-w-2xl translate-y-3.5 text-white [text-shadow:0_1px_4px_rgb(0_0_0/0.55)] sm:translate-y-0 xl:max-w-4xl max-md:translate-y-0!">
             <h1 className="max-w-[18rem] text-[32px] font-semibold leading-[1.18] sm:max-w-xl sm:text-5xl sm:leading-tight xl:text-6xl xl:leading-[1.1] max-md:max-w-[19rem]! max-md:text-[32px]! max-md:leading-[1.12]!">
               Hacemos simple encontrar tu hogar
             </h1>
