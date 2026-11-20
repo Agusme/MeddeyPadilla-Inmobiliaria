@@ -97,7 +97,7 @@ export default function NosotrosPage() {
             <div className="mt-8">
               <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-white"><Award aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} /></span>
-                <p className="text-sm leading-5 text-white/80"><span className="block font-semibold text-white">Matrícula profesional</span><span className="mt-1 block">M.P. 666</span></p>
+                <p className="text-sm leading-5 text-white/80"><span className="block font-semibold text-white">Matrícula de Corredor Inmobiliario</span><span className="mt-1 block">N.º 459</span></p>
               </div>
             </div>
           </div>
