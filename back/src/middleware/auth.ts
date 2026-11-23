@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { config } from "../config";
+import { sendUserError } from "../utils/userError";
 
 export function signAdminToken() {
   return jwt.sign({ role: "admin" }, config.jwtSecret, {
@@ -13,15 +14,16 @@ export function signAdminToken() {
 
 export function requireAdmin(request: Request, response: Response, next: NextFunction) {
   const token = request.header("authorization")?.replace(/^Bearer\s+/i, "");
-  if (!token) return void response.status(401).json({ message: "Autenticación requerida." });
+  if (!token) return void sendUserError(response, 401, "Iniciá sesión para acceder al administrador.");
   try {
     const decoded = jwt.verify(token, config.jwtSecret, {
       algorithms: ["HS256"],
       issuer: "medde-padilla-api",
     });
-    if (typeof decoded === "string" || decoded.role !== "admin") throw new Error();
+    if (typeof decoded === "string" || decoded.role !== "admin" || decoded.sub !== config.adminUsername) throw new Error();
+    response.locals.adminUsername = decoded.sub;
     next();
   } catch {
-    response.status(401).json({ message: "Sesión inválida o vencida." });
+    sendUserError(response, 401, "Tu sesión venció. Iniciá sesión nuevamente.");
   }
 }

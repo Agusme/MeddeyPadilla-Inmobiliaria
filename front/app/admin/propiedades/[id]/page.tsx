@@ -5,6 +5,7 @@ import {
   type AdminProperty,
 } from "@/components/properties/adminPropertyStorage";
 import { getAdminProperty, publicImageUrl } from "@/lib/api";
+import { userErrorMessage } from "@/lib/userMessages";
 import PropertyGallery from "@/components/properties/PropertyGallery";
 import { formatPropertyPrice } from "@/lib/formatPrice";
 import { formatExpenses, formatAmenities } from "@/lib/propertyAdditionalData";
@@ -16,11 +17,18 @@ export default function AdminPropertyDetailPage() {
   const params = useParams<{ id: string }>();
   const [property, setProperty] = useState<AdminProperty | undefined>();
   const [loaded, setLoaded] = useState(false);
+  const [loadError, setLoadError] = useState<string>();
 
   useEffect(() => {
     void getAdminProperty(params.id)
-      .then((item) => setProperty(toAdminProperty(item)))
-      .catch(() => setProperty(undefined))
+      .then((item) => {
+        setLoadError(undefined);
+        setProperty(toAdminProperty(item));
+      })
+      .catch(error => {
+        setProperty(undefined);
+        setLoadError(userErrorMessage(error, "No pudimos cargar la propiedad. Volvé al listado e intentá nuevamente."));
+      })
       .finally(() => setLoaded(true));
   }, [params.id]);
 
@@ -34,7 +42,7 @@ export default function AdminPropertyDetailPage() {
     return (
       <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-12 lg:px-12">
 
-        <h1 className="mt-8 text-2xl font-semibold">Propiedad no encontrada</h1>
+        <h1 className="mt-8 text-2xl font-semibold" role="alert">{loadError ?? "No encontramos la propiedad."}</h1>
       </main>
     );
 
@@ -111,7 +119,7 @@ export default function AdminPropertyDetailPage() {
           {amenities && (
             <>
               <h2 className="mt-10 text-2xl font-semibold tracking-tight">
-                Amenities
+                Comodidades adicionales
               </h2>
               <p className="mt-4 whitespace-pre-line text-black/65">{amenities}</p>
             </>

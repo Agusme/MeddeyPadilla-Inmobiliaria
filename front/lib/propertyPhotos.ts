@@ -1,4 +1,5 @@
 export const maxPropertyPhotos = 30;
+export const maxPropertyPhotoBytes = 8 * 1024 * 1024;
 
 // Upload indexes must match the remaining files sent in FormData.
 export function removePropertyPhoto<T>(files: T[], imageOrder: string[], key: string) {

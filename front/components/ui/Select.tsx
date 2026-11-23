@@ -157,7 +157,7 @@ export default function Select({ options, value: controlledValue, defaultValue =
         <input
           ref={input} id={id} role="combobox" aria-label={label} aria-expanded={open} aria-controls={open ? id + "-list" : undefined}
           aria-autocomplete={searchable ? "list" : "none"} aria-haspopup="listbox" aria-required={required}
-          aria-invalid={invalid || validationError} aria-describedby={describedBy}
+          aria-invalid={invalid || validationError} aria-describedby={validationError ? [describedBy, `${id}-validation`].filter(Boolean).join(" ") : describedBy}
           aria-activedescendant={open && position && filtered[active] ? id + "-option-" + active : undefined}
           autoComplete="off" readOnly={!searchable} value={open && searchable ? query : selectedLabel}
           placeholder={open && searchable ? "Buscar..." : placeholder}
@@ -173,6 +173,7 @@ export default function Select({ options, value: controlledValue, defaultValue =
         </button>}
         <ChevronDown aria-hidden="true" className={`pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-black/45 transition-transform ${open ? "rotate-180" : ""}`} />
       </div>
+      {validationError && <p id={`${id}-validation`} role="alert" className="mt-1.5 text-sm text-red-700">Seleccioná una opción.</p>}
       {open && position && createPortal(
         <div ref={panel} className="fixed z-[60] overflow-y-auto overscroll-contain rounded-xl border border-black/10 bg-white p-1 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.16)]"
           style={{ left: position.left, top: position.top, width: position.width, maxHeight: position.height }}

@@ -44,11 +44,13 @@ export default function ImageOrderList({
   onReorder,
   onRemove,
   compact = false,
+  disabled = false,
 }: {
   items: ImageOrderItem[];
   onReorder: (from: number, to: number) => void;
   onRemove: (key: string) => void;
   compact?: boolean;
+  disabled?: boolean;
 }) {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   if (!items.length) return null;
@@ -58,7 +60,7 @@ export default function ImageOrderList({
       {items.map((item, index) => (
         <li
           key={item.key}
-          draggable
+          draggable={!disabled}
           onDragStart={(event) => {
             setDraggedIndex(index);
             event.dataTransfer.effectAllowed = "move";
@@ -71,7 +73,7 @@ export default function ImageOrderList({
           onDrop={(event) => {
             event.preventDefault();
             const from = Number(event.dataTransfer.getData("text/plain"));
-            if (draggedIndex !== null && Number.isInteger(from) && from >= 0 && from < items.length) onReorder(from, index);
+            if (!disabled && draggedIndex !== null && Number.isInteger(from) && from >= 0 && from < items.length) onReorder(from, index);
             setDraggedIndex(null);
           }}
           onDragEnd={() => setDraggedIndex(null)}
@@ -91,11 +93,12 @@ export default function ImageOrderList({
           </div>
           <div className="flex shrink-0 items-center justify-end">
           {compact ? <div className="flex shrink-0">
-            <button type="button" disabled={index === 0} aria-label={`Mover foto ${index + 1} antes`} onClick={() => onReorder(index, index - 1)} className="flex h-11 w-8 items-center justify-center rounded text-black/60 hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C] disabled:invisible"><ArrowUp aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} /></button>
-            <button type="button" disabled={index === items.length - 1} aria-label={`Mover foto ${index + 1} después`} onClick={() => onReorder(index, index + 1)} className="flex h-11 w-8 items-center justify-center rounded text-black/60 hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C] disabled:invisible"><ArrowDown aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} /></button>
+            <button type="button" disabled={disabled || index === 0} aria-label={`Mover foto ${index + 1} antes`} onClick={() => onReorder(index, index - 1)} className="flex h-11 w-8 items-center justify-center rounded text-black/60 hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C] disabled:invisible"><ArrowUp aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} /></button>
+            <button type="button" disabled={disabled || index === items.length - 1} aria-label={`Mover foto ${index + 1} después`} onClick={() => onReorder(index, index + 1)} className="flex h-11 w-8 items-center justify-center rounded text-black/60 hover:bg-black/5 focus-visible:outline-2 focus-visible:outline-[#B71C1C] disabled:invisible"><ArrowDown aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} /></button>
           </div> : <span aria-hidden="true" className="select-none px-1 text-black/35"><GripVertical className="h-5 w-5" strokeWidth={1.8} /></span>}
           <button
             type="button"
+            disabled={disabled}
             draggable={false}
             aria-label={`Eliminar foto ${index + 1}${index === 0 ? ", portada" : ""}`}
             title="Eliminar foto"

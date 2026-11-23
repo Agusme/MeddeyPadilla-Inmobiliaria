@@ -74,5 +74,3 @@ export const properties: Property[] = [
     address: "Lomas de Tafí, Tucumán",
   },
 ];
-
-export const propertyBySlug = Object.fromEntries(properties.map((property) => [property.slug, property]));

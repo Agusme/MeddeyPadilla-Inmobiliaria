@@ -10,7 +10,7 @@ import {
   toAdminProperty,
   type AdminProperty,
 } from "@/components/properties/adminPropertyStorage";
-import { deleteAdminProperty, getAdminProperties } from "@/lib/api";
+import { deleteAdminProperty, getAdminProperties, propertyMutationNotice } from "@/lib/api";
 import { formatPropertyPrice } from "@/lib/formatPrice";
 import { properties } from "@/components/properties/propertyData";
 import Link from "next/link";
@@ -68,6 +68,7 @@ function formatPrice(property: TableProperty) {
 
 export default function AdminPropertiesPage() {
   const [savedProperties, setSavedProperties] = useState<AdminProperty[]>([]);
+  const [hasLoadError, setHasLoadError] = useState(false);
   const [featuredBaseIds, setFeaturedBaseIds] = useState<string[]>([]);
   const [hiddenBaseIds, setHiddenBaseIds] = useState<string[]>([]);
   const router = useRouter();
@@ -77,7 +78,10 @@ export default function AdminPropertiesPage() {
       setSavedProperties(properties.map(toAdminProperty));
       setFeaturedBaseIds(getFeaturedBasePropertyIds());
       setHiddenBaseIds(getHiddenBasePropertyIds());
-    }).catch(() => setSavedProperties(getStoredAdminProperties()));
+    }).catch(() => {
+      setHasLoadError(true);
+      setSavedProperties(getStoredAdminProperties());
+    });
   }, []);
 
   const listedProperties: TableProperty[] = [
@@ -116,12 +120,12 @@ export default function AdminPropertiesPage() {
         removeStoredAdminProperty(property.id);
         setSavedProperties((current) => current.filter((item) => item.id !== property.id));
       } catch (error) {
-        await Swal.fire({ title: "No se pudo eliminar", text: error instanceof Error ? error.message : "Intentá nuevamente.", icon: "error" });
+        await Swal.fire(propertyMutationNotice(error, "delete"));
         return;
       }
     }
     await Swal.fire({
-      title: "Propiedad eliminada correctamente",
+      title: "La propiedad se eliminó correctamente",
       icon: "success",
       showConfirmButton: false,
       timer: 1800,
@@ -148,6 +152,7 @@ export default function AdminPropertiesPage() {
             <p className="mt-2 text-sm text-black/55">
               {listedProperties.length} {listedProperties.length === 1 ? "propiedad" : "propiedades"} en total
             </p>
+            {hasLoadError && <p className="mt-2 text-sm text-red-700" role="alert">No pudimos cargar las propiedades del servidor. Recargá la página para actualizar el listado.</p>}
           </div>
           <ButtonLink
             href="/admin/propiedades/nueva"
@@ -177,8 +182,16 @@ export default function AdminPropertiesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/10">
-                {listedProperties.map((property) => (
-                  <tr
+                {listedProperties.map((property) => {
+                  const areas = [
+                    { value: property.totalArea, unit: "m² total" },
+                    { value: property.coveredArea, unit: "m² cub." },
+                  ].flatMap(({ value, unit }) => {
+                    const area = String(value ?? "").trim();
+                    return area && area !== "—" && area !== "null" ? [`${area} ${unit}`] : [];
+                  });
+
+                  return <tr
                     key={property.id}
                     className="cursor-pointer align-top transition hover:bg-[#fafafa]"
                     onClick={(event) => {
@@ -226,10 +239,7 @@ export default function AdminPropertiesPage() {
                         {property.bedrooms || "—"} dorm. ·{" "}
                         {property.bathrooms || "—"} baños
                       </p>
-                      <p className="mt-1 text-xs text-black/50">
-                        {property.totalArea || "—"} m² total ·{" "}
-                        {property.coveredArea || "—"} m² cub.
-                      </p>
+                      {areas.length > 0 && <p className="mt-1 text-xs text-black/50">{areas.join(" · ")}</p>}
                     </td>
                     <td className="px-5 py-5">
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -272,8 +282,8 @@ export default function AdminPropertiesPage() {
                         </Button>
                       </div>
                     </td>
-                  </tr>
-                ))}
+                  </tr>;
+                })}
               </tbody>
             </table>
           </HorizontalTableScroll>

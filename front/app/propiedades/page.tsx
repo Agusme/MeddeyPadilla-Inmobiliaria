@@ -9,8 +9,9 @@ import {
   type PublicProperty,
 } from "@/components/properties/propertyRepository";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { ApiError } from "@/lib/api";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
-import { ArrowRight, Building2, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ArrowRight, Building2, ChevronLeft, ChevronRight, LoaderCircle, X } from "lucide-react";
 
 const desktopPageSize = 9;
 const tabletPageSize = 6;
@@ -39,7 +40,7 @@ export default function PropiedadesPage() {
   const [pageSize, setPageSize] = useState(desktopPageSize);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasLoadError, setHasLoadError] = useState(false);
+  const [loadError, setLoadError] = useState<string>();
   const [hasActiveFilter, setHasActiveFilter] = useState(false);
   const [filterResetKey, setFilterResetKey] = useState(0);
   const searchVersion = useRef(0);
@@ -57,7 +58,7 @@ export default function PropiedadesPage() {
     setHasActiveFilter(Boolean(filters.type || filters.operation));
     setCurrentPage(page);
     setIsLoading(true);
-    setHasLoadError(false);
+    setLoadError(undefined);
     const key = JSON.stringify([filters.type ?? "", filters.operation ?? ""]);
     let search = searches.current.get(key);
     if (!search) {
@@ -68,11 +69,13 @@ export default function PropiedadesPage() {
       .then((results) => {
         if (version === searchVersion.current) setProperties(results);
       })
-      .catch(() => {
+      .catch(error => {
         searches.current.delete(key);
         if (version === searchVersion.current) {
           setProperties([]);
-          setHasLoadError(true);
+          setLoadError(error instanceof ApiError && error.status === 0
+            ? error.message
+            : "No pudimos cargar las propiedades. Intentá nuevamente en unos minutos.");
         }
       })
       .finally(() => {
@@ -93,20 +96,24 @@ export default function PropiedadesPage() {
     loadProperties(filters);
   }
 
-  useEffect(() => {
-    const loadFromUrl = () => {
-      const params = new URLSearchParams(window.location.search);
-      const type = params.get("type") || undefined;
-      const operation = params.get("operation") || undefined;
-      setFilterResetKey((current) => current + 1);
-      loadProperties({ type, operation }, pageFromUrl());
-    };
-    loadFromUrl();
-    window.addEventListener("popstate", loadFromUrl);
-    return () => {
-      window.removeEventListener("popstate", loadFromUrl);
-    };
+  const loadFromUrl = useCallback(() => {
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get("type") || undefined;
+    const operation = params.get("operation") || undefined;
+    loadProperties({ type, operation }, pageFromUrl());
   }, [loadProperties]);
+
+  useEffect(() => {
+    const resetFiltersAndLoad = () => {
+      setFilterResetKey((current) => current + 1);
+      loadFromUrl();
+    };
+    resetFiltersAndLoad();
+    window.addEventListener("popstate", resetFiltersAndLoad);
+    return () => {
+      window.removeEventListener("popstate", resetFiltersAndLoad);
+    };
+  }, [loadFromUrl]);
 
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 1024px)");
@@ -125,10 +132,10 @@ export default function PropiedadesPage() {
   }, []);
 
   useEffect(() => {
-    if (isLoading || currentPage <= totalPages) return;
+    if (isLoading || loadError || currentPage <= totalPages) return;
     // displayedPage already clamps rendering; keep its shared URL in range too.
     writePageToUrl(totalPages, "replaceState");
-  }, [currentPage, isLoading, totalPages]);
+  }, [currentPage, isLoading, loadError, totalPages]);
 
   function showAllProperties() {
     window.history.replaceState(window.history.state, "", "/propiedades#listado-propiedades");
@@ -199,7 +206,7 @@ export default function PropiedadesPage() {
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <h2 className="text-xl font-semibold tracking-tight text-[#171717] sm:text-2xl">Propiedades</h2>
             </div>
-            {hasActiveFilter && properties.length > 0 && (
+            {!isLoading && hasActiveFilter && properties.length > 0 && (
               <Button
                 type="button"
                 variant="text"
@@ -210,12 +217,20 @@ export default function PropiedadesPage() {
               </Button>
             )}
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {visibleProperties.map((property) => (
-              <PropertyCard key={property.slug} property={property} />
-            ))}
-          </div>
-          {totalPages > 1 && (
+          {isLoading && (
+            <div className="flex min-h-40 flex-col items-center justify-center gap-3 text-center text-sm text-black/60" role="status">
+              <LoaderCircle aria-hidden="true" className="h-6 w-6 text-[#B71C1C] motion-safe:animate-spin" />
+              <p>Cargando propiedades...</p>
+            </div>
+          )}
+          {!isLoading && !loadError && visibleProperties.length > 0 && (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {visibleProperties.map((property) => (
+                <PropertyCard key={property.slug} property={property} />
+              ))}
+            </div>
+          )}
+          {!isLoading && !loadError && totalPages > 1 && (
             <nav className="mt-8 flex flex-nowrap items-center justify-center gap-2" aria-label="Paginación de propiedades">
               <Button
                 type="button"
@@ -264,12 +279,15 @@ export default function PropiedadesPage() {
               </Button>
             </nav>
           )}
-          {!isLoading && hasLoadError && (
-            <p role="alert" className="py-3 text-center text-sm text-black/60">
-              No pudimos cargar las propiedades. Intentá nuevamente en unos momentos.
-            </p>
+          {!isLoading && loadError && (
+            <div className="flex flex-col items-center gap-2 py-3 text-center">
+              <p role="alert" className="text-sm text-black/60">{loadError}</p>
+              <Button type="button" variant="secondary" size="sm" onClick={loadFromUrl}>
+                Reintentar
+              </Button>
+            </div>
           )}
-          {!isLoading && !hasLoadError && properties.length === 0 && (
+          {!isLoading && !loadError && properties.length === 0 && (
             <div
               className="mx-auto flex max-w-lg flex-col items-center px-2 pt-1 pb-3 text-center sm:px-6 sm:pb-4"
               role="status"

@@ -78,7 +78,7 @@ export default function PropertyFeaturesFields({ propertyType, initial, children
     </section>)}
       </div>
     </PropertyFormAccordion>
-    <PropertyFormAccordion title="Expensas y amenities" defaultOpen={Boolean(initial && ((residential && resolveHasExpenses(initial) === true) || resolveHasAmenities(initial) === true))}>
+    <PropertyFormAccordion title="Expensas y comodidades adicionales" defaultOpen={Boolean(initial && ((residential && resolveHasExpenses(initial) === true) || resolveHasAmenities(initial) === true))}>
       <div className="flex flex-wrap items-start gap-x-6 gap-y-3">
         <fieldset className={`w-full min-w-0 max-w-full lg:w-auto ${residential ? "" : "hidden"}`}>
           <legend className="text-sm font-medium text-[#171717]">Expensas</legend>
@@ -94,14 +94,14 @@ export default function PropertyFeaturesFields({ propertyType, initial, children
           </div>
         </fieldset>
         <fieldset className="w-full min-w-0 max-w-full lg:w-auto">
-          <legend className="text-sm font-medium text-[#171717]">Amenities</legend>
+          <legend className="text-sm font-medium text-[#171717]">Comodidades adicionales</legend>
           <div className="flex flex-wrap items-start gap-x-2">
             <div className="w-30 shrink-0">
-            <Select label="Amenities" name="hasAmenities" value={String(hasAmenities)} onChange={value => setHasAmenities(value === "true")} options={[{ value: "true", label: "Sí" }, { value: "false", label: "No" }]} />
+            <Select label="Comodidades adicionales" name="hasAmenities" value={String(hasAmenities)} onChange={value => setHasAmenities(value === "true")} options={[{ value: "true", label: "Sí" }, { value: "false", label: "No" }]} />
             </div>
           {hasAmenities === true ? (
             <div className="w-64 max-w-full">
-              <input aria-label="Detalle de amenities" name="amenities" type="text" value={amenities} onChange={(event) => setAmenities(event.target.value)} placeholder="Ej. Seguridad, SUM, gimnasio" className={inputClass} />
+              <input aria-label="Detalle de las comodidades adicionales" name="amenities" type="text" value={amenities} onChange={(event) => setAmenities(event.target.value)} placeholder="Ej. Seguridad, SUM, gimnasio" className={inputClass} />
             </div>
           ) : <input type="hidden" name="amenities" value="" />}
           </div>

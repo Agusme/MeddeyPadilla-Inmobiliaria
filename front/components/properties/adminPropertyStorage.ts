@@ -128,36 +128,6 @@ export function removeStoredAdminProperty(id: string) {
   notifyAdminPropertyStorageChanged();
 }
 
-export function updateStoredAdminProperty(property: AdminProperty) {
-  window.localStorage.setItem(
-    adminPropertiesStorageKey,
-    JSON.stringify(
-      getStoredAdminProperties().map((currentProperty) =>
-        currentProperty.id === property.id ? property : currentProperty,
-      ),
-    ),
-  );
-  notifyAdminPropertyStorageChanged();
-}
-
-export function setAdminPropertyFeatured(id: string, featured: boolean) {
-  const property = getStoredAdminProperties().find((item) => item.id === id);
-  if (!property || (featured && !canFeatureProperty(id))) return false;
-
-  updateStoredAdminProperty({ ...property, featured });
-  return true;
-}
-
-export function canFeatureProperty(excludeId?: string) {
-  return (
-    getFeaturedBasePropertyIds().length +
-      getStoredAdminProperties().filter(
-        (property) => property.featured && property.id !== excludeId,
-      ).length <
-    3
-  );
-}
-
 export function getFeaturedBasePropertyIds() {
   if (typeof window === "undefined") return defaultFeaturedBaseProperties;
   try {

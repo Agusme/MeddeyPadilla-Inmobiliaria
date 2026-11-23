@@ -1,5 +1,5 @@
 import type { Property } from "@/components/properties/propertyData";
-import { getPublicProperties, getPublicProperty, publicImageUrl, type ApiProperty, type PublicPropertyFilters } from "@/lib/api";
+import { getPublicProperties, publicImageUrl, type ApiProperty, type PublicPropertyFilters } from "@/lib/api";
 import { hasPositiveValue } from "@/lib/propertyVisibility";
 import { formatPropertyPrice } from "@/lib/formatPrice";
 import { formatExpenses, formatAmenities } from "@/lib/propertyAdditionalData";
@@ -19,17 +19,26 @@ function formatPrice(property: ApiProperty) {
   return formatPropertyPrice(property.price, property.currency);
 }
 
+function isNonNegativeNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
 export function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
   const location = [property.street, property.city].filter(Boolean).join(", ");
   const features: PublicPropertyDetail["features"] = [];
 
-  if (hasPositiveValue(property.bedrooms)) features.push({ label: "Dormitorios", value: property.bedrooms });
-  if (hasPositiveValue(property.bathrooms)) features.push({ label: "Baños", value: property.bathrooms });
-  if (hasPositiveValue(property.coveredArea)) features.push({ label: "Superficie cubierta", value: `${property.coveredArea} m²` });
-  if (hasPositiveValue(property.totalArea)) features.push({ label: "Superficie total", value: `${property.totalArea} m²` });
-  if (hasPositiveValue(property.parkingSpaces)) features.push({ label: "Cochera", value: property.parkingSpaces });
-  if (hasPositiveValue(property.floors)) features.push({ label: "Plantas", value: property.floors });
-  const expenses = formatExpenses(property);
+  if (isNonNegativeNumber(property.bedrooms)) features.push({ label: "Dormitorios", value: property.bedrooms });
+  if (isNonNegativeNumber(property.bathrooms)) features.push({ label: "Baños", value: property.bathrooms });
+  if (isNonNegativeNumber(property.coveredArea)) features.push({ label: "Superficie cubierta", value: `${property.coveredArea} m²` });
+  if (isNonNegativeNumber(property.totalArea)) features.push({ label: "Superficie total", value: `${property.totalArea} m²` });
+  if (isNonNegativeNumber(property.parkingSpaces)) features.push({ label: "Cochera", value: property.parkingSpaces });
+  if (isNonNegativeNumber(property.floors)) features.push({ label: "Plantas", value: property.floors });
+  const rawExpenses: unknown = property.expenses;
+  const amount = typeof rawExpenses === "string" && rawExpenses.trim() ? Number(rawExpenses) : rawExpenses;
+  const expenses = formatExpenses({
+    hasExpenses: typeof property.hasExpenses === "boolean" ? property.hasExpenses : undefined,
+    expenses: isNonNegativeNumber(amount) ? amount : undefined,
+  });
   if (expenses !== undefined) features.push({ label: "Expensas", value: expenses });
 
   const comfortLabels: [keyof ApiProperty, string][] = [
@@ -63,22 +72,8 @@ export function toPublicProperty(property: ApiProperty): PublicPropertyDetail {
   };
 }
 
-/**
- * Adaptador temporal de datos. Cuando exista el backend, estas funciones se
- * reemplazan por llamadas HTTP sin cambiar las páginas que las consumen.
- */
 export async function listPublicProperties(
   filters: PublicPropertyFilters = {},
 ): Promise<PublicProperty[]> {
   return (await getPublicProperties(filters)).map(toPublicProperty);
-}
-
-export async function getPublicPropertyBySlug(
-  slug: string,
-): Promise<PublicPropertyDetail | undefined> {
-  try {
-    return toPublicProperty(await getPublicProperty(slug));
-  } catch {
-    return undefined;
-  }
 }

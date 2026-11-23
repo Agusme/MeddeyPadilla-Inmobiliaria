@@ -1,5 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/api/internal/property-upload-cleanup",
+      "schedule": "0 4 * * *"
+    }
+  ],
   "services": {
     "back": {
       "root": "back",

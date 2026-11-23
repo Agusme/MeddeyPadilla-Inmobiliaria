@@ -7,7 +7,7 @@ export function parsePropertyAdditionalData(body: Record<string, unknown>) {
     if (value === "" || value === undefined || value === null) data[field] = undefined;
     else if (value === true || value === "true") data[field] = true;
     else if (value === false || value === "false") data[field] = false;
-    else throw new Error(`El valor de ${field} no es válido.`);
+    else throw new Error(field === "hasExpenses" ? "Indicá si la propiedad tiene expensas." : "Indicá si la propiedad tiene comodidades adicionales.");
   }
   if (data.hasExpenses === false) data.expenses = undefined;
   else if ("expenses" in body) {

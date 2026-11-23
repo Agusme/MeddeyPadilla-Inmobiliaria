@@ -16,9 +16,10 @@ export const indexingEnabled = process.env.SEO_INDEXING_ENABLED === "true"
   && (!process.env.VERCEL_ENV || process.env.VERCEL_ENV === "production");
 export const siteName = "Medde & Padilla";
 export const defaultDescription = "Medde & Padilla Inmobiliaria: propiedades, ventas, alquileres, tasaciones y administración en Tucumán.";
+export const siteLogoPath = "/logo/logoprincipal.png";
 export const absoluteUrl = (path: string) => siteUrl ? new URL(path, siteUrl).href : undefined;
 
-export function pageMetadata(title: string, description: string, path: string, images = ["/logo/logoHorizontal.png"]): Metadata {
+export function pageMetadata(title: string, description: string, path: string, images = [siteLogoPath]): Metadata {
   const url = absoluteUrl(path);
   const absoluteImages = images.map(image => /^https?:\/\//.test(image) ? image : absoluteUrl(image)).filter((image): image is string => Boolean(image));
   return {

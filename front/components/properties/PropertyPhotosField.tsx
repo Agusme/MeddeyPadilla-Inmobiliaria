@@ -3,12 +3,15 @@
 import { useRef, useState } from "react";
 import { ImagePlus, Plus } from "lucide-react";
 import ImageOrderList from "./ImageOrderList";
-import { maxPropertyPhotos, removePropertyPhoto, uniqueNewPropertyPhotos } from "@/lib/propertyPhotos";
+import { maxPropertyPhotoBytes, maxPropertyPhotos, removePropertyPhoto, uniqueNewPropertyPhotos } from "@/lib/propertyPhotos";
+import type { PropertyUploadProgress } from "@/lib/propertyDirectUpload";
 
-export default function PropertyPhotosField({ files, imageOrder, existingImages = [], onChange }: {
+export default function PropertyPhotosField({ files, imageOrder, existingImages = [], saving = false, progress, onChange }: {
   files: File[];
   imageOrder: string[];
   existingImages?: string[];
+  saving?: boolean;
+  progress?: PropertyUploadProgress;
   onChange: (files: File[], order: string[]) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -52,7 +55,7 @@ export default function PropertyPhotosField({ files, imageOrder, existingImages 
           type="file"
           accept="image/*"
           multiple
-          disabled={atLimit}
+          disabled={atLimit || saving}
           className="sr-only"
           aria-invalid={Boolean(error)}
           aria-describedby={error ? "error-images" : "photos-help"}
@@ -64,8 +67,8 @@ export default function PropertyPhotosField({ files, imageOrder, existingImages 
             let message = "";
             if (imageOrder.length + added.length > maxPropertyPhotos) {
               message = `Podés cargar hasta ${maxPropertyPhotos} imágenes por propiedad. Seleccioná menos fotos.`;
-            } else if (added.some((file) => file.size > 8 * 1024 * 1024)) {
-              message = "Cada imagen debe pesar hasta 8 MB.";
+            } else if (added.some((file) => file.size > maxPropertyPhotoBytes)) {
+              message = "La imagen supera el tamaño máximo permitido de 8 MB.";
             } else if (added.some((file) => !file.type.startsWith("image/"))) {
               message = "Seleccioná únicamente imágenes.";
             }
@@ -87,7 +90,17 @@ export default function PropertyPhotosField({ files, imageOrder, existingImages 
       {hasPhotos && <>
         <p className="mt-2 text-right text-xs text-black/55" role="status">{imageOrder.length} de {maxPropertyPhotos} fotos</p>
       </>}
-      <ImageOrderList compact items={imageOrder.map((key) => {
+      {progress && progress.total > 0 && (
+        <div className="mt-2 text-xs text-black/65">
+          <progress className="block h-2 w-full accent-[#B71C1C]" value={progress.uploaded} max={progress.total} aria-label="Progreso de subida de fotos" />
+          <p className="mt-1" role="status">
+            {progress.uploaded} de {progress.total} {progress.total === 1 ? "foto nueva subida" : "fotos nuevas subidas"}.
+            {progress.failed === 1 && " Quedó una foto pendiente."}
+            {progress.failed > 1 && ` Quedaron ${progress.failed} fotos pendientes.`}
+          </p>
+        </div>
+      )}
+      <ImageOrderList compact disabled={saving} items={imageOrder.map((key) => {
         const [kind, rawIndex] = key.split(":");
         const index = Number(rawIndex);
         return kind === "existing" ? { key, label: "Foto guardada", src: existingImages[index] } : { key, label: files[index]?.name ?? "", file: files[index] };
