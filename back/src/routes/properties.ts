@@ -1,6 +1,6 @@
-import { applyImageOrder } from "../utils/propertyImageOrder";
-import { randomUUID } from "node:crypto";
-import { Router } from "express";
+import { applyImageOrder, maxPropertyPhotos, propertyPhotoLimitMessage } from "../utils/propertyImageOrder";
+import { createHash, randomUUID } from "node:crypto";
+import { Router, type RequestHandler } from "express";
 import multer from "multer";
 import { requireAdmin } from "../middleware/auth";
 import { Property } from "../models/Property";
@@ -11,9 +11,22 @@ import { validPropertyTypes, legacyPropertyTypeAliases } from "../utils/property
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { files: 12, fileSize: 8 * 1024 * 1024 },
+  limits: { files: maxPropertyPhotos, fileSize: 8 * 1024 * 1024 },
   fileFilter: (_request, file, done) => done(null, file.mimetype.startsWith("image/")),
 });
+
+const parseImages = upload.array("images", maxPropertyPhotos);
+const receiveImages: RequestHandler = (request, response, next) => {
+  parseImages(request, response, (error: unknown) => {
+    if (!(error instanceof multer.MulterError)) return next(error);
+    const message = error.code === "LIMIT_FILE_SIZE"
+      ? "Cada imagen debe pesar hasta 8 MB."
+      : error.code === "LIMIT_FILE_COUNT" || (error.code === "LIMIT_UNEXPECTED_FILE" && error.field === "images")
+        ? propertyPhotoLimitMessage
+        : "No se pudieron recibir las imágenes.";
+    response.status(400).json({ message });
+  });
+};
 
 type StoredImage = { url: string; publicId?: string | null; position: number };
 
@@ -38,6 +51,8 @@ async function deleteUploadedImages(images: StoredImage[]) {
 }
 
 async function uploadImages(files: Express.Multer.File[]): Promise<StoredImage[]> {
+  const hashes = new Set(files.map(({ buffer }) => createHash("sha256").update(buffer).digest("hex")));
+  if (hashes.size !== files.length) throw new Error("Hay imágenes repetidas en la carga. Eliminá las copias antes de guardar.");
   const images: StoredImage[] = [];
 
   try {
@@ -136,7 +151,7 @@ adminPropertiesRouter.get("/:id", async (request, response) => {
   if (!property) return response.status(404).json({ message: "Propiedad no encontrada." });
   response.json(serializeProperty(property));
 });
-adminPropertiesRouter.post("/", upload.array("images", 12), async (request, response) => {
+adminPropertiesRouter.post("/", receiveImages, async (request, response) => {
   let images: StoredImage[] = [];
   try {
     const data = bodyToProperty(request.body);
@@ -147,7 +162,7 @@ adminPropertiesRouter.post("/", upload.array("images", 12), async (request, resp
     response.status(201).json(serializeProperty(await Property.create({ ...data, slug, images: orderedImages })));
   } catch (error) { await deleteUploadedImages(images); response.status(400).json({ message: error instanceof Error ? error.message : "Datos inválidos." }); }
 });
-adminPropertiesRouter.patch("/:id", upload.array("images", 12), async (request, response) => {
+adminPropertiesRouter.patch("/:id", receiveImages, async (request, response) => {
   let images: StoredImage[] = [];
   try {
     const data = bodyToProperty(request.body);

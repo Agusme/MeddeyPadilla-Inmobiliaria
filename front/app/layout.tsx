@@ -7,11 +7,13 @@ import type { Metadata } from "next";
 import { absoluteUrl, defaultDescription, pageMetadata, siteUrl } from "@/lib/seo";
 import JsonLd from "@/components/JsonLd";
 
+const favicon = "/logo/favicon.png?v=e72ff69";
+
 export const metadata: Metadata = {
   ...pageMetadata("Inmobiliaria en Tucumán", defaultDescription, "/"),
   ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
   title: { default: "Medde & Padilla | Inmobiliaria en Tucumán", template: "%s | Medde & Padilla" },
-  icons: { icon: "/logo/favicon.png", shortcut: "/logo/favicon.png", apple: "/logo/favicon.png" },
+  icons: { icon: favicon, shortcut: favicon, apple: favicon },
 };
 
 export default function RootLayout({

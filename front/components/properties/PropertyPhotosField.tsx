@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { ImagePlus, Plus } from "lucide-react";
 import ImageOrderList from "./ImageOrderList";
-import { removePropertyPhoto } from "@/lib/propertyPhotos";
+import { maxPropertyPhotos, removePropertyPhoto, uniqueNewPropertyPhotos } from "@/lib/propertyPhotos";
 
 export default function PropertyPhotosField({ files, imageOrder, existingImages = [], onChange }: {
   files: File[];
@@ -13,11 +13,13 @@ export default function PropertyPhotosField({ files, imageOrder, existingImages 
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
+  const [ignoredDuplicates, setIgnoredDuplicates] = useState(false);
   const hasPhotos = imageOrder.length > 0;
-  const atLimit = imageOrder.length >= 12;
+  const atLimit = imageOrder.length >= maxPropertyPhotos;
 
   function clearError() {
     setError("");
+    setIgnoredDuplicates(false);
     inputRef.current?.setCustomValidity("");
   }
 
@@ -38,7 +40,12 @@ export default function PropertyPhotosField({ files, imageOrder, existingImages 
           </span>
         )}
         <span className={hasPhotos ? "font-medium" : "font-semibold"}>{hasPhotos ? "Agregar fotos" : "Seleccionar fotos"}</span>
-        {!hasPhotos && <span className="mt-1 text-xs text-black/55">Opcional · Hasta 12 imágenes de 8 MB</span>}
+        {!hasPhotos && (
+          <span className="mt-1 text-xs text-black/55">
+            Agregá imágenes de la propiedad
+            <span className="block">Por ejemplo, JPG, PNG o WebP</span>
+          </span>
+        )}
         <input
           ref={inputRef}
           name="images"
@@ -53,22 +60,32 @@ export default function PropertyPhotosField({ files, imageOrder, existingImages 
             const selected = Array.from(event.currentTarget.files ?? []);
             event.currentTarget.value = "";
             if (!selected.length) return;
-            const message = imageOrder.length + selected.length > 12 ? "Podés cargar hasta 12 imágenes." : selected.some((file) => file.size > 8 * 1024 * 1024) ? "Cada imagen debe pesar hasta 8 MB." : selected.some((file) => !file.type.startsWith("image/")) ? "Seleccioná únicamente imágenes." : "";
+            const added = uniqueNewPropertyPhotos(files, selected);
+            let message = "";
+            if (imageOrder.length + added.length > maxPropertyPhotos) {
+              message = `Podés cargar hasta ${maxPropertyPhotos} imágenes por propiedad. Seleccioná menos fotos.`;
+            } else if (added.some((file) => file.size > 8 * 1024 * 1024)) {
+              message = "Cada imagen debe pesar hasta 8 MB.";
+            } else if (added.some((file) => !file.type.startsWith("image/"))) {
+              message = "Seleccioná únicamente imágenes.";
+            }
             event.currentTarget.setCustomValidity(message);
             setError(message);
-            if (message) return;
-            onChange([...files, ...selected], [...imageOrder, ...selected.map((_, index) => `new:${files.length + index}`)]);
+            setIgnoredDuplicates(!message && added.length < selected.length);
+            if (message || !added.length) return;
+            onChange([...files, ...added], [...imageOrder, ...added.map((_, index) => `new:${files.length + index}`)]);
           }}
         />
       </label>
       </div>
       {error && <p id="error-images" role="alert" className="mt-1.5 text-sm text-red-700">{error}</p>}
+      {ignoredDuplicates && <p role="status" className="mt-1.5 text-xs text-black/65">Se omitieron las fotos repetidas de esta selección.</p>}
       <p id="photos-help" className={hasPhotos ? "mt-3 text-xs leading-5 text-black/65" : "sr-only"}>
         {hasPhotos && "La primera foto será la portada. Arrastrá o usá las flechas para ordenarlas."}
-        {hasPhotos && atLimit && <span className="mt-1 block">Máximo de 12 fotos alcanzado. Eliminá una para agregar otra.</span>}
+        {hasPhotos && atLimit && <span className="mt-1 block">Máximo de {maxPropertyPhotos} fotos alcanzado. Eliminá una para agregar otra.</span>}
       </p>
       {hasPhotos && <>
-        <p className="mt-2 text-right text-xs text-black/55" role="status">{imageOrder.length} de 12 fotos</p>
+        <p className="mt-2 text-right text-xs text-black/55" role="status">{imageOrder.length} de {maxPropertyPhotos} fotos</p>
       </>}
       <ImageOrderList compact items={imageOrder.map((key) => {
         const [kind, rawIndex] = key.split(":");
