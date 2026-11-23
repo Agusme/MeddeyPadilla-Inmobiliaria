@@ -3,18 +3,20 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import Button from "@/components/ui/Button";
+import { clearLocalizedValidation, localizeFieldValidation } from "@/lib/userMessages";
 
-type FormStatus = "idle" | "sending" | "success" | "error";
+type FormStatus = "idle" | "sending" | "success" | "error" | "unconfirmed" | "unavailable";
 
 export default function ContactForm({ initialMessage = "" }: { initialMessage?: string }) {
   const [status, setStatus] = useState<FormStatus>("idle");
+  const hasError = status === "error" || status === "unconfirmed" || status === "unavailable";
 
   useEffect(() => {
-    if (status !== "success" && status !== "error") return;
+    if (status !== "success" && !hasError) return;
 
     const timeout = window.setTimeout(() => setStatus("idle"), 6000);
     return () => window.clearTimeout(timeout);
-  }, [status]);
+  }, [status, hasError]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,7 +28,7 @@ export default function ContactForm({ initialMessage = "" }: { initialMessage?: 
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
-      setStatus("error");
+      setStatus("unavailable");
       return;
     }
 
@@ -50,16 +52,21 @@ export default function ContactForm({ initialMessage = "" }: { initialMessage?: 
         }),
       });
 
-      if (!response.ok) throw new Error("EmailJS request failed");
+      if (!response.ok) {
+        setStatus(response.status === 408 || response.status >= 500 ? "unconfirmed" : "error");
+        return;
+      }
       form.reset();
       setStatus("success");
     } catch {
-      setStatus("error");
+      setStatus("unconfirmed");
     }
   }
 
   return (
-    <form id="contact-form" onSubmit={handleSubmit} className="mt-5 scroll-mt-32 space-y-4">
+    <form id="contact-form" onSubmit={handleSubmit} className="mt-5 scroll-mt-32 space-y-4"
+      onInvalidCapture={event => localizeFieldValidation(event.target)}
+      onInputCapture={event => clearLocalizedValidation(event.target)}>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="block text-sm font-semibold text-[#171717]">
           Nombre y apellido
@@ -82,9 +89,11 @@ export default function ContactForm({ initialMessage = "" }: { initialMessage?: 
         {status === "sending" ? "Enviando…" : "Enviar consulta"}{" "}
         {status === "sending" ? <LoaderCircle aria-hidden="true" className="ml-2 h-4 w-4 animate-spin" /> : <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" strokeWidth={1.8} />}
       </Button>
-      <p aria-live="polite" role={status === "error" ? "alert" : "status"} className={`text-sm ${status === "error" ? "text-red-700" : "text-black/65"}`}>
+      <p aria-live="polite" role={hasError ? "alert" : "status"} className={`text-sm ${hasError ? "text-red-700" : "text-black/65"}`}>
         {status === "success" && "¡Gracias! Recibimos tu consulta y nos comunicaremos con vos pronto."}
         {status === "error" && "No pudimos enviar tu consulta. Intentá nuevamente en unos minutos o escribinos por WhatsApp."}
+        {status === "unavailable" && "El formulario de contacto no está disponible en este momento. Escribinos por WhatsApp."}
+        {status === "unconfirmed" && "No pudimos confirmar el envío de tu consulta. Antes de reenviarla, escribinos por WhatsApp para verificar si la recibimos."}
       </p>
     </form>
   );

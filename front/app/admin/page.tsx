@@ -5,10 +5,13 @@ import Button from "@/components/ui/Button";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { adminSessionNoticeKey } from "@/lib/api";
+import { clearLocalizedValidation, localizeFieldValidation, userErrorMessage } from "@/lib/userMessages";
 
 export default function AdminPage() {
   const router = useRouter();
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<string | undefined>(() =>
+    typeof window === "undefined" ? undefined : sessionStorage.getItem(adminSessionNoticeKey) ?? undefined);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -16,12 +19,13 @@ export default function AdminPage() {
     event.preventDefault();
     setLoading(true);
     setError(undefined);
+    sessionStorage.removeItem(adminSessionNoticeKey);
     const data = new FormData(event.currentTarget);
     try {
       await authenticateAdmin(String(data.get("username") ?? ""), String(data.get("password") ?? ""));
       router.replace("/admin/propiedades");
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "No se pudo iniciar sesión.");
+      setError(userErrorMessage(caught, "No pudimos iniciar sesión. Intentá nuevamente en unos minutos."));
     } finally {
       setLoading(false);
     }
@@ -50,7 +54,9 @@ export default function AdminPage() {
           Ingresá tus datos para gestionar las propiedades.
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5"
+          onInvalidCapture={event => localizeFieldValidation(event.target)}
+          onInputCapture={event => clearLocalizedValidation(event.target)}>
           <label className="relative block text-sm font-semibold text-[#171717]">
             Usuario
             <input

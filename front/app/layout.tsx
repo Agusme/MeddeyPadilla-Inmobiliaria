@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import FloatingWhatsapp from "@/components/ui/FloatingWhatsapp";
 import type { Metadata } from "next";
 
-import { absoluteUrl, defaultDescription, pageMetadata, siteUrl } from "@/lib/seo";
+import { absoluteUrl, defaultDescription, pageMetadata, siteLogoPath, siteUrl } from "@/lib/seo";
 import JsonLd from "@/components/JsonLd";
 
 const favicon = "/logo/favicon.png?v=e72ff69";
@@ -22,12 +22,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es-AR">
       <body className="flex min-h-screen flex-col">
         <JsonLd data={{
           "@context": "https://schema.org", "@type": "RealEstateAgent",
           name: "Medde & Padilla", url: siteUrl, "@id": absoluteUrl("/#inmobiliaria"),
-          image: absoluteUrl("/logo/logoHorizontal.png"), telephone: "+5493816806570",
+          image: absoluteUrl(siteLogoPath), telephone: "+5493816806570",
           address: { "@type": "PostalAddress", streetAddress: "Congreso 603, piso 5, oficina C", addressLocality: "San Miguel de Tucumán", addressRegion: "Tucumán", addressCountry: "AR" },
           areaServed: "Tucumán", sameAs: ["https://www.instagram.com/medde.padilla.inmob"],
         }} />

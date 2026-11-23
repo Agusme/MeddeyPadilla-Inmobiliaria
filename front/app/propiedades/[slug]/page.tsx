@@ -69,11 +69,11 @@ export default async function PropertyDetailPage({ params }: Props) {
           <h2 className="text-2xl font-semibold tracking-tight">
             Características
           </h2>
-          <dl className="mt-5 grid grid-cols-2 border-l border-t border-black/10 text-center">
+          <dl className="mt-5 grid grid-cols-2 text-center">
             {property.features.map((feature) => (
               <div
                 key={feature.label}
-                className={`border-b border-r border-black/10 px-4 py-3 last:odd:col-span-2 ${feature.label === "Expensas" ? "col-span-2" : ""}`}
+                className="border-b border-r border-black/10 px-4 py-3 odd:border-l [&:nth-child(-n+2)]:border-t"
               >
                 <dt className="text-xs uppercase tracking-wide text-black/50">
                   {feature.label}
@@ -97,7 +97,7 @@ export default async function PropertyDetailPage({ params }: Props) {
           {property.comforts.length > 0 && <ul className="mt-4 grid grid-cols-2 gap-x-5 gap-y-3">
             {property.comforts.map((comfort) => <li key={comfort} className="flex items-center gap-2 text-sm text-black/70"><Check aria-hidden="true" className="h-4 w-4 shrink-0 text-[#B71C1C]" strokeWidth={2} />{comfort}</li>)}
           </ul>}
-          {property.amenities && <p className="mt-4 whitespace-pre-line text-sm leading-6 wrap-anywhere text-black/65"><span className="font-semibold text-[#171717]">Amenities: </span>{property.amenities}</p>}
+          {property.amenities && <p className="mt-4 whitespace-pre-line text-sm leading-6 wrap-anywhere text-black/65"><span className="font-semibold text-[#171717]">Comodidades adicionales: </span>{property.amenities}</p>}
         </div>}
       </section>
       <div className="mt-10 flex justify-end">

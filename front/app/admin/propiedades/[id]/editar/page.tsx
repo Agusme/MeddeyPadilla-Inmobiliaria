@@ -4,10 +4,11 @@ import {
   toAdminProperty,
   type AdminProperty,
 } from "@/components/properties/adminPropertyStorage";
-import { getAdminProperty, publicImageUrl, updateAdminProperty } from "@/lib/api";
+import { getAdminProperty, publicImageUrl } from "@/lib/api";
+import { usePropertySave } from "@/components/properties/usePropertySave";
+import { clearLocalizedValidation, localizeFieldValidation, userErrorMessage } from "@/lib/userMessages";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import PropertyQuantityField from "@/components/properties/PropertyQuantityField";
 import PropertyFeaturesFields from "@/components/properties/PropertyFeaturesFields";
 import { hasResidentialFeatures } from "@/lib/propertyTypes";
@@ -29,8 +30,10 @@ export default function EditarPropiedadPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [property, setProperty] = useState<AdminProperty | null>(null);
+  const [loadError, setLoadError] = useState<string>();
+  const [revision, setRevision] = useState<string>();
   const [published, setPublished] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const { save, saving, progress, clearProgress } = usePropertySave();
   const [files, setFiles] = useState<File[]>([]);
   const [imageOrder, setImageOrder] = useState<string[]>([]);
   const [currency, setCurrency] = useState("USD");
@@ -43,37 +46,30 @@ export default function EditarPropiedadPage() {
   useEffect(() => {
     void getAdminProperty(params.id)
       .then((item) => {
+        setLoadError(undefined);
         const mapped = toAdminProperty(item);
         setProperty(mapped);
+        setRevision(item.updatedAt);
         setPublished(mapped.status === "Publicada");
         setCurrency(mapped.currency);
         setPropertyType(mapped.propertyType);
         setQuantities({ bedrooms: String(mapped.bedrooms), bathrooms: String(mapped.bathrooms), parkingSpaces: String(mapped.parkingSpaces) });
         setImageOrder(mapped.images.map((_, index) => `existing:${index}`));
       })
-      .catch(() => setProperty(null));
+      .catch(error => {
+        setProperty(null);
+        setLoadError(userErrorMessage(error, "No pudimos cargar la propiedad. Volvé al listado e intentá nuevamente."));
+      });
   }, [params.id]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!property || saving) return;
     const data = new FormData(event.currentTarget);
-    data.delete("images");
-    files.forEach((file) => data.append("images", file));
-    data.set("imageOrder", JSON.stringify(imageOrder));
     const featured = published && data.get("featured") === "on";
     data.set("status", published ? "published" : "draft");
     data.set("featured", String(featured));
-    setSaving(true);
-    try {
-      await updateAdminProperty(property.id, data);
-      await Swal.fire({ title: "Propiedad editada correctamente", icon: "success", showConfirmButton: false, timer: 1800, timerProgressBar: true });
-      router.push("/admin/propiedades");
-    } catch (error) {
-      await Swal.fire({ title: "No se pudo guardar", text: error instanceof Error ? error.message : "Intentá nuevamente.", icon: "error" });
-    } finally {
-      setSaving(false);
-    }
+    if (await save(data, files, imageOrder, { id: property.id, revision })) router.push("/admin/propiedades");
   }
 
   function updateQuantity(name: keyof typeof quantities, value: string) {
@@ -94,7 +90,11 @@ export default function EditarPropiedadPage() {
     setErrors((current) => ({ ...current, [field.name]: message }));
   }
 
-  if (!property) return <main className="min-h-screen bg-[#fafafa] px-6 py-10"><p className="text-sm text-black/60">Buscando la propiedad…</p></main>;
+  if (!property) return (
+    <main className="min-h-screen bg-[#fafafa] px-6 py-10">
+      <p role={loadError ? "alert" : "status"} className="text-sm text-black/60">{loadError ?? "Cargando la propiedad…"}</p>
+    </main>
+  );
 
   return (
     <main className="min-h-screen bg-[#fafafa] py-6 sm:py-8">
@@ -110,12 +110,13 @@ export default function EditarPropiedadPage() {
           onInvalidCapture={(event) => {
             const field = event.target;
             if (field instanceof HTMLInputElement || field instanceof HTMLSelectElement || field instanceof HTMLTextAreaElement) {
-              const message = field.validity.valueMissing ? "Completá este campo." : field.validity.rangeUnderflow ? "Ingresá un valor igual o mayor a 0." : field.validity.stepMismatch ? "Ingresá un número entero." : field.validationMessage;
-              updateFieldError(field, message);
+              const message = localizeFieldValidation(field);
+              if (message) updateFieldError(field, message);
             }
           }}
           onInputCapture={(event) => {
             const field = event.target;
+            clearLocalizedValidation(field);
             if ((field instanceof HTMLInputElement || field instanceof HTMLSelectElement || field instanceof HTMLTextAreaElement) && field.validity.valid && errors[field.name]) updateFieldError(field, "");
           }} className="overflow-hidden rounded-xl border border-black/10 bg-white shadow-sm">
           {!hasBedrooms && <input type="hidden" name="bedrooms" value={quantities.bedrooms} />}
@@ -163,8 +164,8 @@ export default function EditarPropiedadPage() {
               </label>
             </div>
             <div className="mt-4 grid grid-cols-1 items-start gap-4 lg:grid-cols-2 lg:grid-rows-[auto_minmax(9rem,auto)_auto] lg:items-stretch lg:gap-y-0">
-              <div className="min-w-0 lg:row-span-3 lg:grid lg:grid-rows-subgrid">
-                <label className={`${labelClass} lg:row-span-3 lg:grid lg:grid-rows-subgrid`}>
+              <div className="min-w-0 lg:row-span-3">
+                <label className={labelClass}>
                   <span>Descripción <span className="text-[#B71C1C]" aria-label="obligatorio">*</span></span>
                   <textarea
                     required
@@ -179,8 +180,11 @@ export default function EditarPropiedadPage() {
               <PropertyPhotosField
                 files={files}
                 imageOrder={imageOrder}
+                saving={saving}
+                progress={progress}
                 existingImages={property.images.map((image) => publicImageUrl(image.url))}
                 onChange={(nextFiles, nextOrder) => {
+                  clearProgress();
                   setFiles(nextFiles);
                   setImageOrder(nextOrder);
                 }}

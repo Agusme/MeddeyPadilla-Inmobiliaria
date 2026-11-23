@@ -77,7 +77,24 @@ async function run(enabled) {
     assert.equal(home.headers.get('x-robots-tag'), enabled ? null : 'noindex, nofollow');
     assert(html.includes(enabled ? 'index, follow' : 'noindex, follow'));
     assert.equal(html.includes('rel="canonical"'), enabled);
-    assert(html.includes('RealEstateAgent'));
+    const agent = [...html.matchAll(/<script type="application\/ld\+json">([^<]+)<\/script>/g)]
+      .map(([, json]) => JSON.parse(json))
+      .find(data => data['@type'] === 'RealEstateAgent');
+    assert(agent);
+    const logoPath = '/logo/logoprincipal.png';
+    const logoUrl = 'https://example.com' + logoPath;
+    assert.equal(agent.image, enabled ? logoUrl : undefined);
+    if (enabled) {
+      assert(html.includes(`property="og:image" content="${logoUrl}"`));
+      assert(html.includes(`name="twitter:image" content="${logoUrl}"`));
+    }
+    const favicon = html.match(/<link rel="icon" href="([^"]+)"/)?.[1];
+    assert(favicon?.startsWith('/logo/favicon.png'));
+    for (const asset of [logoPath, favicon]) {
+      const response = await get(asset, 'example.com');
+      assert.equal(response.status, 200, asset);
+      assert.match(response.headers.get('content-type') ?? '', /^image\/png/);
+    }
     const robots = await (await get('/robots.txt')).text();
     assert(robots.includes('Allow: /'));
     assert(!robots.includes('Disallow: /'));

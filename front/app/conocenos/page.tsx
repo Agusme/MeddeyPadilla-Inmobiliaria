@@ -104,21 +104,19 @@ export default function NosotrosPage() {
         </div>
       
 
-      <section className="relative isolate mx-auto max-w-7xl rounded-2xl bg-[#B71C1C]/[0.04] px-4 pb-16 pt-8 md:px-8 sm:pb-20 sm:pt-10 lg:px-12">
+      <section className="relative isolate mx-auto max-w-7xl rounded-2xl bg-[#B71C1C]/[0.04] px-4 py-6 md:px-8 sm:py-8 lg:px-12">
         <SectionHeading
-title="¿Por qué elegirnos?"
+          title="¿Por qué elegirnos?"
           titleClassName="text-[#B71C1C]"
           titleSize="compact"
-          className="relative z-10 mb-10 sm:mb-12"
+          className="relative z-10 mb-5 sm:mb-6"
         />
         <div className="relative z-10 grid gap-5 md:grid-cols-3">
           {commitments.map((item) => (
-            <article key={item.title} className="rounded-xl border border-black/5 bg-white p-6 shadow-[0_12px_32px_-18px_rgba(0,0,0,0.28)] transition-shadow duration-200 hover:shadow-[0_18px_38px_-18px_rgba(0,0,0,0.32)] sm:p-8 lg:p-9">
-              <div className="flex justify-center text-[#B71C1C]">
-                <item.Icon aria-hidden="true" className="h-12 w-12" strokeWidth={1.8} />
-              </div>
-              <h2 className="mt-5 text-xl font-semibold leading-snug tracking-tight sm:text-2xl">{item.title}</h2>
-              <p className="mt-3 text-sm leading-6 text-black/60 sm:text-base">{item.description}</p>
+            <article key={item.title} className="rounded-xl border border-black/5 bg-white p-4 text-center shadow-[0_12px_32px_-18px_rgba(0,0,0,0.28)] transition-shadow duration-200 hover:shadow-[0_18px_38px_-18px_rgba(0,0,0,0.32)] md:row-span-3 md:grid md:grid-rows-subgrid md:gap-y-0">
+              <item.Icon aria-hidden="true" className="mx-auto h-9 w-9 text-[#B71C1C]" strokeWidth={1.8} />
+              <h2 className="mt-3 text-base leading-snug font-semibold tracking-tight text-balance xl:text-lg">{item.title}</h2>
+              <p className="mt-2 text-sm leading-5 text-black/60">{item.description}</p>
             </article>
           ))}
         </div>

@@ -1,3 +1,5 @@
+import { UserMessageError } from "./userMessages";
+
 // Leave room for multipart boundaries and property fields below Vercel's 4.5 MB limit.
 const imageBudget = 3_800_000;
 
@@ -10,7 +12,7 @@ async function compressImage(file: File, budget: number): Promise<File> {
     await image.decode();
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    if (!context) throw new Error("No se pudieron preparar las fotos en este navegador.");
+    if (!context) throw new UserMessageError("No pudimos preparar las fotos en este navegador. Probá con otro navegador o con archivos más livianos.");
     let maxSide = 2000;
     for (let attempt = 0; attempt < 7; attempt++) {
       const scale = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
@@ -25,10 +27,10 @@ async function compressImage(file: File, budget: number): Promise<File> {
       }
       maxSide *= 0.75;
     }
-    throw new Error("Las fotos pesan demasiado. Probá con imágenes de menor tamaño.");
+    throw new UserMessageError("Las fotos pesan demasiado. Probá con menos fotos o con archivos más livianos.");
   } catch (error) {
-    if (error instanceof Error && error.name !== "EncodingError") throw error;
-    throw new Error(`No se pudo procesar la foto ${file.name}. Probá convertirla a JPG o PNG.`);
+    if (error instanceof UserMessageError) throw error;
+    throw new UserMessageError("No pudimos preparar una de las fotos. Probá convertirla a JPG o PNG.", { cause: error });
   } finally {
     URL.revokeObjectURL(url);
   }

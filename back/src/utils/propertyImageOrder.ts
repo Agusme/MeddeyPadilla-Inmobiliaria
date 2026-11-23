@@ -1,4 +1,5 @@
 export const maxPropertyPhotos = 30;
+export const maxPropertyPhotoBytes = 8 * 1024 * 1024;
 export const propertyPhotoLimitMessage = `Podés cargar hasta ${maxPropertyPhotos} imágenes por propiedad.`;
 
 type StoredImage = { url: string; publicId?: string | null; position: number };
