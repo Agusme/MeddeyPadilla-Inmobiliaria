@@ -17,4 +17,4 @@ Podés usar MongoDB local o MongoDB Atlas. Los datos se crean al guardar la prim
 - `GET /api/properties` y `GET /api/properties/:slug`
 - `GET`, `POST`, `PATCH`, `DELETE /api/admin/properties` (requiere `Authorization: Bearer <token>`)
 
-El alta y la edición aceptan `multipart/form-data` con el campo `images`, hasta 12 imágenes de 8 MB cada una.
+El alta y la edición aceptan `multipart/form-data` con el campo `images`, de hasta 8 MB por archivo. Cada propiedad admite hasta 30 imágenes en total, incluidas las que ya estaban guardadas.

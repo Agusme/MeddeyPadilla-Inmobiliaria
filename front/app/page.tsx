@@ -1,9 +1,28 @@
-import Link from "next/link";
+import ButtonLink from "@/components/ui/ButtonLink";
 import ContactCta from "@/components/ui/ContactCta";
+import SectionHeading from "@/components/ui/SectionHeading";
 import PropertyFilter from "@/components/properties/PropertyFilter";
 import HomeFeaturedProperties from "@/components/properties/HomeFeaturedProperties";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BadgeCheck, House, ShieldCheck } from "lucide-react";
+
+const commitments = [
+  {
+    Icon: BadgeCheck,
+    title: "Transparencia en cada paso",
+    description: "Te explicamos cada etapa con claridad para que tomes decisiones informadas.",
+  },
+  {
+    Icon: ShieldCheck,
+    title: "Inversiones seguras",
+    description: "Operá con la confianza y el respaldo de profesionales matriculados.",
+  },
+  {
+    Icon: House,
+    title: "Acompañamiento personalizado",
+    description: "Te asesoramos de forma cercana para que encuentres el lugar ideal.",
+  },
+];
 
 export default function Home() {
   return (
@@ -42,29 +61,36 @@ export default function Home() {
           <PropertyFilter overlay autoSearch />
         </div>
       </section>
-      <section
-        className="mx-auto max-w-7xl px-4 py-8 md:px-8 sm:py-14 md:py-10 lg:py-14 lg:px-12 max-md:pt-10! max-md:pb-8!"
-        aria-labelledby="featured-properties-title"
-      >
-        <div className="mb-8 flex flex-col items-start gap-5 md:mb-6 lg:mb-8 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <h2
-              id="featured-properties-title"
-              className="text-2xl font-medium tracking-tight text-black sm:text-3xl"
-            >
-              Propiedades destacadas
-            </h2>
-          </div>
-          <Link
-            href="/propiedades#listado-propiedades"
-            className="inline-flex shrink-0 self-end items-center gap-2 text-sm font-medium tracking-wide text-black/70 transition-colors duration-250 hover:text-[#B71C1C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B71C1C]"
-          >
-            Ver todas
-            <ArrowRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} />
-          </Link>
-        </div>
+      <div className="flow-root">
         <HomeFeaturedProperties />
-      </section>
+        <section
+          className="mx-auto max-w-7xl px-4 first:mt-6 md:px-8 lg:px-12"
+          aria-labelledby="home-commitments-title"
+        >
+          <div className="rounded-xl bg-[#B71C1C]/[0.04] px-4 py-6 sm:px-6 sm:py-8">
+            <div className="mb-5 flex items-center justify-between gap-2 sm:mb-6">
+              <SectionHeading
+                title="¿Por qué elegirnos?"
+                titleId="home-commitments-title"
+                titleClassName="text-[#B71C1C]"
+                titleSize="compact"
+              />
+              <ButtonLink href="/conocenos" variant="text" size="sm" className="text-[#B71C1C]! hover:text-black!">
+                Conocénos <ArrowRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.8} />
+              </ButtonLink>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3 lg:gap-5">
+              {commitments.map(({ Icon, title, description }) => (
+                <article key={title} className="rounded-xl border border-black/5 bg-white p-5 text-center shadow-[0_12px_32px_-18px_rgba(0,0,0,0.28)] lg:p-6">
+                  <Icon aria-hidden="true" className="mx-auto h-9 w-9 text-[#B71C1C]" strokeWidth={1.8} />
+                  <h3 className="mt-3 text-lg font-semibold leading-snug tracking-tight lg:text-xl">{title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-black/60">{description}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
       <ContactCta
         title="¿Buscás vender, comprar o alquilar?"
         description="Contanos qué necesitás. Te acompañamos con atención personalizada para que encuentres el próximo paso indicado."

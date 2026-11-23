@@ -1,3 +1,6 @@
+export const maxPropertyPhotos = 30;
+export const propertyPhotoLimitMessage = `Podés cargar hasta ${maxPropertyPhotos} imágenes por propiedad.`;
+
 type StoredImage = { url: string; publicId?: string | null; position: number };
 
 export function applyImageOrder(existing: StoredImage[], added: StoredImage[], rawOrder: unknown): StoredImage[] {
@@ -5,7 +8,7 @@ export function applyImageOrder(existing: StoredImage[], added: StoredImage[], r
   existing.forEach((image, index) => keyed.set(`existing:${index}`, image));
   added.forEach((image, index) => keyed.set(`new:${index}`, image));
   if (rawOrder === undefined) {
-    if (keyed.size > 12) throw new Error("Podés cargar hasta 12 imágenes.");
+    if (keyed.size > maxPropertyPhotos) throw new Error(propertyPhotoLimitMessage);
     return [...existing, ...added].map((image, position) => ({ ...image, position }));
   }
   let order: unknown;
@@ -13,7 +16,7 @@ export function applyImageOrder(existing: StoredImage[], added: StoredImage[], r
   if (!Array.isArray(order) || order.some((key) => typeof key !== "string")) {
     throw new Error("El orden de las imágenes no es válido.");
   }
-  if (order.length > 12) throw new Error("Podés cargar hasta 12 imágenes.");
+  if (order.length > maxPropertyPhotos) throw new Error(propertyPhotoLimitMessage);
   const reordered = (order as string[]).map((key, position) => {
     const image = keyed.get(key);
     if (!image) throw new Error("El orden de las imágenes no es válido.");

@@ -1,38 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { ArrowDown, ArrowUp, GripVertical, Trash2 } from "lucide-react";
+import { cloudinaryImageVariants } from "@/lib/cloudinaryImages";
 
 type ImageOrderItem = { key: string; label: string; src?: string; file?: File };
 
-function FileThumbnail({ file }: { file: File }) {
-  const [src, setSrc] = useState("");
-
-  useEffect(() => {
+function ImagePreview({ src, file }: { src?: string; file?: File }) {
+  const source = file ?? src;
+  const [loadedSource, setLoadedSource] = useState<File | string>();
+  const [failedSource, setFailedSource] = useState<File | string>();
+  const loaded = Boolean(source) && loadedSource === source;
+  const failed = Boolean(source) && failedSource === source;
+  const attachFile = useCallback((element: HTMLImageElement | null) => {
+    if (!element || !file) return;
     const objectUrl = URL.createObjectURL(file);
-    setSrc(objectUrl);
+    element.src = objectUrl;
     return () => URL.revokeObjectURL(objectUrl);
   }, [file]);
 
-  return <ImagePreview src={src} />;
-}
-
-function ImagePreview({ src }: { src: string }) {
-  const [loadedSrc, setLoadedSrc] = useState("");
-  const [errorSrc, setErrorSrc] = useState("");
-  const loaded = src !== "" && loadedSrc === src;
-  const failed = src !== "" && errorSrc === src;
-
   return (
-    <span className="relative block h-12 w-12 shrink-0 overflow-hidden rounded bg-black/5 sm:h-14 sm:w-16" aria-busy={Boolean(src) && !loaded && !failed}>
-      {!loaded && <span aria-hidden="true" className={`absolute inset-0 bg-linear-to-br from-black/10 via-black/5 to-black/10 ${failed || !src ? "" : "animate-pulse"}`} />}
-      {src && !failed && (
+    <span className="relative block h-12 w-12 shrink-0 overflow-hidden rounded bg-black/5 sm:h-14 sm:w-16" aria-busy={Boolean(source) && !loaded && !failed}>
+      {!loaded && <span aria-hidden="true" className={`absolute inset-0 bg-linear-to-br from-black/10 via-black/5 to-black/10 ${failed ? "" : "animate-pulse"}`} />}
+      {!failed && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
+          ref={attachFile}
           alt=""
-          onLoad={() => setLoadedSrc(src)}
-          onError={() => setErrorSrc(src)}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoadedSource(source)}
+          onError={() => setFailedSource(source)}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
         />
       )}
@@ -55,7 +54,7 @@ export default function ImageOrderList({
   if (!items.length) return null;
 
   return (
-    <ol className={compact ? "mt-3 grid min-w-0 gap-3" : "mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"}>
+    <ol className={compact ? "mt-3 grid max-h-[400px] min-w-0 grid-cols-[minmax(0,1fr)] gap-3 overflow-x-hidden overflow-y-auto" : "mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"}>
       {items.map((item, index) => (
         <li
           key={item.key}
@@ -80,9 +79,9 @@ export default function ImageOrderList({
         >
           <div className="relative shrink-0">
           {item.file ? (
-            <FileThumbnail file={item.file} />
+            <ImagePreview file={item.file} />
           ) : item.src ? (
-            <ImagePreview src={item.src} />
+            <ImagePreview src={cloudinaryImageVariants(item.src, "thumbnail")?.src ?? item.src} />
           ) : (
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded bg-[#B71C1C]/5 text-xs font-semibold text-[#B71C1C] sm:h-14 sm:w-16">Foto nueva</span>
           )}

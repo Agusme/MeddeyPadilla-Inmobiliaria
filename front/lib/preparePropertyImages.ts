@@ -37,7 +37,7 @@ async function compressImage(file: File, budget: number): Promise<File> {
 export async function preparePropertyImages(data: FormData): Promise<FormData> {
   const files = data.getAll("images").filter((value): value is File => value instanceof File && value.size > 0);
   if (files.reduce((size, file) => size + file.size, 0) <= imageBudget) return data;
-  // Work sequentially to avoid decoding twelve large photos in memory at once.
+  // Work sequentially to avoid decoding several large photos in memory at once.
   const prepared: File[] = [];
   for (const file of files) prepared.push(await compressImage(file, Math.floor(imageBudget / files.length)));
   const result = new FormData();

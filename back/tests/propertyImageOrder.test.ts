@@ -1,9 +1,20 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { applyImageOrder } from "../src/utils/propertyImageOrder";
-import { removePropertyPhoto } from "../../front/lib/propertyPhotos";
+import { removePropertyPhoto, uniqueNewPropertyPhotos } from "../../front/lib/propertyPhotos";
 
 const image = (url: string, position = 0) => ({ url, publicId: url, position });
+
+test("selecting the same new file twice keeps a single upload in the original order", () => {
+  const photo = (name: string, lastModified: number) => new File(["photo"], name, { lastModified, type: "image/jpeg" });
+  const existing = photo("casa.jpg", 1);
+  const different = photo("casa.jpg", 2);
+  const front = photo("frente.jpg", 1);
+  assert.deepEqual(
+    uniqueNewPropertyPhotos([existing], [photo("casa.jpg", 1), different, front, photo("frente.jpg", 1)]),
+    [different, front],
+  );
+});
 
 test("removing a reordered upload and adding another keeps file indexes aligned on save", () => {
   const next = removePropertyPhoto([image("a"), image("b"), image("c")], ["new:2", "existing:1", "new:0", "new:1"], "new:0");
@@ -47,11 +58,24 @@ test("invalid, duplicate and missing upload references are rejected", () => {
   }
 });
 
-test("the 12 photo limit applies to the final selection including saved photos", () => {
+test("creating accepts 30 photos and rejects 31", () => {
+  const photos = Array.from({ length: 30 }, (_, index) => image(String(index)));
+  assert.equal(applyImageOrder([], photos, undefined).length, 30);
+  assert.throws(() => applyImageOrder([], [...photos, image("extra")], undefined), /hasta 30 imágenes/);
+});
+
+test("editing can grow from 12 saved photos to 30 and replace a photo at the limit", () => {
   const existing = Array.from({ length: 12 }, (_, index) => image(String(index), index));
+  const added = Array.from({ length: 18 }, (_, index) => image(`added-${index}`));
   const keys = existing.map((_, index) => `existing:${index}`);
-  assert.equal(applyImageOrder(existing, [], JSON.stringify(keys)).length, 12);
-  assert.throws(() => applyImageOrder(existing, [image("new")], JSON.stringify([...keys, "new:0"])));
-  assert.throws(() => applyImageOrder(existing, [image("new")], undefined));
-  assert.equal(applyImageOrder(existing, [image("new")], JSON.stringify([...keys.slice(1), "new:0"])).length, 12);
+  const newKeys = added.map((_, index) => `new:${index}`);
+  const saved = applyImageOrder(existing, added, JSON.stringify(["new:0", ...keys, ...newKeys.slice(1)]));
+  assert.equal(saved.length, 30);
+  assert.equal(saved[0].url, "added-0");
+  assert.throws(() => applyImageOrder(existing, [...added, image("extra")], JSON.stringify([...keys, ...newKeys, "new:18"])), /hasta 30 imágenes/);
+  assert.throws(() => applyImageOrder(saved, [image("extra")], undefined), /hasta 30 imágenes/);
+  const replacementOrder = ["new:0", ...saved.slice(1).map((_, index) => `existing:${index + 1}`)];
+  const replaced = applyImageOrder(saved, [image("cover")], JSON.stringify(replacementOrder));
+  assert.equal(replaced.length, 30);
+  assert.equal(replaced[0].url, "cover");
 });
